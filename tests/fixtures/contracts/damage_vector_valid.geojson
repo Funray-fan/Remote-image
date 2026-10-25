@@ -1,0 +1,21 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[[116.0, 39.0], [116.001, 39.0], [116.001, 39.001], [116.0, 39.001], [116.0, 39.0]]]
+      },
+      "properties": {
+        "building_id": "fixture_building_001",
+        "damage_class": "major-damage",
+        "confidence": 0.82,
+        "event_id": "fixture_event",
+        "source": "synthetic_fixture",
+        "model_name": "fixture_damage_model",
+        "model_version": "1.0.0"
+      }
+    }
+  ]
+}

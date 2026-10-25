@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/Funray-fan/Remote-image/schemas/v1/damage-result.schema.json",
+  "title": "DamageResult",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "model_name", "model_version", "artifacts", "meta"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "model_name": {"type": "string", "minLength": 1},
+    "model_version": {"type": "string", "minLength": 1},
+    "artifacts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["tile_index", "metadata"],
+      "properties": {
+        "damage_vector": {"type": "string"},
+        "damage_mask": {"type": "string"},
+        "building_mask": {"type": "string"},
+        "tile_index": {"type": "string"},
+        "metadata": {"type": "string"}
+      },
+      "anyOf": [
+        {"required": ["damage_vector"]},
+        {"required": ["damage_mask"]},
+        {"required": ["building_mask"]}
+      ]
+    },
+    "meta": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["schema_version", "event_id", "study_area_id", "input_asset_ids", "method", "method_version", "parameters", "created_at", "warnings"],
+      "properties": {
+        "schema_version": {"const": "1.0"},
+        "event_id": {"type": "string", "minLength": 1},
+        "study_area_id": {"type": "string", "minLength": 1},
+        "input_asset_ids": {"type": "array", "items": {"type": "string"}, "minItems": 1, "uniqueItems": true},
+        "method": {"enum": ["building_damage", "building_segmentation"]},
+        "method_version": {"type": "string", "minLength": 1},
+        "parameters": {"type": "object"},
+        "created_at": {"type": "string", "format": "date-time"},
+        "warnings": {"type": "array", "items": {"type": "string"}}
+      }
+    }
+  }
+}

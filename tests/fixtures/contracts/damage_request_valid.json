@@ -1,0 +1,17 @@
+{
+  "schema_version": "1.0",
+  "event_id": "fixture_event",
+  "study_area_id": "fixture_area",
+  "post_event_asset_id": "fixture_post_event",
+  "pre_event_asset_id": null,
+  "building_footprints": "tests/fixtures/contracts/buildings.geojson",
+  "model_name": "fixture_damage_model",
+  "task": "building_damage",
+  "inference_options": {
+    "tile_size_px": 256,
+    "overlap_ratio": 0.25,
+    "confidence_threshold": 0.5,
+    "device": "cpu",
+    "batch_size": 1
+  }
+}

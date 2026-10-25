@@ -1,0 +1,21 @@
+{
+  "schema_version": "1.0",
+  "model_name": "fixture_damage_model",
+  "model_version": "1.0.0",
+  "artifacts": {
+    "damage_vector": "tests/fixtures/contracts/damage_vector_valid.geojson",
+    "tile_index": "tests/fixtures/contracts/tile_index_valid.geojson",
+    "metadata": "tests/fixtures/contracts/damage_metadata.json"
+  },
+  "meta": {
+    "schema_version": "1.0",
+    "event_id": "fixture_event",
+    "study_area_id": "fixture_area",
+    "input_asset_ids": ["fixture_post_event"],
+    "method": "building_damage",
+    "method_version": "1.0.0",
+    "parameters": {"fixture_only": true},
+    "created_at": "2026-10-25T00:00:00Z",
+    "warnings": ["synthetic fixture; not a real assessment"]
+  }
+}

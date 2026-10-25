@@ -1,0 +1,20 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[[116.0, 39.0], [116.01, 39.0], [116.01, 39.01], [116.0, 39.01], [116.0, 39.0]]]
+      },
+      "properties": {
+        "tile_id": "tile_000_000",
+        "source_asset_id": "fixture_post_event",
+        "row": 0,
+        "col": 0,
+        "valid_fraction": 1.0,
+        "is_edge_tile": false
+      }
+    }
+  ]
+}

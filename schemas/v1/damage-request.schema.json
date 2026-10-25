@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/Funray-fan/Remote-image/schemas/v1/damage-request.schema.json",
+  "title": "DamageRequest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "event_id", "study_area_id", "post_event_asset_id", "model_name", "task"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "event_id": {"type": "string", "minLength": 1},
+    "study_area_id": {"type": "string", "minLength": 1},
+    "post_event_asset_id": {"type": "string", "minLength": 1},
+    "pre_event_asset_id": {"type": ["string", "null"]},
+    "building_footprints": {"type": ["string", "null"]},
+    "model_name": {"type": "string", "minLength": 1},
+    "task": {"enum": ["building_damage", "building_segmentation"]},
+    "inference_options": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "tile_size_px": {"type": ["integer", "null"], "minimum": 1},
+        "overlap_ratio": {"type": ["number", "null"], "minimum": 0, "exclusiveMaximum": 1},
+        "confidence_threshold": {"type": ["number", "null"], "minimum": 0, "maximum": 1},
+        "device": {"type": ["string", "null"]},
+        "batch_size": {"type": ["integer", "null"], "minimum": 1}
+      }
+    }
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/Funray-fan/Remote-image/schemas/v1/tile-index.schema.json",
+  "title": "TileIndexFeatureCollection",
+  "type": "object",
+  "required": ["type", "features"],
+  "properties": {
+    "type": {"const": "FeatureCollection"},
+    "features": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["type", "geometry", "properties"],
+        "properties": {
+          "type": {"const": "Feature"},
+          "geometry": {"type": ["object", "null"]},
+          "properties": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["tile_id", "source_asset_id", "row", "col", "valid_fraction", "is_edge_tile"],
+            "properties": {
+              "tile_id": {"type": "string", "minLength": 1},
+              "source_asset_id": {"type": "string", "minLength": 1},
+              "row": {"type": "integer", "minimum": 0},
+              "col": {"type": "integer", "minimum": 0},
+              "valid_fraction": {"type": "number", "minimum": 0, "maximum": 1},
+              "is_edge_tile": {"type": "boolean"}
+            }
+          }
+        }
+      }
+    }
+  }
+}
