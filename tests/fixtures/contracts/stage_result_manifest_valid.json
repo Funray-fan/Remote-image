@@ -1,0 +1,29 @@
+{
+  "schema_version": "1.0",
+  "event_id": "fixture_event",
+  "stage": "stage2",
+  "created_at": "2026-10-25T16:30:00+08:00",
+  "input_asset_ids": ["fixture_post_event"],
+  "method": "building_damage",
+  "model_name": "fixture_damage_model",
+  "model_version": "1.0.0",
+  "artifacts": {
+    "damage_vector": "outputs/fixture_event/stage2/damage_vector.gpkg",
+    "tile_index": "outputs/fixture_event/stage2/tile_index.gpkg",
+    "metadata": "outputs/fixture_event/stage2/metadata.json"
+  },
+  "files": [
+    {
+      "path_or_uri": "outputs/fixture_event/stage2/metadata.json",
+      "size_bytes": 132,
+      "sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+    }
+  ],
+  "warnings": ["synthetic fixture only"],
+  "run_command": "python -m unittest discover -s tests -v",
+  "environment": {"python": "3.11", "fixture_only": true},
+  "tests": [{"name": "contract", "status": "pass"}],
+  "known_limitations": ["not a real disaster inference result"],
+  "producer": "C2 fixture",
+  "reviewer": "C1 fixture"
+}
