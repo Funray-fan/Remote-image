@@ -1,0 +1,39 @@
+{
+  "schema_version": "2.0",
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              0,
+              0
+            ],
+            [
+              1,
+              0
+            ],
+            [
+              1,
+              1
+            ],
+            [
+              0,
+              0
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "event_id": "synthetic_event",
+        "study_area_id": "synthetic_area",
+        "tile_id": "tile-0-0",
+        "row": 0,
+        "column": 0
+      }
+    }
+  ]
+}

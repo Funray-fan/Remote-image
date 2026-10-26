@@ -4,9 +4,10 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "remote-image"
-version = "0.1.0"
+version = "0.2.0"
 description = "遥感灾损评估与救援决策辅助系统的模块化框架"
 requires-python = ">=3.10"
+dependencies = ["jsonschema>=4.21,<5"]
 
 [project.optional-dependencies]
 gis = [
@@ -19,7 +20,6 @@ ui = [
     "leafmap>=0.31",
 ]
 dev = [
-    "jsonschema>=4.21",
     "pytest>=8.0",
 ]
 
@@ -31,4 +31,7 @@ package-dir = {"" = "src"}
 
 [tool.setuptools.packages.find]
 where = ["src"]
+
+[tool.setuptools.package-data]
+remote_image = ["schema_data/v2/*.json"]
 

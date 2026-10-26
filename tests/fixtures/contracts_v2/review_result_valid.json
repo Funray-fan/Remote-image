@@ -1,0 +1,26 @@
+{
+  "schema_version": "2.0",
+  "artifacts": {
+    "review_table": "synthetic/review.csv",
+    "review_layer": "synthetic/review.geojson",
+    "road_state_updates": "synthetic/road_updates.geojson",
+    "metadata": "synthetic/review_meta.json"
+  },
+  "meta": {
+    "schema_version": "2.0",
+    "event_id": "synthetic_event",
+    "study_area_id": "synthetic_area",
+    "input_asset_ids": [
+      "synthetic_post"
+    ],
+    "method": "manual_uav_review",
+    "method_version": "0.0.0-fixture",
+    "parameters": {
+      "fixture_only": true
+    },
+    "created_at": "2026-10-26T12:00:00+08:00",
+    "warnings": [
+      "synthetic fixture; not a scientific result"
+    ]
+  }
+}

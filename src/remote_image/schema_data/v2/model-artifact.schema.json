@@ -1,0 +1,104 @@
+{
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": "2.0",
+      "type": "string"
+    },
+    "model_name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "model_version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "task": {
+      "enum": [
+        "building_damage",
+        "building_segmentation"
+      ],
+      "type": "string"
+    },
+    "weights_path": {
+      "type": "string",
+      "minLength": 1
+    },
+    "weights_sha256": {
+      "type": "string",
+      "minLength": 1
+    },
+    "training_config": {
+      "$ref": "#/$defs/TrainingConfig"
+    },
+    "dataset_manifest_path": {
+      "type": "string",
+      "minLength": 1
+    },
+    "trained_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "required": [
+    "schema_version",
+    "model_name",
+    "model_version",
+    "task",
+    "weights_path",
+    "weights_sha256",
+    "training_config",
+    "dataset_manifest_path",
+    "trained_at"
+  ],
+  "additionalProperties": false,
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://remote-image.local/schemas/v2/model-artifact.schema.json",
+  "title": "ModelArtifact",
+  "$defs": {
+    "TrainingConfig": {
+      "type": "object",
+      "properties": {
+        "seed": {
+          "type": "integer"
+        },
+        "epochs": {
+          "type": "integer"
+        },
+        "batch_size": {
+          "type": "integer"
+        },
+        "learning_rate": {
+          "type": "number"
+        },
+        "device": {
+          "type": "string",
+          "minLength": 1
+        },
+        "train_split": {
+          "type": "string",
+          "minLength": 1
+        },
+        "val_split": {
+          "type": "string",
+          "minLength": 1
+        },
+        "test_split": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "seed",
+        "epochs",
+        "batch_size",
+        "learning_rate",
+        "device",
+        "train_split",
+        "val_split",
+        "test_split"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

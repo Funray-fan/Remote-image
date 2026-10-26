@@ -1,0 +1,101 @@
+{
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": "2.0",
+      "type": "string"
+    },
+    "input_product_type": {
+      "type": "string",
+      "minLength": 1
+    },
+    "input_scale": {
+      "enum": [
+        "raw_dn",
+        "sigma0_linear",
+        "sigma0_db"
+      ],
+      "type": "string"
+    },
+    "orbit_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "relative_orbit": {
+      "anyOf": [
+        {
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "orbit_direction": {
+      "enum": [
+        "ascending",
+        "descending"
+      ],
+      "type": "string"
+    },
+    "polarizations": {
+      "type": "array",
+      "items": {
+        "enum": [
+          "VV",
+          "VH"
+        ],
+        "type": "string"
+      }
+    },
+    "target_crs": {
+      "type": "string",
+      "minLength": 1
+    },
+    "dem_path": {
+      "anyOf": [
+        {
+          "type": "string",
+          "minLength": 1
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "speckle_method": {
+      "enum": [
+        "none",
+        "refined_lee"
+      ],
+      "type": "string"
+    },
+    "speckle_window_px": {
+      "anyOf": [
+        {
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    }
+  },
+  "required": [
+    "schema_version",
+    "input_product_type",
+    "input_scale",
+    "orbit_id",
+    "relative_orbit",
+    "orbit_direction",
+    "polarizations",
+    "target_crs",
+    "dem_path",
+    "speckle_method",
+    "speckle_window_px"
+  ],
+  "additionalProperties": false,
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://remote-image.local/schemas/v2/sar-preprocess-spec.schema.json",
+  "title": "SARPreprocessSpec"
+}

@@ -1,0 +1,16 @@
+{
+  "schema_version": "2.0",
+  "event_id": "synthetic_event",
+  "object_type": "building",
+  "object_id": "building-1",
+  "review_status": "reviewed",
+  "damage_class": "minor-damage",
+  "road_status": null,
+  "confirmation": "confirmed",
+  "source": "synthetic_fixture",
+  "evidence_uri": "synthetic/evidence/building-1.png",
+  "reviewer_id": "fixture-reviewer",
+  "reviewed_at": "2026-10-26T12:00:00+08:00",
+  "expires_at": null,
+  "notes": "synthetic fixture only"
+}

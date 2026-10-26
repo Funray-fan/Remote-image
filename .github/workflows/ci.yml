@@ -19,3 +19,5 @@ jobs:
         run: python -m pip install -e ".[dev]"
       - name: Run unit and contract tests
         run: python -m unittest discover -s tests -v
+      - name: Check generated schemas are synchronized
+        run: python scripts/generate_contract_schemas.py --check

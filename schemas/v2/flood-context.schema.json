@@ -1,0 +1,46 @@
+{
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": "2.0",
+      "type": "string"
+    },
+    "event_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "study_area_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "method": {
+      "type": "string",
+      "minLength": 1
+    },
+    "method_version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "parameters": {
+      "type": "object",
+      "additionalProperties": {}
+    },
+    "output_crs": {
+      "type": "string",
+      "minLength": 1
+    }
+  },
+  "required": [
+    "schema_version",
+    "event_id",
+    "study_area_id",
+    "method",
+    "method_version",
+    "parameters",
+    "output_crs"
+  ],
+  "additionalProperties": false,
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://remote-image.local/schemas/v2/flood-context.schema.json",
+  "title": "FloodContext"
+}

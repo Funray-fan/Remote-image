@@ -1,0 +1,48 @@
+{
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": "2.0",
+      "type": "string"
+    },
+    "event_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "layer_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "feature_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "properties": {
+      "type": "object",
+      "additionalProperties": {}
+    },
+    "geometry": {
+      "anyOf": [
+        {
+          "type": "object",
+          "additionalProperties": {}
+        },
+        {
+          "type": "null"
+        }
+      ]
+    }
+  },
+  "required": [
+    "schema_version",
+    "event_id",
+    "layer_id",
+    "feature_id",
+    "properties",
+    "geometry"
+  ],
+  "additionalProperties": false,
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://remote-image.local/schemas/v2/feature-detail.schema.json",
+  "title": "FeatureDetail"
+}

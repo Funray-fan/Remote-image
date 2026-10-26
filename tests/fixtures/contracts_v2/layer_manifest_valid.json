@@ -1,0 +1,22 @@
+{
+  "schema_version": "2.0",
+  "event_id": "synthetic_event",
+  "layers": [
+    {
+      "layer_id": "synthetic-flood",
+      "event_id": "synthetic_event",
+      "kind": "vector",
+      "path": "synthetic/flood.geojson",
+      "crs": "EPSG:32650",
+      "asset_ids": [
+        "synthetic_post"
+      ],
+      "title": "Synthetic flood",
+      "style": {
+        "color": "#0077aa"
+      },
+      "min_zoom": null,
+      "max_zoom": null
+    }
+  ]
+}

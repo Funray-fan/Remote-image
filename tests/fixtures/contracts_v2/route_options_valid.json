@@ -1,0 +1,17 @@
+{
+  "schema_version": "2.0",
+  "start_ids": [
+    "base-1"
+  ],
+  "goal_ids": [
+    "target-1"
+  ],
+  "as_of": "2026-10-26T12:00:00+08:00",
+  "cost_mode": "distance",
+  "blocked_policy": "exclude",
+  "candidate_count": 2,
+  "unknown_policy": "penalize",
+  "unknown_penalty_factor": 10.0,
+  "max_detour_ratio": 2.0,
+  "risk_multiplier": 1.0
+}
