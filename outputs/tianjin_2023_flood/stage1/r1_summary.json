@@ -1,0 +1,26 @@
+{
+  "schema_version": "1.0",
+  "event_id": "tianjin_2023_flood",
+  "stage": "stage1",
+  "owner": "R1",
+  "status": "pass",
+  "input_asset_ids": [
+    "S1A_IW_GRDH_1SDV_20230724T101409_20230724T101434_049564_05F5BB_rtc_vv",
+    "S1A_IW_GRDH_1SDV_20230805T101410_20230805T101435_049739_05FB20_rtc_vv"
+  ],
+  "artifacts": {
+    "asset_catalog": "outputs/tianjin_2023_flood/stage1/asset_catalog.json",
+    "raster_assets": "outputs/tianjin_2023_flood/stage1/raster_assets.json",
+    "prepared_inputs": "outputs/tianjin_2023_flood/stage1/prepared_inputs.json",
+    "pre_event": "outputs/tianjin_2023_flood/stage1/prepared/vv/pre_event.tif",
+    "post_event": "outputs/tianjin_2023_flood/stage1/prepared/vv/post_event.tif",
+    "valid_mask": "outputs/tianjin_2023_flood/stage1/prepared/vv/valid_mask.tif"
+  },
+  "reports": [
+    "outputs/tianjin_2023_flood/stage1/S1A_IW_GRDH_1SDV_20230724T101409_20230724T101434_049564_05F5BB_rtc_vv_validation.json",
+    "outputs/tianjin_2023_flood/stage1/S1A_IW_GRDH_1SDV_20230805T101410_20230805T101435_049739_05FB20_rtc_vv_validation.json"
+  ],
+  "warnings": [
+    "Source COGs are remote signed assets; full source sha256 is not computed."
+  ]
+}

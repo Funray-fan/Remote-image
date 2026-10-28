@@ -1,0 +1,101 @@
+{
+  "schema_version": "1.0",
+  "assets": [
+    {
+      "asset_id": "S1A_IW_GRDH_1SDV_20230724T101409_20230724T101434_049564_05F5BB_rtc_vv",
+      "source_url": "https://planetarycomputer.microsoft.com/api/stac/v1/collections/sentinel-1-rtc/items/S1A_IW_GRDH_1SDV_20230724T101409_20230724T101434_049564_05F5BB_rtc",
+      "retrieved_at": "2023-07-24T10:14:22.089781Z",
+      "license_id": "Copernicus Sentinel data",
+      "sha256": null,
+      "spatial_coverage": {
+        "bbox_wgs84": [
+          116.7,
+          38.8,
+          117.8,
+          39.5
+        ]
+      },
+      "time_range": [
+        "2023-07-24T10:14:22.089781Z",
+        "2023-07-24T10:14:22.089781Z"
+      ],
+      "status": "verified",
+      "limitations": [
+        "Source is a signed remote COG; full source hash is not computed."
+      ],
+      "local_path": null
+    },
+    {
+      "asset_id": "S1A_IW_GRDH_1SDV_20230805T101410_20230805T101435_049739_05FB20_rtc_vv",
+      "source_url": "https://planetarycomputer.microsoft.com/api/stac/v1/collections/sentinel-1-rtc/items/S1A_IW_GRDH_1SDV_20230805T101410_20230805T101435_049739_05FB20_rtc",
+      "retrieved_at": "2023-08-05T10:14:23.001424Z",
+      "license_id": "Copernicus Sentinel data",
+      "sha256": null,
+      "spatial_coverage": {
+        "bbox_wgs84": [
+          116.7,
+          38.8,
+          117.8,
+          39.5
+        ]
+      },
+      "time_range": [
+        "2023-08-05T10:14:23.001424Z",
+        "2023-08-05T10:14:23.001424Z"
+      ],
+      "status": "verified",
+      "limitations": [
+        "Source is a signed remote COG; full source hash is not computed."
+      ],
+      "local_path": null
+    },
+    {
+      "asset_id": "S1A_IW_GRDH_1SDV_20230724T101409_20230724T101434_049564_05F5BB_rtc_vv_prepared",
+      "source_url": "https://planetarycomputer.microsoft.com/api/stac/v1/collections/sentinel-1-rtc/items/S1A_IW_GRDH_1SDV_20230724T101409_20230724T101434_049564_05F5BB_rtc",
+      "retrieved_at": "2023-07-24T10:14:22.089781Z",
+      "license_id": "Copernicus Sentinel data",
+      "sha256": "5ba4e6d0c11f20bda0f2c65be523b7497282df45a7ba51a15ef8d53860e0b57c",
+      "spatial_coverage": {
+        "bbox_wgs84": [
+          116.7,
+          38.8,
+          117.8,
+          39.5
+        ]
+      },
+      "time_range": [
+        "2023-07-24T10:14:22.089781Z",
+        "2023-07-24T10:14:22.089781Z"
+      ],
+      "status": "usable",
+      "limitations": [
+        "Prepared from a remote signed COG; source is Sentinel-1 RTC VV."
+      ],
+      "local_path": "outputs/tianjin_2023_flood/stage1/prepared/vv/pre_event.tif"
+    },
+    {
+      "asset_id": "S1A_IW_GRDH_1SDV_20230805T101410_20230805T101435_049739_05FB20_rtc_vv_prepared",
+      "source_url": "https://planetarycomputer.microsoft.com/api/stac/v1/collections/sentinel-1-rtc/items/S1A_IW_GRDH_1SDV_20230805T101410_20230805T101435_049739_05FB20_rtc",
+      "retrieved_at": "2023-08-05T10:14:23.001424Z",
+      "license_id": "Copernicus Sentinel data",
+      "sha256": "5b15d1ea205b289bb48e540fb9bd6e2c4dae9d119d76b217d6472b84707c4d25",
+      "spatial_coverage": {
+        "bbox_wgs84": [
+          116.7,
+          38.8,
+          117.8,
+          39.5
+        ]
+      },
+      "time_range": [
+        "2023-08-05T10:14:23.001424Z",
+        "2023-08-05T10:14:23.001424Z"
+      ],
+      "status": "usable",
+      "limitations": [
+        "Prepared from a remote signed COG; source is Sentinel-1 RTC VV."
+      ],
+      "local_path": "outputs/tianjin_2023_flood/stage1/prepared/vv/post_event.tif"
+    }
+  ]
+}

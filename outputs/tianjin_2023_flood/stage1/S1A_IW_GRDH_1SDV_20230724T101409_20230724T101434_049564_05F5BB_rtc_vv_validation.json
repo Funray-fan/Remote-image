@@ -1,0 +1,84 @@
+{
+  "status": "pass",
+  "checks": [
+    {
+      "name": "readable",
+      "status": "pass",
+      "expected": true,
+      "actual": true,
+      "message": "Raster opened successfully"
+    },
+    {
+      "name": "crs",
+      "status": "pass",
+      "expected": "defined",
+      "actual": "EPSG:32650",
+      "message": "CRS is present"
+    },
+    {
+      "name": "dimensions",
+      "status": "pass",
+      "expected": ">0",
+      "actual": [
+        27987,
+        20802
+      ],
+      "message": "Raster dimensions are valid"
+    },
+    {
+      "name": "transform",
+      "status": "pass",
+      "expected": "valid affine transform",
+      "actual": [
+        10.0,
+        0.0,
+        253030.0,
+        0.0,
+        -10.0,
+        4521490.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "message": "Affine transform is valid"
+    },
+    {
+      "name": "bands",
+      "status": "pass",
+      "expected": [
+        "VV"
+      ],
+      "actual": [
+        "VV"
+      ],
+      "message": "Required bands are available"
+    },
+    {
+      "name": "coverage",
+      "status": "pass",
+      "expected": "overlap study area",
+      "actual": true,
+      "message": "Raster overlaps study area"
+    }
+  ],
+  "metrics": {
+    "width": 27987,
+    "height": 20802,
+    "count": 1,
+    "dtype": "float32",
+    "crs": "EPSG:32650",
+    "pixel_size_m": [
+      10.0,
+      10.0
+    ],
+    "bounds": [
+      253030.0,
+      4313470.0,
+      532900.0,
+      4521490.0
+    ],
+    "nodata": -32768.0
+  },
+  "warnings": [],
+  "artifacts": {}
+}

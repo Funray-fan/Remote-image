@@ -1,0 +1,39 @@
+{
+  "schema_version": "1.0",
+  "event_id": "zhuozhou_2023_flood",
+  "study_area_id": "zhuozhou_2023_flood",
+  "input_asset_ids": [
+    "S1A_IW_GRDH_1SDV_20230724T101409_20230724T101434_049564_05F5BB_rtc_vv",
+    "S1A_IW_GRDH_1SDV_20230805T101410_20230805T101435_049739_05FB20_rtc_vv"
+  ],
+  "method": "clip_reproject_align",
+  "method_version": "1.0",
+  "parameters": {
+    "target_crs": "EPSG:32650",
+    "resampling": "bilinear",
+    "grid": {
+      "transform": [
+        10.0,
+        0.0,
+        392217.1635396682,
+        0.0,
+        -10.0,
+        4395207.806278839,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "width": 3920,
+      "height": 4484,
+      "pixel_size_x_m": 10.0,
+      "pixel_size_y_m": 10.0
+    }
+  },
+  "created_at": "2026-10-26T08:32:32.397208Z",
+  "warnings": [],
+  "artifacts": {
+    "pre_event": "pre_event.tif",
+    "post_event": "post_event.tif",
+    "valid_mask": "valid_mask.tif"
+  }
+}

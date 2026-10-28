@@ -1,0 +1,78 @@
+{
+  "S1A_IW_GRDH_1SDV_20230724T101409_20230724T101434_049564_05F5BB_rtc_vv": {
+    "asset_id": "S1A_IW_GRDH_1SDV_20230724T101409_20230724T101434_049564_05F5BB_rtc_vv",
+    "path": "remote_S1A_IW_GRDH_1SDV_20230724T101409_20230724T101434_049564_05F5BB_rtc_vv.tif",
+    "acquired_at": "2023-07-24T10:14:22.089781Z",
+    "source": "Copernicus Sentinel-1 RTC",
+    "coordinate_reference_system": "EPSG:32650",
+    "pixel_size_m": 10.0,
+    "bands": [
+      "VV"
+    ],
+    "footprint": null,
+    "source_type": "satellite",
+    "is_substitute": false,
+    "quality_notes": null,
+    "source_uri": "https://sentinel1euwestrtc.blob.core.windows.net/sentinel1-grd-rtc/GRD/2023/7/24/IW/DV/S1A_IW_GRDH_1SDV_20230724T101409_20230724T101434_049564_05F5BB_BBDD/measurement/iw-vv.rtc.tiff?st=2026-10-25T08%3A55%3A03Z&se=2026-10-26T09%3A40%3A03Z&sp=rl&sv=2025-07-05&sr=c&skoid=9c8ff44a-6a2c-4dfb-b298-1c9212f64d9a&sktid=72f988bf-86f1-41af-91ab-2d7cd011db47&skt=2026-10-26T08%3A33%3A53Z&ske=2026-11-02T08%3A33%3A53Z&sks=b&skv=2025-07-05&sig=ZHXlIX9/n66ZqqX2DVT21szx7yE0NyyWeDe/JPFoi8s%3D",
+    "nodata": -32768.0,
+    "width": 27987,
+    "height": 20802,
+    "count": 1,
+    "dtype": "float32",
+    "transform": [
+      10.0,
+      0.0,
+      253030.0,
+      0.0,
+      -10.0,
+      4521490.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "bounds": [
+      253030.0,
+      4313470.0,
+      532900.0,
+      4521490.0
+    ]
+  },
+  "S1A_IW_GRDH_1SDV_20230805T101410_20230805T101435_049739_05FB20_rtc_vv": {
+    "asset_id": "S1A_IW_GRDH_1SDV_20230805T101410_20230805T101435_049739_05FB20_rtc_vv",
+    "path": "remote_S1A_IW_GRDH_1SDV_20230805T101410_20230805T101435_049739_05FB20_rtc_vv.tif",
+    "acquired_at": "2023-08-05T10:14:23.001424Z",
+    "source": "Copernicus Sentinel-1 RTC",
+    "coordinate_reference_system": "EPSG:32650",
+    "pixel_size_m": 10.0,
+    "bands": [
+      "VV"
+    ],
+    "footprint": null,
+    "source_type": "satellite",
+    "is_substitute": false,
+    "quality_notes": null,
+    "source_uri": "https://sentinel1euwestrtc.blob.core.windows.net/sentinel1-grd-rtc/GRD/2023/8/5/IW/DV/S1A_IW_GRDH_1SDV_20230805T101410_20230805T101435_049739_05FB20_27E6/measurement/iw-vv.rtc.tiff?st=2026-10-25T08%3A55%3A07Z&se=2026-10-26T09%3A40%3A07Z&sp=rl&sv=2025-07-05&sr=c&skoid=9c8ff44a-6a2c-4dfb-b298-1c9212f64d9a&sktid=72f988bf-86f1-41af-91ab-2d7cd011db47&skt=2026-10-26T08%3A36%3A34Z&ske=2026-11-02T08%3A36%3A34Z&sks=b&skv=2025-07-05&sig=k%2B9qYysLIcAJGm3ufZNRaARUQB9iGKmajJHQqb9a9N8%3D",
+    "nodata": -32768.0,
+    "width": 27986,
+    "height": 20802,
+    "count": 1,
+    "dtype": "float32",
+    "transform": [
+      10.0,
+      0.0,
+      253000.0,
+      0.0,
+      -10.0,
+      4521490.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "bounds": [
+      253000.0,
+      4313470.0,
+      532860.0,
+      4521490.0
+    ]
+  }
+}

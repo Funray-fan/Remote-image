@@ -1,0 +1,98 @@
+{
+  "pre_event": {
+    "asset_id": "S1A_IW_GRDH_1SDV_20230724T101409_20230724T101434_049564_05F5BB_rtc_vv_prepared",
+    "path": "outputs/tianjin_2023_flood/stage1/prepared/vv/pre_event.tif",
+    "acquired_at": "2023-07-24T10:14:22.089781Z",
+    "source": "Copernicus Sentinel-1 RTC",
+    "coordinate_reference_system": "EPSG:32650",
+    "pixel_size_m": 10.0,
+    "bands": [
+      "VV"
+    ],
+    "footprint": null,
+    "source_type": "satellite",
+    "is_substitute": false,
+    "quality_notes": null,
+    "source_uri": null,
+    "nodata": -32768.0,
+    "width": 9552,
+    "height": 7799,
+    "count": 1,
+    "dtype": "float32",
+    "transform": [
+      10.0,
+      0.0,
+      473949.4746970238,
+      0.0,
+      -10.0,
+      4372569.963915938,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "bounds": [
+      473949.4746970238,
+      4294579.963915938,
+      569469.4746970239,
+      4372569.963915938
+    ]
+  },
+  "post_event": {
+    "asset_id": "S1A_IW_GRDH_1SDV_20230805T101410_20230805T101435_049739_05FB20_rtc_vv_prepared",
+    "path": "outputs/tianjin_2023_flood/stage1/prepared/vv/post_event.tif",
+    "acquired_at": "2023-08-05T10:14:23.001424Z",
+    "source": "Copernicus Sentinel-1 RTC",
+    "coordinate_reference_system": "EPSG:32650",
+    "pixel_size_m": 10.0,
+    "bands": [
+      "VV"
+    ],
+    "footprint": null,
+    "source_type": "satellite",
+    "is_substitute": false,
+    "quality_notes": null,
+    "source_uri": null,
+    "nodata": -32768.0,
+    "width": 9552,
+    "height": 7799,
+    "count": 1,
+    "dtype": "float32",
+    "transform": [
+      10.0,
+      0.0,
+      473949.4746970238,
+      0.0,
+      -10.0,
+      4372569.963915938,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "bounds": [
+      473949.4746970238,
+      4294579.963915938,
+      569469.4746970239,
+      4372569.963915938
+    ]
+  },
+  "study_area_id": "tianjin_2023_flood",
+  "grid": {
+    "transform": [
+      10.0,
+      0.0,
+      473949.4746970238,
+      0.0,
+      -10.0,
+      4372569.963915938,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "width": 9552,
+    "height": 7799,
+    "pixel_size_x_m": 10.0,
+    "pixel_size_y_m": 10.0
+  },
+  "valid_mask": "outputs/tianjin_2023_flood/stage1/prepared/vv/valid_mask.tif",
+  "metadata": "outputs/tianjin_2023_flood/stage1/prepared/vv/metadata.json"
+}

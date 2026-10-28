@@ -1,0 +1,98 @@
+{
+  "pre_event": {
+    "asset_id": "S1A_IW_GRDH_1SDV_20230724T101409_20230724T101434_049564_05F5BB_rtc_vv_prepared",
+    "path": "outputs/zhuozhou_2023_flood/stage1/prepared/vv/pre_event.tif",
+    "acquired_at": "2023-07-24T10:14:22.089781Z",
+    "source": "Copernicus Sentinel-1 RTC",
+    "coordinate_reference_system": "EPSG:32650",
+    "pixel_size_m": 10.0,
+    "bands": [
+      "VV"
+    ],
+    "footprint": null,
+    "source_type": "satellite",
+    "is_substitute": false,
+    "quality_notes": null,
+    "source_uri": null,
+    "nodata": -32768.0,
+    "width": 3920,
+    "height": 4484,
+    "count": 1,
+    "dtype": "float32",
+    "transform": [
+      10.0,
+      0.0,
+      392217.1635396682,
+      0.0,
+      -10.0,
+      4395207.806278839,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "bounds": [
+      392217.1635396682,
+      4350367.806278839,
+      431417.1635396682,
+      4395207.806278839
+    ]
+  },
+  "post_event": {
+    "asset_id": "S1A_IW_GRDH_1SDV_20230805T101410_20230805T101435_049739_05FB20_rtc_vv_prepared",
+    "path": "outputs/zhuozhou_2023_flood/stage1/prepared/vv/post_event.tif",
+    "acquired_at": "2023-08-05T10:14:23.001424Z",
+    "source": "Copernicus Sentinel-1 RTC",
+    "coordinate_reference_system": "EPSG:32650",
+    "pixel_size_m": 10.0,
+    "bands": [
+      "VV"
+    ],
+    "footprint": null,
+    "source_type": "satellite",
+    "is_substitute": false,
+    "quality_notes": null,
+    "source_uri": null,
+    "nodata": -32768.0,
+    "width": 3920,
+    "height": 4484,
+    "count": 1,
+    "dtype": "float32",
+    "transform": [
+      10.0,
+      0.0,
+      392217.1635396682,
+      0.0,
+      -10.0,
+      4395207.806278839,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "bounds": [
+      392217.1635396682,
+      4350367.806278839,
+      431417.1635396682,
+      4395207.806278839
+    ]
+  },
+  "study_area_id": "zhuozhou_2023_flood",
+  "grid": {
+    "transform": [
+      10.0,
+      0.0,
+      392217.1635396682,
+      0.0,
+      -10.0,
+      4395207.806278839,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "width": 3920,
+    "height": 4484,
+    "pixel_size_x_m": 10.0,
+    "pixel_size_y_m": 10.0
+  },
+  "valid_mask": "outputs/zhuozhou_2023_flood/stage1/prepared/vv/valid_mask.tif",
+  "metadata": "outputs/zhuozhou_2023_flood/stage1/prepared/vv/metadata.json"
+}
