@@ -8,18 +8,23 @@ from remote_image.core.contracts import (
     NetworkReport, NetworkSpec, PriorityResult, ReviewResult, RoadGraph,
     RoadStateUpdateResult, RouteResult, StudyArea,
 )
+from remote_image.modules.decision.stage1 import (
+    prepare_context_layers as _prepare_context_layers,
+    validate_context_layers as _validate_context_layers,
+    validate_network as _validate_network,
+)
 
 
 def prepare_context_layers(area: StudyArea, sources: ContextSources, target_crs: str, output_dir: Path) -> ContextLayers:
-    raise NotImplementedError("R3: 统一基础图层并保留来源、日期和许可")
+    return _prepare_context_layers(area, sources, target_crs, output_dir)
 
 
 def validate_context_layers(layers: ContextLayers, area: StudyArea) -> ContextQAReport:
-    raise NotImplementedError("R3: 检查基础图层覆盖、来源和对象ID")
+    return _validate_context_layers(layers, area)
 
 
 def validate_network(roads_path: Path, spec: NetworkSpec) -> NetworkReport:
-    raise NotImplementedError("R3: 检查路网ID、方向、速度和拓扑")
+    return _validate_network(roads_path, spec)
 
 
 def build_road_graph(roads_path: Path, spec: NetworkSpec) -> RoadGraph:
