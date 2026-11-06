@@ -187,7 +187,7 @@ class CaseDataReadiness:
 @dataclass(frozen=True)
 class SARPreprocessSpec:
     input_product_type: str
-    input_scale: Literal["raw_dn", "sigma0_linear", "sigma0_db"]
+    input_scale: Literal["raw_dn", "gamma0_linear", "gamma0_db", "sigma0_linear", "sigma0_db"]
     orbit_id: str
     relative_orbit: int | None
     orbit_direction: Literal["ascending", "descending"]
@@ -203,7 +203,7 @@ class SARPreparedAsset:
     asset: RasterAsset
     record: AssetRecord
     report_path: Path
-    backscatter_quantity: Literal["sigma0"] = "sigma0"
+    backscatter_quantity: Literal["gamma0", "sigma0"] = "sigma0"
     value_scale: Literal["db"] = "db"
 
 

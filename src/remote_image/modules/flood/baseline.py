@@ -45,7 +45,7 @@ def run_flood_baseline(request):
         out / "flood_mask.tif", permanent_water_mask=request.options.permanent_water_mask,
         exclusion_mask=request.options.exclusion_mask)
     warnings = ["新增低散射水体候选；识别精度尚未经过独立参考验证。",
-                "输入是 gamma0 dB；当前团队 sigma0 规格的正式兼容性待审阅。"]
+                "输入是 gamma0 dB；阈值只适用于相同辐射归一化方式。"]
     if request.options.permanent_water_mask is None:
         warnings.append("未使用永久水体辅助资料，仅按本次灾前影像排除已有水体。")
     params = {

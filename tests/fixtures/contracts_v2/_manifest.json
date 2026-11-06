@@ -2,6 +2,11 @@
   "description": "Synthetic interface fixtures only; not scientific outputs.",
   "cases": [
     {
+      "schema": "sar-prepared-asset",
+      "file": "sar_prepared_asset_valid.json",
+      "valid": true
+    },
+    {
       "schema": "flood-options",
       "file": "flood_options_valid.json",
       "valid": true

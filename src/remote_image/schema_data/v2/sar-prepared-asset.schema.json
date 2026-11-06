@@ -17,6 +17,7 @@
     },
     "backscatter_quantity": {
       "enum": [
+        "gamma0",
         "sigma0"
       ],
       "type": "string"

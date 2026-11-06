@@ -22,7 +22,7 @@ def validate_raster(asset: RasterAsset, area: StudyArea, required_bands: tuple[s
 
 
 def preprocess_sar(source_path: Path, input_record: AssetRecord, spec: SARPreprocessSpec, output_dir: Path) -> SARPreparedAsset:
-    raise NotImplementedError("R1: 按产品状态输出 sigma0_db 和处理报告")
+    raise NotImplementedError("R1: 按产品状态输出明确标注的 gamma0_db 或 sigma0_db，并生成处理报告")
 
 
 def prepare_pair(pre: RasterAsset, post: RasterAsset, area: StudyArea, target_crs: str, grid: GridSpec, resampling: ResamplingName, output_dir: Path) -> PreparedInputs:

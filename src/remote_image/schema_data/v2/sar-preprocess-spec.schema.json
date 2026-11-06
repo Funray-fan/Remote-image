@@ -12,6 +12,8 @@
     "input_scale": {
       "enum": [
         "raw_dn",
+        "gamma0_linear",
+        "gamma0_db",
         "sigma0_linear",
         "sigma0_db"
       ],

@@ -1,6 +1,6 @@
 """将明确声明为 gamma0 线性功率的 R1 输入转换为 R2 分析输入。
 
-这里不生成 sigma0，也不修改公共契约。运行时路径为绝对路径，写出的
+这里不生成 sigma0。运行时路径为绝对路径，写出的
 prepared_inputs.json 使用该清单所在目录为路径基准。
 """
 from __future__ import annotations
@@ -284,7 +284,7 @@ def prepare_analysis_inputs(manifest_path, pre_path, post_path, mask_path, outpu
     inputs = PreparedInputs(assets[0], assets[1], manifest["study_area_id"], GridSpec(tuple(actual["transform"]), actual["width"], actual["height"], actual["pixel_size_x_m"], actual["pixel_size_y_m"]), targets["valid_mask"])
     validate_contract(inputs)
     analysis_check = check_analysis_inputs(inputs)
-    provenance = {"r2_input_provenance_version": "1.0", "source_revision": source_revision, "manifest_path": str(manifest_path), "manifest_sha256": sha256_file(manifest_path), "declared_input_radiometry": {"backscatter_quantity": "gamma0", "value_scale": "linear_power", "declaration_source": "explicit prepare_analysis_inputs entry"}, "output_radiometry": {"backscatter_quantity": "gamma0", "value_scale": "db"}, "conversion_version": CONVERSION_VERSION, "source_files": {key: {"path": str(path), "sha256": hashes[key], "manifest_path": manifest.get(key, {}).get("path") if isinstance(manifest.get(key), dict) else manifest.get(key)} for key, path in source_paths.items()}, "asset_id_mapping": {manifest[key]["asset_id"]: asset.asset_id for key, asset in zip(("pre_event", "post_event"), assets)}, "linear_input_check": inspected, "analysis_input_check": analysis_check, "prepared_inputs_path_base": ".", "warnings": inspected["warnings"] + ["本地 gamma0 技术基线；当前固定 sigma0/db 的团队规格需另行确认。"]}
+    provenance = {"r2_input_provenance_version": "1.0", "source_revision": source_revision, "manifest_path": str(manifest_path), "manifest_sha256": sha256_file(manifest_path), "declared_input_radiometry": {"backscatter_quantity": "gamma0", "value_scale": "linear_power", "declaration_source": "explicit prepare_analysis_inputs entry"}, "output_radiometry": {"backscatter_quantity": "gamma0", "value_scale": "db"}, "conversion_version": CONVERSION_VERSION, "source_files": {key: {"path": str(path), "sha256": hashes[key], "manifest_path": manifest.get(key, {}).get("path") if isinstance(manifest.get(key), dict) else manifest.get(key)} for key, path in source_paths.items()}, "asset_id_mapping": {manifest[key]["asset_id"]: asset.asset_id for key, asset in zip(("pre_event", "post_event"), assets)}, "linear_input_check": inspected, "analysis_input_check": analysis_check, "prepared_inputs_path_base": ".", "warnings": inspected["warnings"] + ["本案例使用 gamma0；前后影像和阈值必须保持相同辐射归一化方式。"]}
     portable = replace(inputs, pre_event=replace(inputs.pre_event, path=Path(targets["pre_event"].name)), post_event=replace(inputs.post_event, path=Path(targets["post_event"].name)), valid_mask=Path(targets["valid_mask"].name))
     write_json(output_dir / "prepared_inputs.json", to_payload(portable))
     write_json(output_dir / "input_provenance.json", provenance)

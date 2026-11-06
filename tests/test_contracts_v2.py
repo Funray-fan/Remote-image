@@ -57,6 +57,7 @@ class ContractV2FixtureTests(unittest.TestCase):
 
     def test_major_handoffs_round_trip_paths_tuples_and_timestamps(self) -> None:
         cases = (
+            ("sar-prepared-asset", contracts.SARPreparedAsset),
             ("flood-request", contracts.FloodRequest),
             ("damage-request", contracts.DamageRequest),
             ("decision-request", contracts.DecisionRequest),
@@ -114,6 +115,18 @@ class ContractV2FixtureTests(unittest.TestCase):
 
 
 class ContractV2SemanticTests(unittest.TestCase):
+    def test_sar_prepared_asset_accepts_gamma0_and_sigma0_only(self) -> None:
+        payload = valid_payload("sar-prepared-asset")
+        self.assertEqual(payload["backscatter_quantity"], "gamma0")
+        validate_payload("sar-prepared-asset", payload)
+
+        payload["backscatter_quantity"] = "sigma0"
+        validate_payload("sar-prepared-asset", payload)
+
+        payload["backscatter_quantity"] = "beta0"
+        with self.assertRaises(ValueError):
+            validate_payload("sar-prepared-asset", payload)
+
     def test_sar_threshold_keys_must_match_selected_polarizations(self) -> None:
         base = valid_payload("flood-options")
         base.update(

@@ -16,7 +16,7 @@ gamma0_db = 10 × log10(gamma0_linear_power)
 
 只有共同有效且线性功率大于零的像元才能转换。源文件保留，派生 TIFF 写入 gamma0、db、VV、源文件 SHA-256 与转换版本标签；`input_provenance.json` 保存来源与对象 ID 映射。原本已经是 dB 的输入不能再走线性转换入口。
 
-转为 dB 改变了数值尺度，辐射量仍是 gamma0。当前 C1 的 `SARPreparedAsset` 固定为 sigma0/db，本地适配没有将 gamma0 改名为 sigma0，也没有修改共享 schema。`FloodRequest` 使用普通 `PreparedInputs`，因此可以承载这套明确标记的技术基线；团队对实际物理规格的接受仍需单独审阅。
+转为 dB 改变了数值尺度，辐射量仍是 gamma0。`SARPreparedAsset` 同时支持 gamma0/db 和 sigma0/db，本地适配没有将 gamma0 改名为 sigma0。前后影像必须采用相同归一化方式，阈值也必须针对对应辐射量重新选择。
 
 ## 有效观测与未知
 

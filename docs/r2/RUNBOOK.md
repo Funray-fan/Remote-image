@@ -126,6 +126,6 @@ CI 配置已加入 R2 依赖与测试。本轮只在本地运行这些检查，�
 
 四个公开函数仍在 remote_image.modules.flood.interfaces 中，签名保留。其余阶段的 R2 占位接口没有被假装实现。
 
-实际输入为 gamma0 dB，而团队当前 SARPreparedAsset 写的是 sigma0/db。工程通过明确标注的本地适配运行，没有修改共享 schema 或伪造 sigma0。需要由 C1/R1 审阅这个物理规格；地图和总流程的正式接入也还需要 C1/C3 验证。
+实际输入为 gamma0 dB。共享 `SARPreparedAsset` 同时支持 gamma0/db 和 sigma0/db，工程保留真实物理含义，不伪造 sigma0。前后影像必须使用同一种归一化方式；如果以后改用 sigma0，需要重新选择阈值。地图和总流程的正式接入还需要 C1/C3 验证。
 
 学习从 [CODE_READING.md](CODE_READING.md) 开始。先把一次运行和几个结果文件认清，再逐步阅读代码。

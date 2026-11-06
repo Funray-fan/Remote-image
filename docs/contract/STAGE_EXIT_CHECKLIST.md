@@ -20,7 +20,7 @@
 | 成果 | 建议文件名/位置 | 主责 | 交接检查 |
 |---|---|---|---|
 | 输入资产登记与可复现配置 | `assets.json`、`config.json`、`case_data_readiness.json` | R1 / C1 | asset_id、来源/许可、日期、CRS、输入清单可追溯；进入各阶段前，该阶段最低输入须通过检查并达到 usable |
-| 配准和预处理影像 | `prepared/pre_event.tif`、`prepared/post_event.tif`、`sar_processing_report.json`、`threshold_report.json` | R1 / R2 | 按产品状态完成必要定标/校正，统一 sigma0_db；网格及局部配准可核查；记录前/后两组极化阈值和组合规则；无真值时 IoU/F1 为 null |
+| 配准和预处理影像 | `prepared/pre_event.tif`、`prepared/post_event.tif`、`sar_processing_report.json`、`threshold_report.json` | R1 / R2 | 按产品状态完成必要定标/校正，明确标注 gamma0_db 或 sigma0_db；同一次前后比较必须使用相同归一化方式；网格及局部配准可核查；记录前/后两组极化阈值和组合规则；无真值时 IoU/F1 为 null |
 | 洪水结果 | `flood_mask.tif`、`flood_polygons.gpkg`、`metadata.json` | R2 | 映射到 `FloodResult.artifacts` 的 `flood_mask`、`flood_polygons`、`metadata`；栅格值域与矢量几何通过检查 |
 | 上下文图层和暴露统计 | `context/`、`exposure.csv` 或 `exposure.json` | R3 / R2 | 每层有 CRS、来源与日期；统计口径、单位和缺失数据说明齐全 |
 | 地图配置和运行摘要 | `layer_manifest.json`、`summary.json`、`run.log` | C1 / C3 | 图层可加载、摘要关联输入和方法版本；C3 可查看灾前/灾后、洪水、建筑/道路及统计 |
