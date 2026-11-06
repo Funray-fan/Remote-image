@@ -1,0 +1,50 @@
+{
+  "source_revision": "237cff7c433a6e041418f128d01a99453738a0a8",
+  "retrieved_at": "2026-11-02T11:42:40.742428+00:00",
+  "files": {
+    "pre_event.tif": {
+      "path": "data/zhuozhou/pre_event.tif",
+      "sha256": "613c9c5338ff14f31728810b54d2380dc5d535c3f1553c69458dd76e24aed384",
+      "size_bytes": 62717753,
+      "source_url": "https://github.com/Funray-fan/Remote-image/blob/237cff7c433a6e041418f128d01a99453738a0a8/outputs/zhuozhou_2023_flood/stage1/prepared/vv/pre_event.tif"
+    },
+    "post_event.tif": {
+      "path": "data/zhuozhou/post_event.tif",
+      "sha256": "e785da785719a8cf0675006f6819540282a473b705d41d569d99e049bb53fb23",
+      "size_bytes": 62801947,
+      "source_url": "https://github.com/Funray-fan/Remote-image/blob/237cff7c433a6e041418f128d01a99453738a0a8/outputs/zhuozhou_2023_flood/stage1/prepared/vv/post_event.tif"
+    },
+    "valid_mask.tif": {
+      "path": "data/zhuozhou/valid_mask.tif",
+      "sha256": "25d570bea82fb22efca9d1aa2a75eed1f8566a2e14d0e8eefd75949fdebeba47",
+      "size_bytes": 33779,
+      "source_url": "https://github.com/Funray-fan/Remote-image/blob/237cff7c433a6e041418f128d01a99453738a0a8/outputs/zhuozhou_2023_flood/stage1/prepared/vv/valid_mask.tif"
+    },
+    "prepared_inputs.json": {
+      "path": "data/zhuozhou/prepared_inputs.json",
+      "sha256": "9b01636cb034d0c479e5be9390f588a2cef7845c94ab85390a29e792fa156c2a",
+      "size_bytes": 2291,
+      "source_url": "https://github.com/Funray-fan/Remote-image/blob/237cff7c433a6e041418f128d01a99453738a0a8/outputs/zhuozhou_2023_flood/stage1/prepared_inputs.json"
+    },
+    "raw_buildings.geojson": {
+      "path": "data/zhuozhou/raw_buildings.geojson",
+      "sha256": "f8f8c3ea57de8db117fc8c1bb7661f11535a5ee467e14587563fa2c012631b29",
+      "size_bytes": 1506918,
+      "source_url": "https://github.com/Funray-fan/Remote-image/blob/237cff7c433a6e041418f128d01a99453738a0a8/data/external/osm/geojson/zhuozhou/zhuozhou_osm_features_buildings.geojson"
+    },
+    "raw_roads.geojson": {
+      "path": "data/zhuozhou/raw_roads.geojson",
+      "sha256": "5c2efe09e6356f7d628b9160729b00488d4de6cd7e637286e46600f0ff011b3c",
+      "size_bytes": 6853804,
+      "source_url": "https://github.com/Funray-fan/Remote-image/blob/237cff7c433a6e041418f128d01a99453738a0a8/data/external/osm/geojson/zhuozhou/zhuozhou_osm_features_roads.geojson"
+    }
+  },
+  "licenses": {
+    "raster": "Copernicus Sentinel data",
+    "context": "ODbL-1.0; OpenStreetMap contributors"
+  },
+  "limitations": [
+    "OSM source observation dates are unspecified; not a verified 2023 asset inventory.",
+    "The R1 text-file manifest hashes can differ with LF/CRLF; these are hashes of the actual retrieved files."
+  ]
+}

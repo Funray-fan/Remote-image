@@ -11,19 +11,23 @@ from remote_image.core.contracts import (
 
 
 def evaluate_flood_thresholds(inputs: PreparedInputs, candidates: Sequence[FloodOptions], reference: Path | None, output_dir: Path) -> ThresholdReport:
-    raise NotImplementedError("R2: 比较候选阈值；无真值时只给定性选择依据")
+    from .thresholds import evaluate_flood_thresholds as implementation
+    return implementation(inputs, candidates, reference, output_dir)
 
 
 def run_flood_baseline(request: FloodRequest) -> FloodResult:
-    raise NotImplementedError("R2: 使用灾后阈值和灾前非水筛查生成洪水结果")
+    from .baseline import run_flood_baseline as implementation
+    return implementation(request)
 
 
 def polygonize_mask(mask_path: Path, ctx: FloodContext, output_path: Path) -> Path:
-    raise NotImplementedError("R2: 将洪水掩膜转换为带事件和方法属性的矢量面")
+    from .vectorization import polygonize_mask as implementation
+    return implementation(mask_path, ctx, output_path)
 
 
 def summarize_exposure(flood: FloodResult, layers: ContextLayers, area_crs: str) -> ExposureReport:
-    raise NotImplementedError("R2: 统计受影响建筑、人口和道路")
+    from .exposure import summarize_exposure as implementation
+    return implementation(flood, layers, area_crs)
 
 
 def check_damage_geography(result, buildings: Path, tile_index: Path, area_crs: str) -> SpatialQAReport:
