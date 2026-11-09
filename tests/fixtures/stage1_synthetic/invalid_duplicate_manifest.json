@@ -1,0 +1,1 @@
+{"event_id":"synthetic","layers":[{"id":"same","title":"one","kind":"vector","path":"flood_polygons.geojson","crs":"EPSG:4326"},{"id":"same","title":"two","kind":"vector","path":"roads.geojson","crs":"EPSG:4326"}]}

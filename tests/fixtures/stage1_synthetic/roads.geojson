@@ -1,0 +1,7 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {"type":"Feature","properties":{"feature_id":"road-001","kind":"road","status":"synthetic","name":"示例道路"},"geometry":{"type":"LineString","coordinates":[[116.004,39.908],[116.027,39.925]]}},
+    {"type":"Feature","properties":{"feature_id":"road-002","kind":"road","status":"synthetic","name":"示例支路"},"geometry":{"type":"LineString","coordinates":[[116.006,39.929],[116.024,39.905]]}}
+  ]
+}
