@@ -1,0 +1,1 @@
+{"event_id":"synthetic","layers":[{"id":"projected","title":"projected","kind":"vector","path":"flood_polygons.geojson","crs":"EPSG:3857"}]}

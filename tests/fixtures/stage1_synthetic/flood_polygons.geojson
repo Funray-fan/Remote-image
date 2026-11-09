@@ -1,0 +1,10 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {"feature_id": "flood-001", "class": "flood", "area_m2": 120000, "event_id": "demo-flood-2023"},
+      "geometry": {"type": "Polygon", "coordinates": [[[116.00, 39.90], [116.03, 39.90], [116.03, 39.93], [116.00, 39.93], [116.00, 39.90]]]}
+    }
+  ]
+}
