@@ -1,0 +1,14 @@
+{
+  "schema_version": "c3-synthetic-0.1",
+  "event_id": "demo-flood-2023",
+  "synthetic": true,
+  "summary": "summary.json",
+  "layers": [
+    {"id":"pre-event","title":"灾前影像","kind":"raster","path":"pre_event.tif","visible":false,"crs":"EPSG:4326","time":"2023-07-20","source":"synthetic"},
+    {"id":"post-event","title":"灾后影像","kind":"raster","path":"post_event.tif","visible":true,"crs":"EPSG:4326","time":"2023-08-02","source":"synthetic"},
+    {"id":"flood-mask","title":"洪水掩膜","kind":"raster","path":"flood_mask.tif","visible":true,"crs":"EPSG:4326","source":"synthetic","palette":{"0":"transparent","1":"#16a6b6","255":"transparent"}},
+    {"id":"flood-polygons","title":"洪水范围","kind":"vector","path":"flood_polygons.geojson","visible":true,"crs":"EPSG:4326","source":"synthetic","color":"#16a6b6"},
+    {"id":"buildings","title":"建筑","kind":"vector","path":"buildings.geojson","visible":false,"crs":"EPSG:4326","source":"synthetic","color":"#e3a018"},
+    {"id":"roads","title":"道路","kind":"vector","path":"roads.geojson","visible":true,"crs":"EPSG:4326","source":"synthetic","color":"#4b5563"}
+  ]
+}

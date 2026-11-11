@@ -1,0 +1,7 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {"type":"Feature","properties":{"feature_id":"building-001","kind":"building","status":"synthetic","damage_class":"not_assessed"},"geometry":{"type":"Polygon","coordinates":[[[116.008,39.922],[116.011,39.922],[116.011,39.925],[116.008,39.925],[116.008,39.922]]] }},
+    {"type":"Feature","properties":{"feature_id":"building-002","kind":"building","status":"synthetic","damage_class":"not_assessed"},"geometry":{"type":"Polygon","coordinates":[[[116.016,39.912],[116.019,39.912],[116.019,39.915],[116.016,39.915],[116.016,39.912]]] }}
+  ]
+}
