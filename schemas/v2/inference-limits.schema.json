@@ -1,0 +1,69 @@
+{
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": "2.0",
+      "type": "string"
+    },
+    "tile_size_min_px": {
+      "type": "integer"
+    },
+    "tile_size_max_px": {
+      "anyOf": [
+        {
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "allowed_tile_sizes_px": {
+      "type": "array",
+      "items": {
+        "type": "integer"
+      }
+    },
+    "overlap_ratio_max": {
+      "type": "number"
+    },
+    "confidence_threshold_min": {
+      "type": "number"
+    },
+    "confidence_threshold_max": {
+      "type": "number"
+    },
+    "allowed_devices": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "batch_size_max": {
+      "anyOf": [
+        {
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    }
+  },
+  "required": [
+    "schema_version",
+    "tile_size_min_px",
+    "tile_size_max_px",
+    "allowed_tile_sizes_px",
+    "overlap_ratio_max",
+    "confidence_threshold_min",
+    "confidence_threshold_max",
+    "allowed_devices",
+    "batch_size_max"
+  ],
+  "additionalProperties": false,
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://remote-image.local/schemas/v2/inference-limits.schema.json",
+  "title": "InferenceLimits"
+}

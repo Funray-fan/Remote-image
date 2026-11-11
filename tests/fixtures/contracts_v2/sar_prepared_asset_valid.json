@@ -1,0 +1,41 @@
+{
+  "schema_version": "2.0",
+  "asset": {
+    "asset_id": "synthetic_post",
+    "path": "synthetic/post_event.tif",
+    "acquired_at": "2026-10-26T12:00:00+08:00",
+    "source": "synthetic_fixture",
+    "coordinate_reference_system": "EPSG:32650",
+    "pixel_size_m": 0.5,
+    "bands": [
+      "VV",
+      "VH",
+      "R",
+      "G",
+      "B"
+    ],
+    "footprint": null,
+    "source_type": "satellite",
+    "is_substitute": false,
+    "quality_notes": "synthetic contract fixture only"
+  },
+  "record": {
+    "asset_id": "synthetic_post",
+    "source_url": "https://example.invalid/synthetic-sar",
+    "retrieved_at": "2026-10-26T12:00:00+08:00",
+    "license_id": "fixture-only",
+    "sha256": null,
+    "spatial_coverage": "synthetic_area",
+    "time_range": [
+      "2026-10-26T12:00:00+08:00",
+      "2026-10-26T12:00:00+08:00"
+    ],
+    "status": "usable",
+    "limitations": [
+      "synthetic fixture only"
+    ]
+  },
+  "report_path": "synthetic/sar_processing_report.json",
+  "backscatter_quantity": "gamma0",
+  "value_scale": "db"
+}

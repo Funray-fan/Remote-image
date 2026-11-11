@@ -1,0 +1,13 @@
+{
+  "schema_version": "2.0",
+  "crs": "EPSG:32650",
+  "population_reference": 1000.0,
+  "grid_size_m": 1000.0,
+  "origin_x_m": 500000.0,
+  "origin_y_m": 4400000.0,
+  "weights": {
+    "damage": 0.4,
+    "population": 0.3,
+    "access": 0.3
+  }
+}

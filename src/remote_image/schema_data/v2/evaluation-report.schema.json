@@ -1,0 +1,176 @@
+{
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": "2.0",
+      "type": "string"
+    },
+    "status": {
+      "enum": [
+        "pass",
+        "warning",
+        "fail"
+      ],
+      "type": "string"
+    },
+    "checks": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/CheckItem"
+      }
+    },
+    "metrics": {
+      "type": "object",
+      "additionalProperties": {}
+    },
+    "warnings": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "artifacts": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "model_name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "model_version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "dataset_name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "dataset_version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "split": {
+      "enum": [
+        "train",
+        "val",
+        "test"
+      ],
+      "type": "string"
+    },
+    "sample_count": {
+      "type": "integer"
+    },
+    "class_counts": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "integer"
+      }
+    },
+    "seed": {
+      "type": "integer"
+    },
+    "split_strategy": {
+      "enum": [
+        "scene_or_image_pair"
+      ],
+      "type": "string"
+    },
+    "spatial_overlap_checked": {
+      "type": "boolean"
+    },
+    "per_class": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      }
+    },
+    "confusion_matrix": {
+      "type": "array",
+      "items": {
+        "type": "array",
+        "items": {
+          "type": "integer"
+        }
+      }
+    },
+    "limitations": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    }
+  },
+  "required": [
+    "schema_version",
+    "status",
+    "checks",
+    "metrics",
+    "warnings",
+    "artifacts",
+    "model_name",
+    "model_version",
+    "dataset_name",
+    "dataset_version",
+    "split",
+    "sample_count",
+    "class_counts",
+    "seed",
+    "split_strategy",
+    "spatial_overlap_checked",
+    "per_class",
+    "confusion_matrix",
+    "limitations"
+  ],
+  "additionalProperties": false,
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://remote-image.local/schemas/v2/evaluation-report.schema.json",
+  "title": "EvaluationReport",
+  "$defs": {
+    "CheckItem": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "status": {
+          "enum": [
+            "pass",
+            "warning",
+            "fail"
+          ],
+          "type": "string"
+        },
+        "expected": {},
+        "actual": {},
+        "message": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "name",
+        "status",
+        "expected",
+        "actual",
+        "message"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

@@ -1,0 +1,149 @@
+{
+  "schema_version": "1.0",
+  "created_date": "2026-10-28",
+  "events": [
+    "tianjin_2023_flood",
+    "zhuozhou_2023_flood"
+  ],
+  "licenses": {
+    "sentinel_1_rtc": "Copernicus Sentinel data, free and open under the Copernicus data policy",
+    "osm_geojson": "Open Database License (ODbL); attribution: OpenStreetMap contributors"
+  },
+  "limitations": [
+    "Study-area bounding boxes are approximate retrieval extents, not authoritative flood boundaries.",
+    "Road blockage status is not inferred; authoritative incident verification is still required.",
+    "Prepared rasters are VV backscatter inputs, not flood masks or damage labels."
+  ],
+  "files": [
+    {
+      "path": "data/external/osm/geojson/tianjin/tianjin_osm_features_buildings.geojson",
+      "size_bytes": 23029373,
+      "sha256": "2df01b3b656cd0e40ba57d50551f25e490ba8095620b5891d6096f20a392d249"
+    },
+    {
+      "path": "data/external/osm/geojson/tianjin/tianjin_osm_features_rescue_points.geojson",
+      "size_bytes": 35329,
+      "sha256": "45277d6c67cdeabf9fd8e77419dbd5c36884966f28ff353e124044212c3b4269"
+    },
+    {
+      "path": "data/external/osm/geojson/tianjin/tianjin_osm_features_roads.geojson",
+      "size_bytes": 35923741,
+      "sha256": "537012a666d2ac2b2c3e2919d0fcc262c21d8a6f4a1f1810a092f2eed95d3b10"
+    },
+    {
+      "path": "data/external/osm/geojson/zhuozhou/zhuozhou_osm_features_buildings.geojson",
+      "size_bytes": 1506918,
+      "sha256": "f8f8c3ea57de8db117fc8c1bb7661f11535a5ee467e14587563fa2c012631b29"
+    },
+    {
+      "path": "data/external/osm/geojson/zhuozhou/zhuozhou_osm_features_rescue_points.geojson",
+      "size_bytes": 1297,
+      "sha256": "37116f482d8b1e217b7160f58461e2bbb35e7b7e49b526f6b8cc0bc3c67b9cc4"
+    },
+    {
+      "path": "data/external/osm/geojson/zhuozhou/zhuozhou_osm_features_roads.geojson",
+      "size_bytes": 6853804,
+      "sha256": "5c2efe09e6356f7d628b9160729b00488d4de6cd7e637286e46600f0ff011b3c"
+    },
+    {
+      "path": "outputs/tianjin_2023_flood/stage1/asset_catalog.json",
+      "size_bytes": 3622,
+      "sha256": "9383801cd9e7a072d9adb37aa149012be06a43374ab231a150a3bf5ab1f80724"
+    },
+    {
+      "path": "outputs/tianjin_2023_flood/stage1/prepared/vv/metadata.json",
+      "size_bytes": 966,
+      "sha256": "971a37a9311a93cae27407a94336fb11402a28c20d0e8bb6104908c10bd24c80"
+    },
+    {
+      "path": "outputs/tianjin_2023_flood/stage1/prepared/vv/post_event.tif",
+      "size_bytes": 45396145,
+      "sha256": "5b15d1ea205b289bb48e540fb9bd6e2c4dae9d119d76b217d6472b84707c4d25"
+    },
+    {
+      "path": "outputs/tianjin_2023_flood/stage1/prepared/vv/pre_event.tif",
+      "size_bytes": 45430521,
+      "sha256": "5ba4e6d0c11f20bda0f2c65be523b7497282df45a7ba51a15ef8d53860e0b57c"
+    },
+    {
+      "path": "outputs/tianjin_2023_flood/stage1/prepared/vv/valid_mask.tif",
+      "size_bytes": 124713,
+      "sha256": "0ada8985ce79f10ddab60ac03868b3f9787676829a75f8b0c8fa2b54047b0851"
+    },
+    {
+      "path": "outputs/tianjin_2023_flood/stage1/prepared_inputs.json",
+      "size_bytes": 2383,
+      "sha256": "e07a97a6b4d9973fc4ea8356058c4ff877ec1d5c3ffa0569e2fc3aff293c9220"
+    },
+    {
+      "path": "outputs/tianjin_2023_flood/stage1/r1_summary.json",
+      "size_bytes": 1203,
+      "sha256": "e3cc5d99854de644797a758a8d2505146c293591e32630e492776845111f1c07"
+    },
+    {
+      "path": "outputs/tianjin_2023_flood/stage1/raster_assets.json",
+      "size_bytes": 2896,
+      "sha256": "6fef832a03eaa60d3f4185220b34e023191943091d766e7b05ac022f3c7b3a7a"
+    },
+    {
+      "path": "outputs/tianjin_2023_flood/stage1/S1A_IW_GRDH_1SDV_20230724T101409_20230724T101434_049564_05F5BB_rtc_vv_validation.json",
+      "size_bytes": 1618,
+      "sha256": "2431162df68b055586f2dcbf0d2cb48fdc32f5da97251d115db987a72397c133"
+    },
+    {
+      "path": "outputs/tianjin_2023_flood/stage1/S1A_IW_GRDH_1SDV_20230805T101410_20230805T101435_049739_05FB20_rtc_vv_validation.json",
+      "size_bytes": 1618,
+      "sha256": "c35ae8754f6d6d35ac977d31c41677bddc904e5fb2f3913b6bf1150f97509d0e"
+    },
+    {
+      "path": "outputs/zhuozhou_2023_flood/stage1/asset_catalog.json",
+      "size_bytes": 3628,
+      "sha256": "0ffedcde6331f1d25b377ace5dc4b2d8681b353643b98f49fccd53c6e3d18118"
+    },
+    {
+      "path": "outputs/zhuozhou_2023_flood/stage1/prepared/vv/metadata.json",
+      "size_bytes": 968,
+      "sha256": "64beb26481badd52b69838920b76e03787e2127380a418edaee69536d2c1fec7"
+    },
+    {
+      "path": "outputs/zhuozhou_2023_flood/stage1/prepared/vv/post_event.tif",
+      "size_bytes": 62801947,
+      "sha256": "e785da785719a8cf0675006f6819540282a473b705d41d569d99e049bb53fb23"
+    },
+    {
+      "path": "outputs/zhuozhou_2023_flood/stage1/prepared/vv/pre_event.tif",
+      "size_bytes": 62717753,
+      "sha256": "613c9c5338ff14f31728810b54d2380dc5d535c3f1553c69458dd76e24aed384"
+    },
+    {
+      "path": "outputs/zhuozhou_2023_flood/stage1/prepared/vv/valid_mask.tif",
+      "size_bytes": 33779,
+      "sha256": "25d570bea82fb22efca9d1aa2a75eed1f8566a2e14d0e8eefd75949fdebeba47"
+    },
+    {
+      "path": "outputs/zhuozhou_2023_flood/stage1/prepared_inputs.json",
+      "size_bytes": 2388,
+      "sha256": "aca8ba5597bbb69ff4fa7fe734e964e03851512a6f3ee0772d22d3fcb1a712fc"
+    },
+    {
+      "path": "outputs/zhuozhou_2023_flood/stage1/r1_summary.json",
+      "size_bytes": 1212,
+      "sha256": "8c7b5d1d61e4e409bb6593b9b142061e4bc7514b50c047499d4f8b55f3fe7303"
+    },
+    {
+      "path": "outputs/zhuozhou_2023_flood/stage1/raster_assets.json",
+      "size_bytes": 2896,
+      "sha256": "b4d0921e513d0cfcabe618cbea3d85858f993443fcc5dce4b1250a6fe43e38e0"
+    },
+    {
+      "path": "outputs/zhuozhou_2023_flood/stage1/S1A_IW_GRDH_1SDV_20230724T101409_20230724T101434_049564_05F5BB_rtc_vv_validation.json",
+      "size_bytes": 1618,
+      "sha256": "2431162df68b055586f2dcbf0d2cb48fdc32f5da97251d115db987a72397c133"
+    },
+    {
+      "path": "outputs/zhuozhou_2023_flood/stage1/S1A_IW_GRDH_1SDV_20230805T101410_20230805T101435_049739_05FB20_rtc_vv_validation.json",
+      "size_bytes": 1618,
+      "sha256": "c35ae8754f6d6d35ac977d31c41677bddc904e5fb2f3913b6bf1150f97509d0e"
+    }
+  ]
+}

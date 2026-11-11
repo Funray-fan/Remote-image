@@ -1,0 +1,77 @@
+{
+  "type": "object",
+  "properties": {
+    "event_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "stage": {
+      "enum": [
+        "stage1",
+        "stage2",
+        "stage3"
+      ],
+      "type": "string"
+    },
+    "study_area": {
+      "$ref": "#/$defs/StudyArea"
+    },
+    "asset_catalog": {
+      "type": "string",
+      "minLength": 1
+    },
+    "module_configs": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": {}
+      }
+    },
+    "output_dir": {
+      "type": "string",
+      "minLength": 1
+    },
+    "schema_version": {
+      "const": "2.0",
+      "type": "string"
+    }
+  },
+  "required": [
+    "event_id",
+    "stage",
+    "study_area",
+    "asset_catalog",
+    "module_configs",
+    "output_dir",
+    "schema_version"
+  ],
+  "additionalProperties": false,
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://remote-image.local/schemas/v2/pipeline-config.schema.json",
+  "title": "PipelineConfig",
+  "$defs": {
+    "StudyArea": {
+      "type": "object",
+      "properties": {
+        "identifier": {
+          "type": "string",
+          "minLength": 1
+        },
+        "boundary": {
+          "type": "string",
+          "minLength": 1
+        },
+        "coordinate_reference_system": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "identifier",
+        "boundary",
+        "coordinate_reference_system"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

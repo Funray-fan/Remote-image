@@ -1,0 +1,332 @@
+{
+  "type": "object",
+  "properties": {
+    "model_name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "model_version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "task": {
+      "enum": [
+        "building_damage",
+        "building_segmentation"
+      ],
+      "type": "string"
+    },
+    "weights_path": {
+      "type": "string",
+      "minLength": 1
+    },
+    "weights_sha256": {
+      "type": "string",
+      "minLength": 1
+    },
+    "input_spec": {
+      "$ref": "#/$defs/ModelInputSpec"
+    },
+    "inference_defaults": {
+      "$ref": "#/$defs/InferenceOptions"
+    },
+    "inference_limits": {
+      "$ref": "#/$defs/InferenceLimits"
+    },
+    "object_aggregation": {
+      "$ref": "#/$defs/ObjectAggregationSpec"
+    },
+    "class_map": {
+      "type": "object",
+      "additionalProperties": {
+        "enum": [
+          "no-damage",
+          "minor-damage",
+          "major-damage",
+          "destroyed",
+          "un-classified"
+        ],
+        "type": "string"
+      }
+    },
+    "dependencies": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "evaluation_path": {
+      "type": "string",
+      "minLength": 1
+    },
+    "schema_version": {
+      "const": "2.0",
+      "type": "string"
+    }
+  },
+  "required": [
+    "model_name",
+    "model_version",
+    "task",
+    "weights_path",
+    "weights_sha256",
+    "input_spec",
+    "inference_defaults",
+    "inference_limits",
+    "object_aggregation",
+    "class_map",
+    "dependencies",
+    "evaluation_path",
+    "schema_version"
+  ],
+  "additionalProperties": false,
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://remote-image.local/schemas/v2/model-manifest.schema.json",
+  "title": "ModelManifest",
+  "$defs": {
+    "ModelInputSpec": {
+      "type": "object",
+      "properties": {
+        "sensors": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "bands": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "pixel_size_min_m": {
+          "type": "number"
+        },
+        "pixel_size_max_m": {
+          "type": "number"
+        },
+        "requires_pre_event": {
+          "type": "boolean"
+        },
+        "normalization": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "number"
+          }
+        },
+        "tile_size_px": {
+          "type": "integer"
+        },
+        "nodata_policy": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "sensors",
+        "bands",
+        "pixel_size_min_m",
+        "pixel_size_max_m",
+        "requires_pre_event",
+        "normalization",
+        "tile_size_px",
+        "nodata_policy"
+      ],
+      "additionalProperties": false
+    },
+    "InferenceOptions": {
+      "type": "object",
+      "properties": {
+        "tile_size_px": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "overlap_ratio": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "confidence_threshold": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "device": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "batch_size": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "tile_size_px",
+        "overlap_ratio",
+        "confidence_threshold",
+        "device",
+        "batch_size"
+      ],
+      "additionalProperties": false
+    },
+    "InferenceLimits": {
+      "type": "object",
+      "properties": {
+        "tile_size_min_px": {
+          "type": "integer"
+        },
+        "tile_size_max_px": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "allowed_tile_sizes_px": {
+          "type": "array",
+          "items": {
+            "type": "integer"
+          }
+        },
+        "overlap_ratio_max": {
+          "type": "number"
+        },
+        "confidence_threshold_min": {
+          "type": "number"
+        },
+        "confidence_threshold_max": {
+          "type": "number"
+        },
+        "allowed_devices": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "batch_size_max": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "tile_size_min_px",
+        "tile_size_max_px",
+        "allowed_tile_sizes_px",
+        "overlap_ratio_max",
+        "confidence_threshold_min",
+        "confidence_threshold_max",
+        "allowed_devices",
+        "batch_size_max"
+      ],
+      "additionalProperties": false
+    },
+    "ObjectAggregationSpec": {
+      "type": "object",
+      "properties": {
+        "geometry_source": {
+          "enum": [
+            "request_footprints",
+            "model_localization"
+          ],
+          "type": "string"
+        },
+        "id_rule": {
+          "type": "string",
+          "minLength": 1
+        },
+        "background_code": {
+          "type": "integer"
+        },
+        "damage_class_map": {
+          "type": "object",
+          "additionalProperties": {
+            "enum": [
+              "no-damage",
+              "minor-damage",
+              "major-damage",
+              "destroyed",
+              "un-classified"
+            ],
+            "type": "string"
+          }
+        },
+        "confidence_definition": {
+          "enum": [
+            "mean_class_probability",
+            "majority_vote_fraction"
+          ],
+          "type": "string"
+        },
+        "low_confidence_policy": {
+          "enum": [
+            "un-classified"
+          ],
+          "type": "string"
+        },
+        "tile_merge_rule": {
+          "type": "string",
+          "minLength": 1
+        },
+        "empty_pixel_policy": {
+          "enum": [
+            "un-classified_null_confidence_with_reason"
+          ],
+          "type": "string"
+        }
+      },
+      "required": [
+        "geometry_source",
+        "id_rule",
+        "background_code",
+        "damage_class_map",
+        "confidence_definition",
+        "low_confidence_policy",
+        "tile_merge_rule",
+        "empty_pixel_policy"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

@@ -1,0 +1,74 @@
+{
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": "2.0",
+      "type": "string"
+    },
+    "geometry_source": {
+      "enum": [
+        "request_footprints",
+        "model_localization"
+      ],
+      "type": "string"
+    },
+    "id_rule": {
+      "type": "string",
+      "minLength": 1
+    },
+    "background_code": {
+      "type": "integer"
+    },
+    "damage_class_map": {
+      "type": "object",
+      "additionalProperties": {
+        "enum": [
+          "no-damage",
+          "minor-damage",
+          "major-damage",
+          "destroyed",
+          "un-classified"
+        ],
+        "type": "string"
+      }
+    },
+    "confidence_definition": {
+      "enum": [
+        "mean_class_probability",
+        "majority_vote_fraction"
+      ],
+      "type": "string"
+    },
+    "low_confidence_policy": {
+      "enum": [
+        "un-classified"
+      ],
+      "type": "string"
+    },
+    "tile_merge_rule": {
+      "type": "string",
+      "minLength": 1
+    },
+    "empty_pixel_policy": {
+      "enum": [
+        "un-classified_null_confidence_with_reason"
+      ],
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema_version",
+    "geometry_source",
+    "id_rule",
+    "background_code",
+    "damage_class_map",
+    "confidence_definition",
+    "low_confidence_policy",
+    "tile_merge_rule",
+    "empty_pixel_policy"
+  ],
+  "additionalProperties": false,
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://remote-image.local/schemas/v2/object-aggregation-spec.schema.json",
+  "title": "ObjectAggregationSpec"
+}

@@ -1,0 +1,8 @@
+{
+  "schema_version": "2.0",
+  "tile_size_px": 512,
+  "overlap_ratio": 0.25,
+  "confidence_threshold": 0.5,
+  "device": "cpu",
+  "batch_size": 1
+}

@@ -1,0 +1,94 @@
+{
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": "2.0",
+      "type": "string"
+    },
+    "sample_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "event_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "scene_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "image_pair_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "group_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "split": {
+      "enum": [
+        "train",
+        "val",
+        "test"
+      ],
+      "type": "string"
+    },
+    "pre_event_path": {
+      "anyOf": [
+        {
+          "type": "string",
+          "minLength": 1
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "post_event_path": {
+      "type": "string",
+      "minLength": 1
+    },
+    "label_path": {
+      "type": "string",
+      "minLength": 1
+    },
+    "footprint_path": {
+      "anyOf": [
+        {
+          "type": "string",
+          "minLength": 1
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "source": {
+      "type": "string",
+      "minLength": 1
+    },
+    "license_id": {
+      "type": "string",
+      "minLength": 1
+    }
+  },
+  "required": [
+    "schema_version",
+    "sample_id",
+    "event_id",
+    "scene_id",
+    "image_pair_id",
+    "group_id",
+    "split",
+    "pre_event_path",
+    "post_event_path",
+    "label_path",
+    "footprint_path",
+    "source",
+    "license_id"
+  ],
+  "additionalProperties": false,
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://remote-image.local/schemas/v2/dataset-item.schema.json",
+  "title": "DatasetItem"
+}

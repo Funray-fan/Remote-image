@@ -1,0 +1,204 @@
+{
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": "2.0",
+      "type": "string"
+    },
+    "manifest": {
+      "$ref": "#/$defs/DatasetManifest"
+    },
+    "splits": {
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/$defs/DatasetSplit"
+      }
+    }
+  },
+  "required": [
+    "schema_version",
+    "manifest",
+    "splits"
+  ],
+  "additionalProperties": false,
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://remote-image.local/schemas/v2/dataset-bundle.schema.json",
+  "title": "DatasetBundle",
+  "$defs": {
+    "DatasetManifest": {
+      "type": "object",
+      "properties": {
+        "dataset_name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "dataset_version": {
+          "type": "string",
+          "minLength": 1
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/DatasetItem"
+          }
+        },
+        "source_url": {
+          "type": "string",
+          "minLength": 1
+        },
+        "license_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "split_strategy": {
+          "enum": [
+            "scene_or_image_pair"
+          ],
+          "type": "string"
+        },
+        "spatial_overlap_checked": {
+          "type": "boolean"
+        },
+        "overlap_report_path": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "schema_version": {
+          "enum": [
+            "2.0"
+          ],
+          "type": "string"
+        }
+      },
+      "required": [
+        "dataset_name",
+        "dataset_version",
+        "items",
+        "source_url",
+        "license_id",
+        "split_strategy",
+        "spatial_overlap_checked",
+        "overlap_report_path",
+        "schema_version"
+      ],
+      "additionalProperties": false
+    },
+    "DatasetItem": {
+      "type": "object",
+      "properties": {
+        "sample_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "event_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "scene_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "image_pair_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "group_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "split": {
+          "enum": [
+            "train",
+            "val",
+            "test"
+          ],
+          "type": "string"
+        },
+        "pre_event_path": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "post_event_path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "label_path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "footprint_path": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "source": {
+          "type": "string",
+          "minLength": 1
+        },
+        "license_id": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "sample_id",
+        "event_id",
+        "scene_id",
+        "image_pair_id",
+        "group_id",
+        "split",
+        "pre_event_path",
+        "post_event_path",
+        "label_path",
+        "footprint_path",
+        "source",
+        "license_id"
+      ],
+      "additionalProperties": false
+    },
+    "DatasetSplit": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "enum": [
+            "train",
+            "val",
+            "test"
+          ],
+          "type": "string"
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/DatasetItem"
+          }
+        }
+      },
+      "required": [
+        "name",
+        "items"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

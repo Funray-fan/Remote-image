@@ -1,0 +1,78 @@
+{
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": "2.0",
+      "type": "string"
+    },
+    "crs": {
+      "type": "string",
+      "minLength": 1
+    },
+    "edge_id_field": {
+      "type": "string",
+      "minLength": 1
+    },
+    "direction_field": {
+      "anyOf": [
+        {
+          "type": "string",
+          "minLength": 1
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "speed_field": {
+      "anyOf": [
+        {
+          "type": "string",
+          "minLength": 1
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "snap_tolerance_m": {
+      "type": "number"
+    },
+    "default_speed_kmh": {
+      "type": "number"
+    },
+    "one_way_values": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "blocked_field": {
+      "anyOf": [
+        {
+          "type": "string",
+          "minLength": 1
+        },
+        {
+          "type": "null"
+        }
+      ]
+    }
+  },
+  "required": [
+    "schema_version",
+    "crs",
+    "edge_id_field",
+    "direction_field",
+    "speed_field",
+    "snap_tolerance_m",
+    "default_speed_kmh",
+    "one_way_values",
+    "blocked_field"
+  ],
+  "additionalProperties": false,
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://remote-image.local/schemas/v2/network-spec.schema.json",
+  "title": "NetworkSpec"
+}
