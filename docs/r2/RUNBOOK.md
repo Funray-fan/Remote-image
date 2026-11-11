@@ -2,7 +2,7 @@
 
 R2 第一阶段已经实现，并在真实涿州数据上跑通。程序会检查两期影像，按规则标出可能新增的水面，生成边界，再统计这些范围与建筑、道路的交叠。当前没有训练深度学习模型，也没有独立参考标签可用来确认识别精度。
 
-工程位于 D:/codex/Remote-image-r2。原学习目录 D:/codex/Remote-image-r2-learning 保留，原始数据没有被覆盖。
+本说明中的案例在 R2 的独立工作目录完成，以下命令均以当前仓库根目录为起点。原始数据不随代码提交。
 
 ## 先看现成结果
 
@@ -29,7 +29,6 @@ R2 第一阶段已经实现，并在真实涿州数据上跑通。程序会检�
 打开 PowerShell，执行：
 
 ~~~powershell
-Set-Location D:\codex\Remote-image-r2
 .\.venv\Scripts\python.exe -X utf8 -m remote_image.modules.flood.cli run --config configs/r2/zhuozhou_2023.resolved.json
 ~~~
 
@@ -113,7 +112,7 @@ prepare_r2_sample.py 优先复用同级学习目录中 hash 一致的 TIFF，否
 测试命令：
 
 ~~~powershell
-$env:TEMP = "D:\codex\Remote-image-r2\work\temp"
+$env:TEMP = Join-Path (Get-Location) 'work/temp'
 $env:TMP = $env:TEMP
 New-Item -ItemType Directory -Path $env:TEMP -Force | Out-Null
 .\.venv\Scripts\python.exe -X utf8 -m unittest discover -s tests -v
