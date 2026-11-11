@@ -1,0 +1,106 @@
+{
+  "type": "object",
+  "properties": {
+    "event_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "layers": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/MapLayerSpec"
+      }
+    },
+    "schema_version": {
+      "const": "2.0",
+      "type": "string"
+    }
+  },
+  "required": [
+    "event_id",
+    "layers",
+    "schema_version"
+  ],
+  "additionalProperties": false,
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://remote-image.local/schemas/v2/layer-manifest.schema.json",
+  "title": "LayerManifest",
+  "$defs": {
+    "MapLayerSpec": {
+      "type": "object",
+      "properties": {
+        "layer_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "event_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "kind": {
+          "enum": [
+            "raster",
+            "vector"
+          ],
+          "type": "string"
+        },
+        "path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "crs": {
+          "type": "string",
+          "minLength": 1
+        },
+        "asset_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "style": {
+          "type": "object",
+          "additionalProperties": {}
+        },
+        "min_zoom": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "max_zoom": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "layer_id",
+        "event_id",
+        "kind",
+        "path",
+        "crs",
+        "asset_ids",
+        "title",
+        "style",
+        "min_zoom",
+        "max_zoom"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

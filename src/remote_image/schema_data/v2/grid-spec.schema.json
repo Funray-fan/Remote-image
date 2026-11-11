@@ -1,0 +1,59 @@
+{
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": "2.0",
+      "type": "string"
+    },
+    "transform": {
+      "type": "array",
+      "prefixItems": [
+        {
+          "type": "number"
+        },
+        {
+          "type": "number"
+        },
+        {
+          "type": "number"
+        },
+        {
+          "type": "number"
+        },
+        {
+          "type": "number"
+        },
+        {
+          "type": "number"
+        }
+      ],
+      "items": false,
+      "minItems": 6,
+      "maxItems": 6
+    },
+    "width": {
+      "type": "integer"
+    },
+    "height": {
+      "type": "integer"
+    },
+    "pixel_size_x_m": {
+      "type": "number"
+    },
+    "pixel_size_y_m": {
+      "type": "number"
+    }
+  },
+  "required": [
+    "schema_version",
+    "transform",
+    "width",
+    "height",
+    "pixel_size_x_m",
+    "pixel_size_y_m"
+  ],
+  "additionalProperties": false,
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://remote-image.local/schemas/v2/grid-spec.schema.json",
+  "title": "GridSpec"
+}

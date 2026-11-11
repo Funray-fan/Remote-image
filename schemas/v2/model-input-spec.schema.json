@@ -1,0 +1,60 @@
+{
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": "2.0",
+      "type": "string"
+    },
+    "sensors": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "bands": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "pixel_size_min_m": {
+      "type": "number"
+    },
+    "pixel_size_max_m": {
+      "type": "number"
+    },
+    "requires_pre_event": {
+      "type": "boolean"
+    },
+    "normalization": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "number"
+      }
+    },
+    "tile_size_px": {
+      "type": "integer"
+    },
+    "nodata_policy": {
+      "type": "string",
+      "minLength": 1
+    }
+  },
+  "required": [
+    "schema_version",
+    "sensors",
+    "bands",
+    "pixel_size_min_m",
+    "pixel_size_max_m",
+    "requires_pre_event",
+    "normalization",
+    "tile_size_px",
+    "nodata_policy"
+  ],
+  "additionalProperties": false,
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://remote-image.local/schemas/v2/model-input-spec.schema.json",
+  "title": "ModelInputSpec"
+}

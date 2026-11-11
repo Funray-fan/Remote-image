@@ -1,0 +1,95 @@
+{
+  "description": "Synthetic interface fixtures only; not scientific outputs.",
+  "cases": [
+    {
+      "schema": "flood-options",
+      "file": "flood_options_valid.json",
+      "valid": true
+    },
+    {
+      "schema": "flood-request",
+      "file": "flood_request_valid.json",
+      "valid": true
+    },
+    {
+      "schema": "orthomosaic-request",
+      "file": "orthomosaic_request_valid.json",
+      "valid": true
+    },
+    {
+      "schema": "damage-request",
+      "file": "damage_request_valid.json",
+      "valid": true
+    },
+    {
+      "schema": "damage-result",
+      "file": "damage_result_valid.json",
+      "valid": true
+    },
+    {
+      "schema": "flood-result",
+      "file": "flood_result_valid.json",
+      "valid": true
+    },
+    {
+      "schema": "review-result",
+      "file": "review_result_valid.json",
+      "valid": true
+    },
+    {
+      "schema": "route-options",
+      "file": "route_options_valid.json",
+      "valid": true
+    },
+    {
+      "schema": "priority-spec",
+      "file": "priority_spec_valid.json",
+      "valid": true
+    },
+    {
+      "schema": "decision-request",
+      "file": "decision_request_valid.json",
+      "valid": true
+    },
+    {
+      "schema": "review-spec",
+      "file": "review_spec_valid.json",
+      "valid": true
+    },
+    {
+      "schema": "review-record",
+      "file": "review_record_valid.json",
+      "valid": true
+    },
+    {
+      "schema": "layer-manifest",
+      "file": "layer_manifest_valid.json",
+      "valid": true
+    },
+    {
+      "schema": "inference-options",
+      "file": "inference_options_valid.json",
+      "valid": true
+    },
+    {
+      "schema": "dataset-manifest",
+      "file": "dataset_manifest_valid.json",
+      "valid": true
+    },
+    {
+      "schema": "damage-vector",
+      "file": "damage_vector_valid.json",
+      "valid": true
+    },
+    {
+      "schema": "tile-index",
+      "file": "tile_index_valid.json",
+      "valid": true
+    },
+    {
+      "schema": "damage-request",
+      "file": "damage_request_invalid_v1.json",
+      "valid": false
+    }
+  ]
+}

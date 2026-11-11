@@ -1,0 +1,121 @@
+{
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": "2.0",
+      "type": "string"
+    },
+    "effective_states_path": {
+      "type": "string",
+      "minLength": 1
+    },
+    "changes_path": {
+      "type": "string",
+      "minLength": 1
+    },
+    "accepted_count": {
+      "type": "integer"
+    },
+    "rejected_count": {
+      "type": "integer"
+    },
+    "as_of": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "report": {
+      "$ref": "#/$defs/QualityReport"
+    }
+  },
+  "required": [
+    "schema_version",
+    "effective_states_path",
+    "changes_path",
+    "accepted_count",
+    "rejected_count",
+    "as_of",
+    "report"
+  ],
+  "additionalProperties": false,
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://remote-image.local/schemas/v2/road-state-update-result.schema.json",
+  "title": "RoadStateUpdateResult",
+  "$defs": {
+    "QualityReport": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "enum": [
+            "pass",
+            "warning",
+            "fail"
+          ],
+          "type": "string"
+        },
+        "checks": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/CheckItem"
+          }
+        },
+        "metrics": {
+          "type": "object",
+          "additionalProperties": {}
+        },
+        "warnings": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "artifacts": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      },
+      "required": [
+        "status",
+        "checks",
+        "metrics",
+        "warnings",
+        "artifacts"
+      ],
+      "additionalProperties": false
+    },
+    "CheckItem": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "status": {
+          "enum": [
+            "pass",
+            "warning",
+            "fail"
+          ],
+          "type": "string"
+        },
+        "expected": {},
+        "actual": {},
+        "message": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "name",
+        "status",
+        "expected",
+        "actual",
+        "message"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

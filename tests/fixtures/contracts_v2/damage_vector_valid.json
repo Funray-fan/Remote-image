@@ -1,0 +1,42 @@
+{
+  "schema_version": "2.0",
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              0,
+              0
+            ],
+            [
+              1,
+              0
+            ],
+            [
+              1,
+              1
+            ],
+            [
+              0,
+              0
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "event_id": "synthetic_event",
+        "study_area_id": "synthetic_area",
+        "building_id": "building-1",
+        "damage_class": "minor-damage",
+        "confidence": 0.75,
+        "reason": null,
+        "model_name": "synthetic_xbd_model",
+        "model_version": "0.0.0-fixture"
+      }
+    }
+  ]
+}

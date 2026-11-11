@@ -1,0 +1,136 @@
+{
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": "2.0",
+      "type": "string"
+    },
+    "event_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "object_type": {
+      "enum": [
+        "building",
+        "road"
+      ],
+      "type": "string"
+    },
+    "object_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "review_status": {
+      "enum": [
+        "pending",
+        "reviewed",
+        "cannot_determine"
+      ],
+      "type": "string"
+    },
+    "damage_class": {
+      "anyOf": [
+        {
+          "enum": [
+            "no-damage",
+            "minor-damage",
+            "major-damage",
+            "destroyed",
+            "un-classified"
+          ],
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "road_status": {
+      "anyOf": [
+        {
+          "enum": [
+            "blocked",
+            "open",
+            "unknown"
+          ],
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "confirmation": {
+      "enum": [
+        "confirmed",
+        "unconfirmed"
+      ],
+      "type": "string"
+    },
+    "source": {
+      "type": "string",
+      "minLength": 1
+    },
+    "evidence_uri": {
+      "anyOf": [
+        {
+          "type": "string",
+          "minLength": 1
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "reviewer_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "reviewed_at": {
+      "anyOf": [
+        {
+          "type": "string",
+          "format": "date-time"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "expires_at": {
+      "anyOf": [
+        {
+          "type": "string",
+          "format": "date-time"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "notes": {
+      "type": "string",
+      "minLength": 1
+    }
+  },
+  "required": [
+    "schema_version",
+    "event_id",
+    "object_type",
+    "object_id",
+    "review_status",
+    "damage_class",
+    "road_status",
+    "confirmation",
+    "source",
+    "evidence_uri",
+    "reviewer_id",
+    "reviewed_at",
+    "expires_at",
+    "notes"
+  ],
+  "additionalProperties": false,
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://remote-image.local/schemas/v2/review-record.schema.json",
+  "title": "ReviewRecord"
+}

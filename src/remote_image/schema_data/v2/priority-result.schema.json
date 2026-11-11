@@ -1,0 +1,110 @@
+{
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": "2.0",
+      "type": "string"
+    },
+    "meta": {
+      "$ref": "#/$defs/ResultMeta"
+    },
+    "priority_areas_path": {
+      "type": "string",
+      "minLength": 1
+    },
+    "weights_used": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": {
+          "type": "number"
+        }
+      }
+    },
+    "score_component_keys": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "area_count": {
+      "type": "integer"
+    }
+  },
+  "required": [
+    "schema_version",
+    "meta",
+    "priority_areas_path",
+    "weights_used",
+    "score_component_keys",
+    "area_count"
+  ],
+  "additionalProperties": false,
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://remote-image.local/schemas/v2/priority-result.schema.json",
+  "title": "PriorityResult",
+  "$defs": {
+    "ResultMeta": {
+      "type": "object",
+      "properties": {
+        "schema_version": {
+          "enum": [
+            "2.0"
+          ],
+          "type": "string"
+        },
+        "event_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "study_area_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "input_asset_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "method": {
+          "type": "string",
+          "minLength": 1
+        },
+        "method_version": {
+          "type": "string",
+          "minLength": 1
+        },
+        "parameters": {
+          "type": "object",
+          "additionalProperties": {}
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "warnings": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      },
+      "required": [
+        "schema_version",
+        "event_id",
+        "study_area_id",
+        "input_asset_ids",
+        "method",
+        "method_version",
+        "parameters",
+        "created_at",
+        "warnings"
+      ],
+      "additionalProperties": false
+    }
+  }
+}
