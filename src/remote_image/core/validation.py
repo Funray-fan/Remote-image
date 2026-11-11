@@ -182,6 +182,8 @@ def validate_result(
     专用 schema，先执行本层通用检查；模块 schema 由模块负责人提交，
     C1 再通过 validate_against_schema 集成。
     """
+    if is_dataclass(result):
+        validate_contract(result)
     data = _to_mapping(result)
     errors: list[dict[str, str]] = []
     artifacts = data.get("artifacts")

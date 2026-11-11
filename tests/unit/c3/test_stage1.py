@@ -75,11 +75,23 @@ class Stage1VisualizationTests(unittest.TestCase):
         from streamlit.testing.v1 import AppTest
 
         app = AppTest.from_file(str(Path(__file__).resolve().parents[3] / "app" / "main.py"))
+        app.session_state["case"] = "合成功能样例"
         app.run(timeout=30)
         self.assertFalse(app.exception)
         self.assertIn("洪水范围", [item.label for item in app.checkbox])
         self.assertIn("受影响建筑数", [item.label for item in app.metric])
         self.assertEqual(len(app.warning), 1)
+
+    @unittest.skipUnless(importlib.util.find_spec("streamlit"), "requires UI dependencies")
+    def test_cleared_case_selector_shows_prompt(self):
+        from streamlit.testing.v1 import AppTest
+        app = AppTest.from_file(str(Path(__file__).resolve().parents[3] / "app" / "main.py"))
+        app.session_state['case'] = '合成功能样例'
+        app.run(timeout=30)
+        app.session_state['case'] = None
+        app.run(timeout=30)
+        self.assertFalse(app.exception)
+        self.assertTrue(any('请选择一个案例' in item.value for item in app.info))
 
 
 if __name__ == "__main__":

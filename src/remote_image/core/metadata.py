@@ -24,6 +24,8 @@ def _jsonable(value: Any) -> Any:
 def write_metadata(metadata: ResultMeta | Mapping[str, Any], output_path: str | Path) -> Path:
     """将 ResultMeta 或字段映射写入 UTF-8 JSON。"""
     if isinstance(metadata, ResultMeta):
+        from remote_image.core.validation import validate_contract
+        validate_contract(metadata)
         payload = _jsonable(metadata)
     elif isinstance(metadata, Mapping):
         payload = _jsonable(metadata)

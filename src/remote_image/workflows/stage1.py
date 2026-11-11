@@ -12,7 +12,8 @@ from pathlib import Path
 from typing import Any, Mapping
 
 from remote_image.core.config import load_config
-from remote_image.core.contracts import ResultMeta
+from remote_image.core.contracts import ResultMeta, SCHEMA_VERSION
+from remote_image.core.validation import validate_result, validate_contract
 from remote_image.core.metadata import write_metadata
 from remote_image.core.manifest import build_manifest
 
@@ -100,6 +101,13 @@ def run_pipeline(config: dict[str, Any]) -> dict[str, Any]:
             function = _resolve_callable(step["callable"])
             kwargs = _resolve_step_refs(step.get("kwargs", {}), step_outputs)
             output = function(**kwargs)
+            if hasattr(output, "meta") and hasattr(output, "artifacts"):
+                validate_contract(output)
+                report = validate_result(output)
+                if report["status"] == "fail":
+                    raise ValueError(str(report["errors"]))
+                if output.meta.event_id != config["event_id"] or output.meta.study_area_id != config["study_area_id"]:
+                    raise ValueError("步骤结果事件或研究区不一致")
             step_outputs[step_name] = output
             step_records.append({
                 "name": step_name,
@@ -184,7 +192,7 @@ def run_pipeline(config: dict[str, Any]) -> dict[str, Any]:
 
     if input_asset_ids:
         meta_record = ResultMeta(
-            schema_version="1.0", event_id=config["event_id"],
+            schema_version=SCHEMA_VERSION, event_id=config["event_id"],
             study_area_id=config["study_area_id"],
             input_asset_ids=tuple(dict.fromkeys(input_asset_ids)),
             method=";".join(dict.fromkeys(methods)) or "stage1_pipeline",
@@ -218,6 +226,7 @@ def run_pipeline(config: dict[str, Any]) -> dict[str, Any]:
             summary["metadata_path"] = metadata_path.relative_to(project_root).as_posix()
             summary["manifest_path"] = manifest_path.relative_to(project_root).as_posix()
         except Exception as exc:
+            summary["status"] = "fail"
             summary["warnings"].append(f"manifest 未生成：{type(exc).__name__}: {exc}")
             LOGGER.warning("manifest 未生成：%s", exc)
     else:

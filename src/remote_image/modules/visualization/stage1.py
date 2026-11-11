@@ -60,6 +60,14 @@ def load_layers(manifest_path: str | Path) -> list[MapLayer]:
     layers: list[MapLayer] = []
     ids: set[str] = set()
     for index, item in enumerate(data["layers"]):
+        if isinstance(item, dict) and "layer_id" in item:
+            style = item.get("style", {})
+            item = {**item, "id": item["layer_id"],
+                    "source": ", ".join(item.get("asset_ids", [])) or "来源见运行记录",
+                    "color": style.get("color"),
+                    "visible": item["layer_id"] not in {"pre_event", "buildings", "roads"},
+                    "palette": {"0": "transparent", "1": "#16a6b6", "255": "transparent"}
+                    if item["layer_id"] == "flood_mask" else None}
         if not isinstance(item, dict):
             raise VisualizationInputError(f"第 {index + 1} 个图层配置必须是对象")
         missing = {"id", "title", "kind", "path"} - item.keys()
@@ -112,6 +120,11 @@ def load_manifest(
     """Load the descriptive fields in a C3 manifest alongside its layers."""
     path = Path(manifest_path).resolve()
     data = _read_json(path)
+    if data.get("schema_version") == "2.0":
+        from remote_image.core.validation import validate_payload
+        validate_payload("LayerManifest", data)
+        if "summary" not in data and (path.parent / "summary.json").is_file():
+            data["summary"] = "summary.json"
     if not data.get("event_id"):
         raise VisualizationInputError("layer_manifest.event_id 不能为空")
     if not isinstance(data.get("layers"), list) or not data["layers"]:
@@ -143,7 +156,7 @@ def load_summary(summary_path: str | Path) -> dict[str, Any]:
     data = _read_json(Path(summary_path))
     if not data.get("event_id"):
         raise VisualizationInputError("summary.event_id 不能为空")
-    statistics = data.get("statistics", {})
+    statistics = data.get("statistics", data.get("metrics", {}))
     warnings = data.get("warnings", [])
     if not isinstance(statistics, dict):
         raise VisualizationInputError("summary.statistics 必须是对象")
@@ -156,7 +169,7 @@ def render_summary(summary: Mapping[str, Any]) -> dict[str, Any]:
     """Normalize upstream summary fields for display; do not recalculate them."""
     return {
         "event_id": summary.get("event_id", "unknown"),
-        "statistics": dict(summary.get("statistics", {})),
+        "statistics": dict(summary.get("statistics", summary.get("metrics", {}))),
         "warnings": list(summary.get("warnings", [])),
         "metadata": {
             key: summary[key]
@@ -172,11 +185,11 @@ def query_feature(vector_path: str | Path, feature_id: str) -> dict[str, Any] | 
     features = data.get("features")
     if not isinstance(features, list):
         raise VisualizationInputError("GeoJSON.features 必须是数组")
-    for feature in features:
+    for index, feature in enumerate(features):
         if not isinstance(feature, dict):
             raise VisualizationInputError("GeoJSON.features 中的每一项都必须是对象")
         properties = feature.get("properties") or {}
-        candidate = properties.get("feature_id", feature.get("id"))
+        candidate = _identifier(properties, feature, index)
         if candidate is not None and str(candidate) == str(feature_id):
             return feature
     return None
@@ -196,7 +209,7 @@ def feature_ids(vector_path: str | Path) -> list[str]:
 
 
 def _identifier(properties: Mapping[str, Any], feature: Mapping[str, Any], fallback: int) -> Any:
-    for key in ("feature_id", "building_id", "edge_id", "id"):
+    for key in ("feature_id", "source_id", "candidate_id", "flood_id", "building_id", "edge_id", "id"):
         if properties.get(key) is not None:
             return properties[key]
     return feature.get("id", fallback)
@@ -276,18 +289,19 @@ def _raster_payload(layer: MapLayer, max_dimension: int = 512) -> tuple[str, tup
             "渲染 GeoTIFF 需要 GIS 依赖，请安装项目可选依赖：python -m pip install -e '.[gis]'"
         ) from exc
 
-    with rasterio.open(layer.path) as dataset:
-        if dataset.crs is None:
+    from rasterio.vrt import WarpedVRT
+    # SVG uses Web Mercator: warp raster pixels to the same projection first.
+    with rasterio.open(layer.path) as source:
+        if source.crs is None:
             raise VisualizationInputError(f"栅格缺少 CRS：{layer.title}")
-        scale = min(1.0, max_dimension / max(dataset.width, dataset.height))
-        width = max(1, int(dataset.width * scale))
-        height = max(1, int(dataset.height * scale))
-        values = dataset.read(
-            out_shape=(dataset.count, height, width),
-            masked=True,
-            resampling=Resampling.average,
-        )
-        bounds = transform_bounds(dataset.crs, "EPSG:4326", *dataset.bounds, densify_pts=21)
+        sampling = Resampling.nearest if layer.palette else Resampling.average
+        with WarpedVRT(source, crs="EPSG:3857", resampling=sampling) as dataset:
+            scale = min(1.0, max_dimension / max(dataset.width, dataset.height))
+            width = max(1, int(dataset.width * scale))
+            height = max(1, int(dataset.height * scale))
+            values = dataset.read(out_shape=(dataset.count, height, width),
+                                  masked=True, resampling=sampling)
+            bounds = transform_bounds(dataset.crs, "EPSG:4326", *dataset.bounds)
 
     band_count = values.shape[0]
     if layer.palette:

@@ -12,6 +12,7 @@ from pathlib import Path
 import re
 
 from remote_image.core.contracts import (
+    SCHEMA_VERSION,
     DamageRequest,
     DamageResult,
     InferenceOptions,
@@ -32,6 +33,9 @@ class EmptyBaselineDamageAdapter:
         request: DamageRequest,
         options: InferenceOptions | None = None,
     ) -> DamageResult:
+
+        if (request.model_name, request.model_version) != (self.name, self.version):
+            raise ValueError("请求模型名称/版本与空基线适配器不一致")
 
         # 1. 生成安全的事件目录名称，避免事件编号包含路径分隔符。
         safe_event_id = re.sub(
@@ -57,6 +61,7 @@ class EmptyBaselineDamageAdapter:
         # 3. 生成空的 GeoJSON FeatureCollection。
         # 不添加任何建筑物损毁记录或虚构切片记录。
         empty_geojson = {
+            "schema_version": SCHEMA_VERSION,
             "type": "FeatureCollection",
             "features": [],
         }
@@ -98,7 +103,7 @@ class EmptyBaselineDamageAdapter:
 
         # 5. 构造 Python 公共接口要求的结果元信息。
         meta = ResultMeta(
-            schema_version="1.0",
+            schema_version=SCHEMA_VERSION,
             event_id=request.event_id,
             study_area_id=request.study_area.identifier,
             input_asset_ids=input_asset_ids,

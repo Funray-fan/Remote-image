@@ -118,7 +118,7 @@ class C1Stage1Tests(unittest.TestCase):
     def test_write_metadata_from_public_result_meta(self):
         with tempfile.TemporaryDirectory() as td:
             root = Path(td)
-            meta = ResultMeta("1.0", "e1", "a1", ("asset1",), "baseline", "0.1")
+            meta = ResultMeta("2.0", "e1", "a1", ("asset1",), "baseline", "0.1")
             path = write_metadata(meta, root / "metadata.json")
             saved = json.loads(path.read_text(encoding="utf-8"))
             self.assertEqual(saved["event_id"], "e1")

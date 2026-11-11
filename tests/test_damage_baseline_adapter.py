@@ -32,6 +32,7 @@ def make_request(tmp_path):
         ),
         post_event=post_event,
         model_name="baseline_damage_model",
+        model_version="0.1.0",
         task="building_damage",
     )
 
@@ -59,10 +60,9 @@ def test_empty_baseline_passes_contract(tmp_path):
 
     assert report.passed, report.errors
 
-    assert "return_type" in report.checks
-    assert "artifact_keys" in report.checks
-    assert "event_id" in report.checks
-    assert "study_area_id" in report.checks
+    assert "schema_v2" in report.checks
+    assert "artifact_files" in report.checks
+    assert "event_and_area" in report.checks
     assert "input_asset_ids" in report.checks
     assert "model_identity" in report.checks
 

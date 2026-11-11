@@ -16,8 +16,8 @@ jobs:
           python-version: "3.11"
           cache: pip
       - name: Install project and development checks
-        run: python -m pip install -r requirements-r2.lock -e ".[dev,r2]"
+        run: python -m pip install -r requirements-r2.lock -e ".[dev,r2,ui]"
       - name: Run unit and contract tests
-        run: python -m unittest discover -s tests -v
+        run: python -m pytest tests -q
       - name: Check generated schemas are synchronized
         run: python scripts/generate_contract_schemas.py --check

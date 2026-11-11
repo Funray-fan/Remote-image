@@ -228,6 +228,11 @@ def prepare_context_layers(
             )
         outputs[layer_key] = output_path
 
+    from dataclasses import replace
+    original_sources = sources
+    sources = ContextSources(sources.event_id, {key: replace(record, path=outputs[key])
+        for key, record in sources.layers.items()})
+    _write_contract(original_sources, output_dir / "original_context_sources.json")
     result = ContextLayers(
         event_id=sources.event_id,
         study_area_id=area.identifier,
