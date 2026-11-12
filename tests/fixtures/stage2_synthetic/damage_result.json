@@ -1,0 +1,26 @@
+{
+  "schema_version": "1.0",
+  "model_name": "c3_synthetic_demo",
+  "model_version": "1.0.0",
+  "artifacts": {
+    "damage_vector": "damage_vector.geojson",
+    "tile_index": "tile_index.geojson",
+    "metadata": "metadata.json"
+  },
+  "meta": {
+    "schema_version": "1.0",
+    "event_id": "demo-flood-2023",
+    "study_area_id": "demo-area",
+    "input_asset_ids": [
+      "demo-optical-pre",
+      "demo-optical-post"
+    ],
+    "method": "building_damage",
+    "method_version": "1.0.0",
+    "parameters": {
+      "fixture_only": true
+    },
+    "created_at": "2026-11-12T00:00:00Z",
+    "warnings": []
+  }
+}

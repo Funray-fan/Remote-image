@@ -1,0 +1,41 @@
+{
+  "schema_version": "1.0",
+  "event_id": "demo-flood-2023",
+  "synthetic": true,
+  "layers": [
+    {
+      "layer_id": "demo-optical-pre",
+      "event_id": "demo-flood-2023",
+      "kind": "raster",
+      "path": "optical_pre.tif",
+      "crs": "EPSG:3857",
+      "asset_ids": [
+        "demo-optical-pre"
+      ],
+      "title": "灾前 RGB",
+      "style": {
+        "visible": false,
+        "source": "synthetic_fixture"
+      },
+      "min_zoom": null,
+      "max_zoom": null
+    },
+    {
+      "layer_id": "demo-optical-post",
+      "event_id": "demo-flood-2023",
+      "kind": "raster",
+      "path": "optical_post.tif",
+      "crs": "EPSG:3857",
+      "asset_ids": [
+        "demo-optical-post"
+      ],
+      "title": "灾后 RGB",
+      "style": {
+        "visible": true,
+        "source": "synthetic_fixture"
+      },
+      "min_zoom": null,
+      "max_zoom": null
+    }
+  ]
+}

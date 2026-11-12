@@ -36,6 +36,7 @@ class MapLayer:
     color: str | None = None
     time: str | None = None
     palette: Mapping[str, str] | None = None
+    color_property: str | None = None
 
 
 def _read_json(path: Path) -> dict[str, Any]:
@@ -62,6 +63,13 @@ def load_layers(manifest_path: str | Path) -> list[MapLayer]:
     for index, item in enumerate(data["layers"]):
         if not isinstance(item, dict):
             raise VisualizationInputError(f"第 {index + 1} 个图层配置必须是对象")
+        if ("layer_id" in item or "event_id" in item) and item.get("event_id") != data.get("event_id"):
+            raise VisualizationInputError("图层 event_id 与地图清单不一致")
+        if "layer_id" in item:
+            style = item.get("style", {})
+            if not isinstance(style, dict):
+                raise VisualizationInputError("图层 style 必须是对象")
+            item = {**style, **item, "id": item["layer_id"]}
         missing = {"id", "title", "kind", "path"} - item.keys()
         if missing:
             raise VisualizationInputError(
@@ -81,6 +89,8 @@ def load_layers(manifest_path: str | Path) -> list[MapLayer]:
             raise VisualizationInputError(f"不支持的图层文件格式：{artifact.suffix or '(无扩展名)'}")
         if kind == "vector" and artifact.suffix.lower() in {".geojson", ".json"} and not item.get("crs"):
             raise VisualizationInputError(f"矢量图层 {layer_id} 必须声明 CRS")
+        if (kind == "raster") != (artifact.suffix.lower() in {".tif", ".tiff"}):
+            raise VisualizationInputError(f"图层 {layer_id} 的类型与文件格式不一致")
         if not artifact.is_file():
             raise VisualizationInputError(f"图层文件不存在：{artifact}")
         palette = item.get("palette")
@@ -270,24 +280,31 @@ def _raster_payload(layer: MapLayer, max_dimension: int = 512) -> tuple[str, tup
         import numpy as np
         import rasterio
         from rasterio.enums import Resampling
+        from rasterio.vrt import WarpedVRT
         from rasterio.warp import transform_bounds
     except ImportError as exc:
         raise VisualizationInputError(
             "渲染 GeoTIFF 需要 GIS 依赖，请安装项目可选依赖：python -m pip install -e '.[gis]'"
         ) from exc
 
-    with rasterio.open(layer.path) as dataset:
-        if dataset.crs is None:
-            raise VisualizationInputError(f"栅格缺少 CRS：{layer.title}")
-        scale = min(1.0, max_dimension / max(dataset.width, dataset.height))
-        width = max(1, int(dataset.width * scale))
-        height = max(1, int(dataset.height * scale))
-        values = dataset.read(
-            out_shape=(dataset.count, height, width),
-            masked=True,
-            resampling=Resampling.average,
-        )
-        bounds = transform_bounds(dataset.crs, "EPSG:4326", *dataset.bounds, densify_pts=21)
+    try:
+        with rasterio.open(layer.path) as source:
+            if source.crs is None:
+                raise VisualizationInputError(f"栅格缺少 CRS：{layer.title}")
+            indexes = (1, 2, 3) if source.count >= 3 and not layer.palette else (1,)
+            method = Resampling.nearest if layer.palette else Resampling.bilinear
+            # The SVG uses Mercator coordinates, so warp the pixels as well as their bounds.
+            with WarpedVRT(source, crs="EPSG:3857", resampling=method) as dataset:
+                scale = min(1.0, max_dimension / max(dataset.width, dataset.height))
+                width = max(1, int(dataset.width * scale))
+                height = max(1, int(dataset.height * scale))
+                values = dataset.read(
+                    indexes, out_shape=(len(indexes), height, width),
+                    masked=True, resampling=method,
+                )
+                bounds = transform_bounds(dataset.crs, "EPSG:4326", *dataset.bounds)
+    except rasterio.errors.RasterioError as exc:
+        raise VisualizationInputError(f"无法读取栅格 {layer.title}：{exc}") from exc
 
     band_count = values.shape[0]
     if layer.palette:
@@ -407,7 +424,13 @@ def _geometry_svg(geometry: Mapping[str, Any], bounds: tuple[float, float, float
     return f'<path d="{path}" fill="{html.escape(color)}" fill-opacity="0.38" stroke="{html.escape(color)}" stroke-width="2" fill-rule="evenodd" />'
 
 
-def render_map(layers: Iterable[MapLayer], visible_layer_ids: Iterable[str] | None = None) -> str:
+def render_map(
+    layers: Iterable[MapLayer],
+    visible_layer_ids: Iterable[str] | None = None,
+    *,
+    vector_features: Mapping[str, Iterable[dict[str, Any]]] | None = None,
+    interactive: bool = False,
+) -> str:
     """Render visible local vector/raster assets as a self-contained SVG map."""
     layers = list(layers)
     visible_ids = set(visible_layer_ids) if visible_layer_ids is not None else {
@@ -422,9 +445,12 @@ def render_map(layers: Iterable[MapLayer], visible_layer_ids: Iterable[str] | No
     raster_data: dict[str, tuple[str, tuple[float, float, float, float]]] = {}
     for layer in visible:
         if layer.kind == "vector":
-            collection = _feature_collection(layer)
+            features = (
+                vector_features[layer.id] if vector_features is not None and layer.id in vector_features
+                else _feature_collection(layer)["features"]
+            )
             layer_features = []
-            for feature in collection.get("features", []):
+            for feature in features:
                 if not isinstance(feature, dict):
                     continue
                 geometry = feature.get("geometry")
@@ -460,7 +486,7 @@ def render_map(layers: Iterable[MapLayer], visible_layer_ids: Iterable[str] | No
 
     width, height, pad = 1000, 700, 35
     body: list[str] = []
-    for layer in visible:
+    for layer in sorted(visible, key=lambda layer: layer.kind != "raster"):
         if layer.id in raster_data:
             payload, (rwest, rsouth, reast, rnorth) = raster_data[layer.id]
             x1, y1 = _project((rwest, rnorth), bounds, width, height, pad)
@@ -470,21 +496,60 @@ def render_map(layers: Iterable[MapLayer], visible_layer_ids: Iterable[str] | No
             )
         for index, feature in enumerate(features_by_layer.get(layer.id, [])):
             properties = feature.get("properties") or {}
-            feature_id = _identifier(properties, feature, f"{layer.id}-{index+1}")
+            feature_id = (
+                properties["building_id"] if layer.color_property == "damage_class"
+                else _identifier(properties, feature, f"{layer.id}-{index+1}")
+            )
             encoded_properties = html.escape(json.dumps(properties, ensure_ascii=False), quote=True)
             title = html.escape(f"{layer.title} · {feature_id}")
             color = layer.color or "#087e8b"
+            if layer.palette and layer.color_property:
+                color = layer.palette.get(properties.get(layer.color_property), color)
             shape = _geometry_svg(feature["geometry"], bounds, width, height, pad, color)
             body.append(
                 f'<g class="map-feature" tabindex="0" role="button" data-feature-id="{html.escape(str(feature_id), quote=True)}" data-properties="{encoded_properties}" onclick="showFeature(this)" onkeydown="if(event.key===\'Enter\'||event.key===\' \')showFeature(this)"><title>{title}</title>{shape}</g>'
             )
 
+    controls = (
+        '<div style="margin:6px 0"><button onclick="zoomMap(0.7)">放大</button> '
+        '<button onclick="zoomMap(1.43)">缩小</button> '
+        '<button onclick="resetMap()">复位</button> <small>拖动地图可平移</small></div>'
+        if interactive else ""
+    )
+    interaction = """
+        const map = document.getElementById("offline-map");
+        function zoomMap(scale) {
+            const box = map.viewBox.baseVal;
+            const w = Math.max(20, Math.min(2000, box.width * scale));
+            const h = w * 0.7;
+            map.setAttribute("viewBox", [box.x+(box.width-w)/2, box.y+(box.height-h)/2, w, h].join(" "));
+        }
+        function resetMap() { map.setAttribute("viewBox", "0 0 1000 700"); }
+        let drag = null;
+        map.addEventListener("pointerdown", e => {
+            if (e.button !== 0 || e.target.closest(".map-feature")) return;
+            drag = [e.clientX, e.clientY];
+            map.setPointerCapture(e.pointerId);
+        });
+        map.addEventListener("pointermove", e => {
+            if (!drag) return;
+            const box = map.viewBox.baseVal;
+            const scale = Math.abs(map.getScreenCTM().a);
+            map.setAttribute("viewBox", [box.x-(e.clientX-drag[0])/scale,
+                box.y-(e.clientY-drag[1])/scale, box.width, box.height].join(" "));
+            drag = [e.clientX, e.clientY];
+        });
+        map.addEventListener("lostpointercapture", () => { drag = null; });
+    """ if interactive else ""
     return (
         '<div style="font-family:Arial,sans-serif;color:#172b32">'
-        '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 700" role="img" aria-label="阶段一灾情地图" style="width:100%;height:auto;background:#edf3f5;border:1px solid #d9e2e5;border-radius:8px">'
+        '<style>.map-feature{cursor:pointer}.map-feature:focus{outline:2px solid #172b32}</style>' +
+        controls +
+        '<svg id="offline-map" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 700" role="group" aria-label="灾情地图" style="width:100%;height:auto;touch-action:none;background:#edf3f5;border:1px solid #d9e2e5;border-radius:8px">'
         '<rect width="1000" height="700" fill="#edf3f5"/>' + "".join(body) +
         '<text x="18" y="680" font-size="13" fill="#53636b">WGS 84 · 离线本地渲染</text></svg>'
         '<div id="feature-info" style="min-height:46px;padding:10px 12px;margin-top:8px;background:#f7fafb;border:1px solid #d9e2e5;border-radius:6px;white-space:pre-wrap">点击地图要素查看属性</div>'
-        '<script>function showFeature(el){let p={};try{p=JSON.parse(el.dataset.properties||"{}")}catch(e){};document.getElementById("feature-info").textContent="feature_id: "+el.dataset.featureId+"\\n"+JSON.stringify(p,null,2)}</script>'
+        '<script>function showFeature(el){let p={};try{p=JSON.parse(el.dataset.properties||"{}")}catch(e){};document.getElementById("feature-info").textContent="feature_id: "+el.dataset.featureId+"\\n"+JSON.stringify(p,null,2)}</script>' +
+        '<script>' + interaction + '</script>' +
         '</div>'
     )

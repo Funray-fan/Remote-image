@@ -1,4 +1,8 @@
-# C3 第一阶段开发说明
+# C3 地图开发说明
+
+第二阶段的运行步骤、交接文件和演示验收见 [C3 第二阶段建筑灾损地图](stage2.md)。
+
+## 第一阶段
 
 `src/remote_image/modules/visualization/stage1.py` 提供 manifest 读取、GeoJSON 查询、上游统计摘要显示和离线 SVG 地图渲染。GeoTIFF 通过可选 GIS 依赖读取，渲染不访问在线底图。当前 `tests/fixtures/stage1_synthetic` 只用于开发和测试，不能作为真实灾情结果。
 

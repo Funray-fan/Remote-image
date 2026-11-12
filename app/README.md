@@ -11,3 +11,5 @@ streamlit run app/main.py
 ```
 
 页面默认加载 `tests/fixtures/stage1_synthetic/layer_manifest.json`，可在侧栏替换为 C1/R2 交付的本地 manifest。
+
+侧栏选择「阶段二 · 建筑灾损」可查看光学 RGB、逐建筑损毁等级、原始置信度、来源和模型版本。支持合成演示及已通过空间质检的本地推理结果；交接格式和复跑命令见 [阶段二说明](../docs/c3/stage2.md)。

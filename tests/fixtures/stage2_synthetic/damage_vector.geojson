@@ -1,0 +1,239 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              116.008,
+              39.922
+            ],
+            [
+              116.01039999999999,
+              39.922
+            ],
+            [
+              116.01039999999999,
+              39.924
+            ],
+            [
+              116.008,
+              39.924
+            ],
+            [
+              116.008,
+              39.922
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "building_id": "DEMO-001",
+        "damage_class": "no-damage",
+        "confidence": 0.97,
+        "event_id": "demo-flood-2023",
+        "source": "synthetic_fixture",
+        "model_name": "c3_synthetic_demo",
+        "model_version": "1.0.0"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              116.016,
+              39.912
+            ],
+            [
+              116.0184,
+              39.912
+            ],
+            [
+              116.0184,
+              39.914
+            ],
+            [
+              116.016,
+              39.914
+            ],
+            [
+              116.016,
+              39.912
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "building_id": "DEMO-002",
+        "damage_class": "minor-damage",
+        "confidence": 0.76,
+        "event_id": "demo-flood-2023",
+        "source": "synthetic_fixture",
+        "model_name": "c3_synthetic_demo",
+        "model_version": "1.0.0"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              116.023,
+              39.922
+            ],
+            [
+              116.02539999999999,
+              39.922
+            ],
+            [
+              116.02539999999999,
+              39.924
+            ],
+            [
+              116.023,
+              39.924
+            ],
+            [
+              116.023,
+              39.922
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "building_id": "DEMO-003",
+        "damage_class": "major-damage",
+        "confidence": 0.82,
+        "event_id": "demo-flood-2023",
+        "source": "synthetic_fixture",
+        "model_name": "c3_synthetic_demo",
+        "model_version": "1.0.0"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              116.01,
+              39.91
+            ],
+            [
+              116.0124,
+              39.91
+            ],
+            [
+              116.0124,
+              39.912
+            ],
+            [
+              116.01,
+              39.912
+            ],
+            [
+              116.01,
+              39.91
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "building_id": "DEMO-004",
+        "damage_class": "destroyed",
+        "confidence": 0.94,
+        "event_id": "demo-flood-2023",
+        "source": "synthetic_fixture",
+        "model_name": "c3_synthetic_demo",
+        "model_version": "1.0.0"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              116.027,
+              39.903
+            ],
+            [
+              116.0294,
+              39.903
+            ],
+            [
+              116.0294,
+              39.905
+            ],
+            [
+              116.027,
+              39.905
+            ],
+            [
+              116.027,
+              39.903
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "building_id": "DEMO-005",
+        "damage_class": "un-classified",
+        "confidence": 0.48,
+        "event_id": "demo-flood-2023",
+        "source": "synthetic_fixture",
+        "model_name": "c3_synthetic_demo",
+        "model_version": "1.0.0"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              116.036,
+              39.918
+            ],
+            [
+              116.0384,
+              39.918
+            ],
+            [
+              116.0384,
+              39.92
+            ],
+            [
+              116.036,
+              39.92
+            ],
+            [
+              116.036,
+              39.918
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "building_id": "DEMO-006",
+        "damage_class": "major-damage",
+        "confidence": 0.62,
+        "event_id": "demo-flood-2023",
+        "source": "synthetic_fixture",
+        "model_name": "c3_synthetic_demo",
+        "model_version": "1.0.0"
+      }
+    }
+  ]
+}
