@@ -45,3 +45,6 @@ Thumbs.db
 !tests/fixtures/**/*.tiff
 !data/manifests/**/*.geojson
 
+# 本地试验缓存，以及 evaluate 根据本机结果生成的参数冻结文件。
+work/
+configs/r2/*.resolved.json

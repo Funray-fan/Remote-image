@@ -2,12 +2,14 @@
 
 All images, polygons, classes and confidence values are synthetic. They test the C3 interface only and do not demonstrate model accuracy or real damage.
 
-- Six buildings cover the five approved classes.
+- Six buildings cover the five approved classes, with valid confidence values from 0.62 to 0.97.
 - Threshold 0.90 displays DEMO-001 and DEMO-004.
 - RGB GeoTIFFs use EPSG:3857 to exercise reprojection.
 - The event matches the stage1_synthetic flood fixture so that overlays can be tested.
-- DamageResult and vector properties follow the existing v1 JSON schemas.
+- DamageResult, LayerManifest, vectors and tile index follow the integration branch v2 schemas.
 - Artifact paths are relative to damage_result.json.
 - metadata.fixture_only and meta.parameters.fixture_only identify this test fixture.
+- DEMO-005 has null confidence, un-classified damage and a reason. It remains visible only at threshold zero.
+- The companion summary.json carries the synthetic flag without adding fields to LayerManifest.
 
 No xBD imagery, model weights or real assessment outputs are included.

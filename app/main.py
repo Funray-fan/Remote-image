@@ -38,6 +38,11 @@ DEFAULT_MANIFEST = REPOSITORY_ROOT / "tests" / "fixtures" / "stage1_synthetic" /
 STAGE2_FIXTURE = DEFAULT_MANIFEST.parent.parent / "stage2_synthetic"
 
 
+@st.cache_data(show_spinner=False)
+def cached_map(layers, enabled_ids, versions):
+    return render_map(layers, enabled_ids, interactive=True)
+
+
 def _safe_path(value: str, root: Path) -> Path:
     candidate = Path(value)
     if not candidate.is_absolute():
@@ -60,14 +65,43 @@ def _show_map(markup: str) -> None:
 
 def show_stage1() -> None:
     st.title("洪水影响评估地图")
-    st.caption("阶段一 · C3 可视化 · 支持本地数据离线展示")
+    st.caption("阶段一 · 灾前灾后对照、候选水体与暴露统计 · 本地离线地图")
 
     with st.sidebar:
         st.header("案例数据")
-        manifest_value = st.text_input(
-            "layer_manifest.json 路径（相对仓库根目录）",
-            value=str(DEFAULT_MANIFEST.relative_to(REPOSITORY_ROOT)),
-        )
+        cases = {"合成功能样例": DEFAULT_MANIFEST}
+        completed = sorted(REPOSITORY_ROOT.glob('outputs/*/stage1/integrated/*/layer_manifest.json'), reverse=True)
+        for path in completed:
+            status = path.parent / 'run_status.json'
+            if status.is_file() and json.loads(status.read_text(encoding='utf-8')).get('status') == 'complete':
+                summary_file = path.parent / "summary.json"
+                summary = load_summary(summary_file) if summary_file.is_file() else {}
+                label = "合成联调" if summary.get("synthetic") else str(summary.get("event_id", "历史案例"))
+                if label == "zhuozhou_2023_flood":
+                    label = "涿州洪水"
+                cases[f"{label} · {path.parent.name}"] = path
+        if "pending_case" in st.session_state:
+            st.session_state['case'] = st.session_state.pop('pending_case')
+        default_index = None if 'case' in st.session_state else (1 if len(cases)>1 else 0)
+        choice = st.selectbox("选择案例", list(cases), index=default_index, key="case")
+        if choice is None:
+            st.info("请选择一个案例。")
+            st.stop()
+        if st.button("运行涿州阶段一分析", type="primary"):
+            try:
+                from remote_image.workflows.integrated import run_case
+                with st.spinner("正在核对输入、分析候选水体并生成统计与地图，请稍候…"):
+                    output = run_case(REPOSITORY_ROOT/'configs/integrated-zhuozhou.json')
+                st.session_state['pending_case'] = f"涿州洪水 · {output.name}"
+                st.rerun()
+            except Exception as exc:
+                st.error(f"运行失败：{exc}。请检查本地案例输入是否准备齐全。")
+        with st.expander("自定义结果文件"):
+            manifest_value = st.text_input(
+                "图层清单路径（相对项目目录）",
+                value=str(cases[choice].relative_to(REPOSITORY_ROOT)),
+                key=f"manifest-{choice}",
+            )
         try:
             manifest_path = _safe_path(manifest_value, REPOSITORY_ROOT)
             manifest = load_manifest(manifest_path, allowed_root=REPOSITORY_ROOT)
@@ -78,7 +112,8 @@ def show_stage1() -> None:
 
         event_id = str(manifest.get("event_id", "unknown"))
         st.caption(f"事件：{event_id}")
-        st.caption("合成样例" if manifest.get("synthetic") else "数据来源以 manifest 为准")
+        is_synthetic = manifest.get("synthetic", False)
+        st.caption("合成样例 · 仅验证功能" if is_synthetic else "历史案例 · 水体候选，识别精度尚未验证")
 
         st.subheader("图层")
         enabled_ids = []
@@ -87,7 +122,8 @@ def show_stage1() -> None:
                 enabled_ids.append(layer.id)
             details = " · ".join(value for value in (layer.time, layer.crs, layer.source) if value)
             if details:
-                st.caption(details)
+                with st.expander(f"{layer.title} · 来源"):
+                    st.caption(details)
 
         st.subheader("图例")
         for layer in layers:
@@ -109,7 +145,11 @@ def show_stage1() -> None:
     with map_col:
         st.subheader("地图")
         try:
-            markup = render_map(layers, enabled_ids, interactive=True)
+            with st.spinner("正在加载地图…"):
+                markup = cached_map(
+                    layers, enabled_ids,
+                    tuple((str(layer.path), layer.path.stat().st_mtime_ns) for layer in layers),
+                )
             _show_map(markup)
         except VisualizationInputError as exc:
             st.error(str(exc))
@@ -126,14 +166,27 @@ def show_stage1() -> None:
                     "flood_area_m2": "洪水面积（m²）",
                     "affected_buildings": "受影响建筑数",
                     "affected_population": "受影响人口",
+                    "candidate_area_m2": "新增水体候选面积（m²）",
+                    "building_objects_intersecting": "交叠建筑来源对象数",
+                    "road_overlap_length_m": "道路交叠长度（m）",
+                    "population_exposed": "人口暴露（未知）",
                 }
                 for name, value in summary["statistics"].items():
-                    st.metric(labels.get(name, name), value)
-                for warning in summary["warnings"]:
-                    st.warning(str(warning))
+                    if name in labels:
+                        st.metric(labels[name], "未知" if value is None else f"{value:,.2f}" if isinstance(value,float) else value)
+                if is_synthetic:
+                    for warning in summary["warnings"]:
+                        st.warning(str(warning))
+                else:
+                    st.warning("候选交叠不等于建筑损毁或道路阻断；人口与识别精度未验证。")
+                    with st.expander("数据来源与适用限制"):
+                        for warning in summary["warnings"]:
+                            st.write(str(warning))
+                st.download_button("下载运行摘要", json.dumps(load_summary(summary_path),ensure_ascii=False,indent=2),
+                                   file_name="summary.json", mime="application/json")
                 if summary["metadata"]:
-                    st.caption("运行信息")
-                    st.json(summary["metadata"])
+                    with st.expander("运行信息"):
+                        st.json(summary["metadata"])
             except (OSError, VisualizationInputError) as exc:
                 st.error(str(exc))
 
@@ -191,7 +244,7 @@ def show_stage2() -> None:
 
         st.caption(f"事件：{result.event_id}")
         threshold = st.slider("地图显示置信度下限", 0.0, 1.0, 0.0, 0.01)
-        st.caption("此阈值只筛选展示和查询，原始预测保持不变。")
+        st.caption("此阈值只筛选展示和查询，原始预测保持不变。未知置信度仅在阈值为 0 时显示。")
         handle = DamageMapHandle(result.event_id)
         context_notes = []
         has_optical_raster = False
@@ -281,9 +334,12 @@ def show_stage2() -> None:
                 if detail is not None:
                     st.text(
                         f"损毁等级：{DAMAGE_CLASSES[detail['damage_class']][0]}\n"
-                        f"原始置信度：{detail['confidence']}\n来源：{detail['source']}\n"
+                        f"原始置信度：{detail['confidence'] if detail['confidence'] is not None else '未知'}\n"
+                        f"来源：{detail.get('source') or '输入资产 ' + '、'.join(result.input_asset_ids)}\n"
                         f"模型版本：{detail['model_version']}"
                     )
+                    if detail.get("reason"):
+                        st.caption(f"判定说明：{detail['reason']}")
                     with st.expander("查看原始属性"):
                         st.json(detail)
 

@@ -1,0 +1,119 @@
+{
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": "2.0",
+      "type": "string"
+    },
+    "nodes_path": {
+      "type": "string",
+      "minLength": 1
+    },
+    "edges_path": {
+      "type": "string",
+      "minLength": 1
+    },
+    "crs": {
+      "type": "string",
+      "minLength": 1
+    },
+    "directed": {
+      "type": "boolean"
+    },
+    "node_count": {
+      "type": "integer"
+    },
+    "edge_count": {
+      "type": "integer"
+    },
+    "spec": {
+      "$ref": "#/$defs/NetworkSpec"
+    }
+  },
+  "required": [
+    "schema_version",
+    "nodes_path",
+    "edges_path",
+    "crs",
+    "directed",
+    "node_count",
+    "edge_count",
+    "spec"
+  ],
+  "additionalProperties": false,
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://remote-image.local/schemas/v2/road-graph.schema.json",
+  "title": "RoadGraph",
+  "$defs": {
+    "NetworkSpec": {
+      "type": "object",
+      "properties": {
+        "crs": {
+          "type": "string",
+          "minLength": 1
+        },
+        "edge_id_field": {
+          "type": "string",
+          "minLength": 1
+        },
+        "direction_field": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "speed_field": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "snap_tolerance_m": {
+          "type": "number"
+        },
+        "default_speed_kmh": {
+          "type": "number"
+        },
+        "one_way_values": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "blocked_field": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "crs",
+        "edge_id_field",
+        "direction_field",
+        "speed_field",
+        "snap_tolerance_m",
+        "default_speed_kmh",
+        "one_way_values",
+        "blocked_field"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

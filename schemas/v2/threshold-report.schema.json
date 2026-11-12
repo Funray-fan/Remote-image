@@ -1,0 +1,190 @@
+{
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": "2.0",
+      "type": "string"
+    },
+    "status": {
+      "enum": [
+        "pass",
+        "warning",
+        "fail"
+      ],
+      "type": "string"
+    },
+    "checks": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/CheckItem"
+      }
+    },
+    "metrics": {
+      "type": "object",
+      "additionalProperties": {}
+    },
+    "warnings": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "artifacts": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "candidate_options": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/FloodOptions"
+      }
+    },
+    "selected_options": {
+      "$ref": "#/$defs/FloodOptions"
+    },
+    "reference_available": {
+      "type": "boolean"
+    },
+    "selection_reason": {
+      "type": "string",
+      "minLength": 1
+    }
+  },
+  "required": [
+    "schema_version",
+    "status",
+    "checks",
+    "metrics",
+    "warnings",
+    "artifacts",
+    "candidate_options",
+    "selected_options",
+    "reference_available",
+    "selection_reason"
+  ],
+  "additionalProperties": false,
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://remote-image.local/schemas/v2/threshold-report.schema.json",
+  "title": "ThresholdReport",
+  "$defs": {
+    "CheckItem": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "status": {
+          "enum": [
+            "pass",
+            "warning",
+            "fail"
+          ],
+          "type": "string"
+        },
+        "expected": {},
+        "actual": {},
+        "message": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "name",
+        "status",
+        "expected",
+        "actual",
+        "message"
+      ],
+      "additionalProperties": false
+    },
+    "FloodOptions": {
+      "type": "object",
+      "properties": {
+        "polarizations": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "VV",
+              "VH"
+            ],
+            "type": "string"
+          }
+        },
+        "post_thresholds_db": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "number"
+          }
+        },
+        "pre_water_thresholds_db": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "number"
+          }
+        },
+        "polarization_rule": {
+          "enum": [
+            "single",
+            "all",
+            "any"
+          ],
+          "type": "string"
+        },
+        "permanent_water_mask": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "exclusion_mask": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "min_patch_area_m2": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "method": {
+          "enum": [
+            "sar_post_threshold"
+          ],
+          "type": "string"
+        }
+      },
+      "required": [
+        "polarizations",
+        "post_thresholds_db",
+        "pre_water_thresholds_db",
+        "polarization_rule",
+        "permanent_water_mask",
+        "exclusion_mask",
+        "min_patch_area_m2",
+        "method"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

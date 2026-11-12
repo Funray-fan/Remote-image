@@ -1,0 +1,61 @@
+{
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": "2.0",
+      "type": "string"
+    },
+    "point_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "point_type": {
+      "enum": [
+        "rescue_base",
+        "shelter",
+        "target"
+      ],
+      "type": "string"
+    },
+    "geometry": {
+      "type": "object",
+      "additionalProperties": {}
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "capacity": {
+      "anyOf": [
+        {
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "source": {
+      "type": "string",
+      "minLength": 1
+    },
+    "updated_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "required": [
+    "schema_version",
+    "point_id",
+    "point_type",
+    "geometry",
+    "name",
+    "capacity",
+    "source",
+    "updated_at"
+  ],
+  "additionalProperties": false,
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://remote-image.local/schemas/v2/rescue-point.schema.json",
+  "title": "RescuePoint"
+}

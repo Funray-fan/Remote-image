@@ -1,0 +1,92 @@
+{
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": "2.0",
+      "type": "string"
+    },
+    "polarizations": {
+      "type": "array",
+      "items": {
+        "enum": [
+          "VV",
+          "VH"
+        ],
+        "type": "string"
+      }
+    },
+    "post_thresholds_db": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "number"
+      }
+    },
+    "pre_water_thresholds_db": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "number"
+      }
+    },
+    "polarization_rule": {
+      "enum": [
+        "single",
+        "all",
+        "any"
+      ],
+      "type": "string"
+    },
+    "permanent_water_mask": {
+      "anyOf": [
+        {
+          "type": "string",
+          "minLength": 1
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "exclusion_mask": {
+      "anyOf": [
+        {
+          "type": "string",
+          "minLength": 1
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "min_patch_area_m2": {
+      "anyOf": [
+        {
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "method": {
+      "enum": [
+        "sar_post_threshold"
+      ],
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema_version",
+    "polarizations",
+    "post_thresholds_db",
+    "pre_water_thresholds_db",
+    "polarization_rule",
+    "permanent_water_mask",
+    "exclusion_mask",
+    "min_patch_area_m2",
+    "method"
+  ],
+  "additionalProperties": false,
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://remote-image.local/schemas/v2/flood-options.schema.json",
+  "title": "FloodOptions"
+}

@@ -1,0 +1,20 @@
+{
+  "schema_version": "2.0",
+  "polarizations": [
+    "VV",
+    "VH"
+  ],
+  "post_thresholds_db": {
+    "VV": -16.0,
+    "VH": -23.0
+  },
+  "pre_water_thresholds_db": {
+    "VV": -15.0,
+    "VH": -22.0
+  },
+  "polarization_rule": "all",
+  "permanent_water_mask": null,
+  "exclusion_mask": null,
+  "min_patch_area_m2": 20.0,
+  "method": "sar_post_threshold"
+}

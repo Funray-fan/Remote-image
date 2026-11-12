@@ -1,51 +1,24 @@
-"""最小可运行示例。"""
+"""安装与 v2 契约的最小自检入口。"""
 
-from datetime import datetime
+import json
 from pathlib import Path
 
-from remote_image.core.contracts import RasterAsset, StudyArea
-from remote_image.core.registry import PluginRegistry
-from remote_image.modules.baseline import PlaceholderDamageModel, PlaceholderDecisionEngine
-from remote_image.workflows.assessment import AssessmentWorkflow
-
-
-def build_registry() -> PluginRegistry:
-    registry = PluginRegistry()
-    registry.register("baseline_damage_model", PlaceholderDamageModel())
-    registry.register("baseline_decision_engine", PlaceholderDecisionEngine())
-    return registry
+from remote_image.core.contracts import DamageRequest
+from remote_image.core.serialization import from_payload, to_payload
+from remote_image.core.validation import validate_contract
 
 
 def main() -> None:
-    registry = build_registry()
-    workflow = AssessmentWorkflow(registry)
-    study_area = StudyArea(
-        identifier="fixture_area",
-        boundary="tests/fixtures/contracts/study_area.geojson",
-        coordinate_reference_system="EPSG:4326",
-    )
-    result = workflow.run(
-        event_id="fixture_event",
-        study_area=study_area,
-        post_event=RasterAsset(
-            asset_id="fixture_post_event",
-            path=Path("data/post_event_orthomosaic.tif"),
-            acquired_at=datetime.now(),
-            source="uav",
-            coordinate_reference_system="EPSG:4326",
-            pixel_size_m=0.1,
-            source_type="uav_orthomosaic",
-        ),
-        pre_event=None,
-        building_footprints=Path("data/buildings.geojson"),
-        road_network=Path("data/roads.geojson"),
-        rescue_points=Path("data/rescue_points.geojson"),
-        population_grid=Path("data/population.tif"),
-    )
-    for key, value in result.items():
-        print(f"{key}: {value}")
+    root = Path(__file__).resolve().parents[2]
+    fixture = root / "tests" / "fixtures" / "contracts_v2" / "damage_request_valid.json"
+    if not fixture.is_file():
+        print("Remote Image 已安装；仓库外运行时请由项目配置提供契约输入。")
+        return
+    request = from_payload(DamageRequest, json.loads(fixture.read_text(encoding="utf-8")))
+    validate_contract(request)
+    print("Remote Image v2 契约自检通过")
+    print(json.dumps(to_payload(request), ensure_ascii=False, indent=2))
 
 
 if __name__ == "__main__":
     main()
-

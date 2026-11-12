@@ -1,12 +1,14 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+from datetime import datetime, timezone
 from pathlib import Path
 
 from remote_image.core.contracts import (
     DamageRequest,
     DecisionRequest,
     InferenceOptions,
+    PrioritySpec,
     RasterAsset,
     RouteOptions,
     StudyArea,
@@ -30,6 +32,7 @@ class AssessmentWorkflow:
         rescue_points: Path,
         population_grid: Path | None = None,
         damage_model_name: str = "baseline_damage_model",
+        damage_model_version: str = "0.2.0",
         decision_engine_name: str = "baseline_decision_engine",
     ) -> dict[str, str]:
         model = self.registry.get(damage_model_name)
@@ -41,6 +44,7 @@ class AssessmentWorkflow:
                 pre_event=pre_event,
                 building_footprints=building_footprints,
                 model_name=damage_model_name,
+                model_version=damage_model_version,
             ),
             InferenceOptions(device="cpu", batch_size=1),
         )
@@ -53,7 +57,15 @@ class AssessmentWorkflow:
                 road_network=road_network,
                 rescue_points=rescue_points,
                 population_grid=population_grid,
-                route_options=RouteOptions(start_ids=("start",), goal_ids=("goal",)),
+                route_options=RouteOptions(
+                    start_ids=("start",),
+                    goal_ids=("goal",),
+                    as_of=datetime.now(timezone.utc),
+                ),
+                priority_spec=PrioritySpec(
+                    crs=study_area.coordinate_reference_system,
+                    population_reference=1.0,
+                ),
             )
         )
         return {

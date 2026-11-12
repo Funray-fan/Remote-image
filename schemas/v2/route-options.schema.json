@@ -1,0 +1,84 @@
+{
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": "2.0",
+      "type": "string"
+    },
+    "start_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "goal_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "as_of": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "cost_mode": {
+      "enum": [
+        "distance",
+        "time",
+        "risk_weighted"
+      ],
+      "type": "string"
+    },
+    "blocked_policy": {
+      "enum": [
+        "exclude"
+      ],
+      "type": "string"
+    },
+    "candidate_count": {
+      "type": "integer"
+    },
+    "unknown_policy": {
+      "enum": [
+        "exclude",
+        "penalize"
+      ],
+      "type": "string"
+    },
+    "unknown_penalty_factor": {
+      "type": "number"
+    },
+    "max_detour_ratio": {
+      "anyOf": [
+        {
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "risk_multiplier": {
+      "type": "number"
+    }
+  },
+  "required": [
+    "schema_version",
+    "start_ids",
+    "goal_ids",
+    "as_of",
+    "cost_mode",
+    "blocked_policy",
+    "candidate_count",
+    "unknown_policy",
+    "unknown_penalty_factor",
+    "max_detour_ratio",
+    "risk_multiplier"
+  ],
+  "additionalProperties": false,
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://remote-image.local/schemas/v2/route-options.schema.json",
+  "title": "RouteOptions"
+}

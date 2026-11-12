@@ -1,0 +1,45 @@
+{
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": "2.0",
+      "type": "string"
+    },
+    "event_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "review_as_of": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "sample_n": {
+      "type": "integer"
+    },
+    "road_sample_n": {
+      "type": "integer"
+    },
+    "seed": {
+      "type": "integer"
+    },
+    "sampling_strategy": {
+      "enum": [
+        "stratified_area"
+      ],
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema_version",
+    "event_id",
+    "review_as_of",
+    "sample_n",
+    "road_sample_n",
+    "seed",
+    "sampling_strategy"
+  ],
+  "additionalProperties": false,
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://remote-image.local/schemas/v2/review-spec.schema.json",
+  "title": "ReviewSpec"
+}

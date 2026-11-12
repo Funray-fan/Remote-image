@@ -1,0 +1,9 @@
+{
+  "schema_version": "2.0",
+  "event_id": "synthetic_event",
+  "review_as_of": "2026-10-26T12:00:00+08:00",
+  "sample_n": 180,
+  "road_sample_n": 30,
+  "seed": 42,
+  "sampling_strategy": "stratified_area"
+}

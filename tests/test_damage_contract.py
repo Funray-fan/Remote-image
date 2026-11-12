@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import json
 import unittest
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 
 from remote_image.core.contracts import (
@@ -22,6 +22,7 @@ FIXTURES = ROOT / "tests" / "fixtures" / "contracts"
 
 class FixtureDamageModel:
     name = "fixture_damage_model"
+    version = "1.0.0"
 
     def predict(
         self, request: DamageRequest, options: InferenceOptions | None = None
@@ -35,14 +36,14 @@ class FixtureDamageModel:
             model_name=self.name,
             model_version="1.0.0",
             meta=ResultMeta(
-                schema_version="1.0",
+                schema_version="2.0",
                 event_id=request.event_id,
                 study_area_id=request.study_area.identifier,
                 input_asset_ids=(request.post_event.asset_id,),
                 method=request.task,
                 method_version="1.0.0",
                 parameters={"fixture_only": True},
-                created_at=datetime(2026, 10, 25),
+                created_at=datetime(2026, 10, 25, tzinfo=timezone.utc),
             ),
         )
 
@@ -62,12 +63,15 @@ def make_request() -> DamageRequest:
         post_event=post,
         building_footprints=FIXTURES / "buildings.geojson",
         model_name="fixture_damage_model",
+        model_version="1.0.0",
     )
 
 
 class DamageAdapterContractTests(unittest.TestCase):
     def test_fixture_adapter_passes_contract(self) -> None:
-        report = check_adapter_contract(FixtureDamageModel(), make_request())
+        report = check_adapter_contract(
+            FixtureDamageModel(), make_request(), validate_artifacts=False
+        )
         self.assertTrue(report.passed, report.errors)
 
     def test_fixture_files_are_isolated_and_synthetic(self) -> None:

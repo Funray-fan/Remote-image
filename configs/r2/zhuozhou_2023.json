@@ -1,0 +1,93 @@
+{
+  "r2_config_version": "1.0",
+  "project_root": "../..",
+  "event_id": "zhuozhou_2023_flood",
+  "input": {
+    "prepared_inputs_path": "data/zhuozhou/prepared_inputs.json",
+    "pre_path": "data/zhuozhou/pre_event.tif",
+    "post_path": "data/zhuozhou/post_event.tif",
+    "valid_mask_path": "data/zhuozhou/valid_mask.tif",
+    "source_revision": "237cff7c433a6e041418f128d01a99453738a0a8",
+    "backscatter_quantity": "gamma0",
+    "value_scale": "linear_power",
+    "polarization": "VV",
+    "expected": {
+      "width": 3920,
+      "height": 4484,
+      "crs": "EPSG:32650",
+      "pixel_size_m": 10,
+      "joint_valid_pixels": 17573360
+    },
+    "expected_hashes": {
+      "pre_event": "613c9c5338ff14f31728810b54d2380dc5d535c3f1553c69458dd76e24aed384",
+      "post_event": "e785da785719a8cf0675006f6819540282a473b705d41d569d99e049bb53fb23",
+      "valid_mask": "25d570bea82fb22efca9d1aa2a75eed1f8566a2e14d0e8eefd75949fdebeba47"
+    }
+  },
+  "analysis": {
+    "area_crs": "EPSG:32650",
+    "aoi_kind": "raster_extent",
+    "connectivity": 4,
+    "min_patch_area_m2": 0,
+    "selected_water_threshold_db": null,
+    "permanent_water_mask": null,
+    "exclusion_mask": null
+  },
+  "threshold_search": {
+    "candidate_values_db": [
+      -18,
+      -20,
+      -16,
+      -22,
+      -14,
+      -12
+    ],
+    "candidate_patch_areas_m2": [
+      0,
+      1000
+    ],
+    "development_bounds": [
+      [
+        411817.1635396682,
+        4372787.806278839,
+        416817.1635396682,
+        4377787.806278839
+      ],
+      [
+        397217.1635396682,
+        4365367.806278839,
+        407217.1635396682,
+        4375367.806278839
+      ]
+    ],
+    "heldout_bounds": [
+      [
+        397217.1635396682,
+        4380207.806278839,
+        407217.1635396682,
+        4390207.806278839
+      ],
+      [
+        416417.1635396682,
+        4355367.806278839,
+        426417.1635396682,
+        4365367.806278839
+      ]
+    ],
+    "reference_path": null
+  },
+  "context": {
+    "buildings_path": "data/zhuozhou/raw_buildings.geojson",
+    "roads_path": "data/zhuozhou/raw_roads.geojson",
+    "id_rule": "osm_type:osm_id",
+    "expected_hashes": {
+      "buildings": "f8f8c3ea57de8db117fc8c1bb7661f11535a5ee467e14587563fa2c012631b29",
+      "roads": "5c2efe09e6356f7d628b9160729b00488d4de6cd7e637286e46600f0ff011b3c"
+    }
+  },
+  "output": {
+    "root": "outputs/zhuozhou_2023_flood/stage1/r2",
+    "export_geojson": true,
+    "write_previews": true
+  }
+}

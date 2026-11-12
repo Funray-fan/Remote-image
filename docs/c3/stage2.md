@@ -11,14 +11,13 @@ python -m pip install -e ".[ui,gis]"
 python -m streamlit run app/main.py --global.developmentMode false
 ```
 
-本次在项目内隔离安装了测试依赖，也可直接运行：
+本地对齐版本使用独立虚拟环境，也可直接运行：
 
 ```powershell
-$env:PYTHONPATH="$PWD/.venv/c3-deps;$PWD/src"
-python -m streamlit run app/main.py --global.developmentMode false --server.address 127.0.0.1 --server.port 8503 --server.headless true --browser.gatherUsageStats false
+.venv/c3-aligned/Scripts/python.exe -m streamlit run app/main.py --global.developmentMode false --server.address 127.0.0.1 --server.port 8504 --server.headless true --browser.gatherUsageStats false
 ```
 
-打开浏览器访问 http://127.0.0.1:8503，侧栏选择「阶段二 · 建筑灾损」。
+打开浏览器访问 http://127.0.0.1:8504，侧栏选择「阶段二 · 建筑灾损」。根目录原有启动器也支持在默认环境缺失时使用此环境。
 
 ## 已实现功能
 
@@ -46,15 +45,15 @@ outputs/<event_id>/stage2/
   layer_manifest.json         # 可选，引用已登记光学 GeoTIFF
 ```
 
-DamageResult 使用仓库现有 schemas/v1/damage-result.schema.json，method 必须为 building_damage；artifacts 必须包含 damage_vector、tile_index、metadata。artifact 路径以 damage_result.json 所在目录为基准，路径须在仓库内。缺少 GeoJSON CRS 时遵从 RFC 7946，使用 WGS 84 经纬度；投影坐标请交付带 CRS 的 GeoPackage。
+DamageResult 已对齐队长集成分支的 schemas/v2/damage-result.schema.json，并保留旧版 v1 读取兼容；method 必须为 building_damage，artifacts 必须包含 damage_vector、tile_index、metadata。artifact 路径优先以 damage_result.json 所在目录为基准，不存在时兼容仓库相对路径；绝对路径也必须在仓库内。缺少 GeoJSON CRS 时遵从 RFC 7946，使用 WGS 84 经纬度；投影坐标请交付带 CRS 的 GeoPackage。
 
-每栋建筑保留 building_id、damage_class、confidence、event_id、source、model_name、model_version。前三个身份字段 event_id、model_name、model_version 必须与结果一致；building_id 在当前结果内唯一。支持 Polygon 和 MultiPolygon。
+v2 每栋建筑保留 building_id、damage_class、confidence、reason、event_id、study_area_id、model_name、model_version，身份字段必须与结果一致，building_id 在当前结果内唯一。v2 不包含旧版 source 字段，详情面板从结果 input_asset_ids 展示输入来源。支持 Polygon 和 MultiPolygon。
 
-当前已发布 v1 schema 仅接受 0..1 的数值 confidence。v1.6 说明中的 null confidence / reason 须先由 C1 发布 schema 迁移，本改动未私自修改公共字段规则。
+v2 允许 confidence=null，但必须同时为 un-classified 并给出非空 reason；未知值不转成 0。阈值为 0 时显示未知记录，正阈值时隐藏，原值和原因保留。旧版 v1 仍只接受数值置信度。本次直接消费 C1 已发布规则，没有修改公共 schema。
 
-在「本地推理结果」里输入结果路径、空间质检路径和可选影像/洪水清单。空间质检路径留空时默认使用结果目录下的 spatial_qa.json。报告状态必须为 pass；如果带 event_id 则必须匹配。完整报告仍由 R2/C1 验证，C3 只读取状态和告警，不代替空间检查或公共 schema 校验。
+在「本地推理结果」里输入结果路径、空间质检路径和可选影像/洪水清单。空间质检路径留空时默认使用结果目录下的 spatial_qa.json。v2 报告按 SpatialQAReport 校验，含 schema_version、status、checks、metrics、warnings、artifacts；状态必须为 pass，检查项不能含 fail。旧版 v1 报告如果带 event_id 则必须匹配。C3 校验交接格式并读取状态和告警，不代替 R2 的空间检查。
 
-光学清单支持 v1.6 描述的 layer_id、event_id、kind、path、crs、asset_ids、title、style、min_zoom、max_zoom，也兼容阶段一的 id 配置。当前渲染器读取 style.visible、style.color、style.palette，缩放级别范围暂不参与显示过滤。清单内相对路径以清单目录为基准。请通过 C1 清单指定图层，页面不搜索目录或猜测资产。
+光学清单直接支持 v2 LayerManifest 的 layer_id、event_id、kind、path、crs、asset_ids、title、style、min_zoom、max_zoom，也兼容阶段一的 id 配置。v2 清单不添加 synthetic/summary 等额外字段；沿用集成版同目录 summary.json 约定读取合成标记和统计，并核对事件。当前渲染器读取 style.visible、style.color、style.palette，缩放级别范围暂不参与显示过滤。清单内相对路径以清单目录为基准。图层由清单指定；一阶段案例选择器沿用队长对完成运行结果目录的登记方式。
 
 同事件的洪水清单可与光学影像叠加；默认隐藏洪水清单里的灰度影像，让 RGB 底图保持可见，洪水范围/掩膜仍可切换。不同事件仅给出提示，不将另一案例移到当前地理范围。
 
@@ -78,11 +77,11 @@ DamageMapResult 和 DamageMapHandle 是 C3 内部视图对象，未替换公共 
 
 ## 演示验收
 
-tests/fixtures/stage2_synthetic 中包含六栋建筑、五种类别、0.48..0.97 的演示置信度和两张小型 RGB GeoTIFF。全部由规则生成，仅用于工程测试，没有使用 xBD 图片、训练权重或真实灾情预测。
+tests/fixtures/stage2_synthetic 已迁移为 v2，包含六栋建筑、五种类别、0.62..0.97 的有效演示置信度、一栋未知置信度及原因，以及两张小型 RGB GeoTIFF。全部由规则生成，仅用于工程测试，没有使用 xBD 图片、训练权重或真实灾情预测。
 
 1. 打开阶段二，确认合成提示、建筑总数 6、当前显示 6、模型版本 1.0.0。
 2. 阈值调到 0.90，当前显示应为 2，建筑总数保持 6。
-3. 搜索 DEMO-004，查看 destroyed / 完全损毁、原始置信度 0.94 和 synthetic_fixture 来源。
+3. 搜索 DEMO-004，查看 destroyed / 完全损毁、原始置信度 0.94 和输入资产来源；阈值为 0 时搜索 DEMO-005，确认置信度为未知且有原因。
 4. 打开灾前影像，关闭灾后影像，检查 RGB 切换；开关洪水范围。
 5. 点击建筑检查属性，操作放大、缩小、复位和平移。
 6. 用其他 event_id 的洪水清单测试，确认提示不同事件且不叠加。
@@ -91,11 +90,11 @@ tests/fixtures/stage2_synthetic 中包含六栋建筑、五种类别、0.48..0.9
 自动检查：
 
 ```powershell
-$env:PYTHONPATH="$PWD/.venv/c3-deps;$PWD/src"
-python -m unittest discover -s tests -v
+.venv/c3-aligned/Scripts/python.exe -m pytest tests --ignore=tests/fixtures -q
+.venv/c3-aligned/Scripts/python.exe scripts/generate_contract_schemas.py --check
 ```
 
-本次 27 项自动测试全部通过，覆盖阶段一回归、阶段二页面筛选和查询、事件隔离、掩膜不能代替逐建筑结果、空间质检状态、非法属性和越界路径、发布 schema 兼容性、GeoPackage 重投影及 RGB/洪水/建筑叠加。浏览器访问审批超时，真实浏览器的点击、平移和缩放仍待人工验收，尚无界面截图。
+测试覆盖阶段一回归、阶段二页面筛选和查询、事件隔离、掩膜不能代替逐建筑结果、空间质检状态、非法属性和越界路径、v2 schema 及旧版兼容、GeoPackage 重投影及 RGB/洪水/建筑叠加。本地对齐的测试数量及结果见 alignment.md。此前浏览器访问审批超时，真实浏览器的点击、平移和缩放仍待人工验收，尚无本次适配的界面截图。
 
 阶段一和阶段二统一通过显式高度的 iframe 显示地图，避免 st.html 默认忽略地图脚本。页面测试检查地图容器实际包含 SVG、影像、要素和交互代码；这仍不能代替真实浏览器的视觉验收。
 

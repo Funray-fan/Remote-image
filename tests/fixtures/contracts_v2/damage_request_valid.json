@@ -1,0 +1,51 @@
+{
+  "schema_version": "2.0",
+  "event_id": "synthetic_event",
+  "study_area": {
+    "identifier": "synthetic_area",
+    "boundary": "synthetic/study_area.geojson",
+    "coordinate_reference_system": "EPSG:32650"
+  },
+  "post_event": {
+    "asset_id": "synthetic_post",
+    "path": "synthetic/post_event.tif",
+    "acquired_at": "2026-10-26T12:00:00+08:00",
+    "source": "synthetic_fixture",
+    "coordinate_reference_system": "EPSG:32650",
+    "pixel_size_m": 0.5,
+    "bands": [
+      "VV",
+      "VH",
+      "R",
+      "G",
+      "B"
+    ],
+    "footprint": null,
+    "source_type": "satellite",
+    "is_substitute": false,
+    "quality_notes": "synthetic contract fixture only"
+  },
+  "model_name": "synthetic_xbd_model",
+  "model_version": "0.0.0-fixture",
+  "pre_event": {
+    "asset_id": "synthetic_pre",
+    "path": "synthetic/pre_event.tif",
+    "acquired_at": "2026-10-26T12:00:00+08:00",
+    "source": "synthetic_fixture",
+    "coordinate_reference_system": "EPSG:32650",
+    "pixel_size_m": 0.5,
+    "bands": [
+      "VV",
+      "VH",
+      "R",
+      "G",
+      "B"
+    ],
+    "footprint": null,
+    "source_type": "satellite",
+    "is_substitute": false,
+    "quality_notes": "synthetic contract fixture only"
+  },
+  "building_footprints": "synthetic/buildings.geojson",
+  "task": "building_damage"
+}

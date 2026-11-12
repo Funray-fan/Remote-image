@@ -1,0 +1,27 @@
+{
+  "schema_version": "2.0",
+  "artifacts": {
+    "damage_vector": "synthetic/damage_vector.geojson",
+    "tile_index": "synthetic/tile_index.geojson",
+    "metadata": "synthetic/damage_meta.json"
+  },
+  "model_name": "synthetic_xbd_model",
+  "model_version": "0.0.0-fixture",
+  "meta": {
+    "schema_version": "2.0",
+    "event_id": "synthetic_event",
+    "study_area_id": "synthetic_area",
+    "input_asset_ids": [
+      "synthetic_post"
+    ],
+    "method": "building_damage",
+    "method_version": "0.0.0-fixture",
+    "parameters": {
+      "fixture_only": true
+    },
+    "created_at": "2026-10-26T12:00:00+08:00",
+    "warnings": [
+      "synthetic fixture; not a scientific result"
+    ]
+  }
+}

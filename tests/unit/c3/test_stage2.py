@@ -21,6 +21,25 @@ HAS_GIS = importlib.util.find_spec("rasterio") is not None
 
 
 class Stage2VisualizationTests(unittest.TestCase):
+    def test_v2_unknown_confidence_preserves_reason(self):
+        result = load_damage_result(FIXTURE / "damage_result.json", allowed_root=ROOT)
+        handle = DamageMapHandle(result.event_id)
+        layer = render_damage_layer(result.event_id, result, handle, 0)
+        detail = show_building_detail(result.event_id, layer, "DEMO-005", handle)
+        self.assertIsNone(detail["confidence"])
+        self.assertTrue(detail["reason"])
+        render_damage_layer(result.event_id, result, handle, 0.01)
+        self.assertNotIn("DEMO-005", handle.buildings)
+        self.assertIsNone(result.features["DEMO-005"]["properties"]["confidence"])
+
+    def test_legacy_v1_results_remain_readable(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            copytree(ROOT / "tests/fixtures/contracts", root / "tests/fixtures/contracts")
+            result = load_damage_result(root / "tests/fixtures/contracts/damage_result_valid.json", allowed_root=root)
+            # The old shared fixture stores paths from the repository root.
+            self.assertEqual(result.model_version, "1.0.0")
+
     def test_threshold_preserves_source_and_filters_by_building_id(self):
         result = load_damage_result(FIXTURE / "damage_result.json", allowed_root=ROOT)
         handle = DamageMapHandle(result.event_id)
@@ -53,13 +72,17 @@ class Stage2VisualizationTests(unittest.TestCase):
             with self.assertRaisesRegex(VisualizationInputError, "spatial_qa.json"):
                 load_damage_result(result_path, allowed_root=root)
             qa = data / "spatial_qa.json"
-            qa.write_text('{"status":"warning"}', encoding="utf-8")
+            report = {"schema_version": "2.0", "status": "warning", "checks": [], "metrics": {}, "warnings": [], "artifacts": {}}
+            qa.write_text(json.dumps(report), encoding="utf-8")
             with self.assertRaisesRegex(VisualizationInputError, "须为 pass"):
                 load_damage_result(result_path, allowed_root=root)
-            qa.write_text('{"status":"pass","event_id":"other"}', encoding="utf-8")
-            with self.assertRaisesRegex(VisualizationInputError, "事件 ID"):
+            report["status"] = "pass"
+            report["checks"] = [{"name": "geometry", "status": "fail", "expected": True, "actual": False, "message": "test failure"}]
+            qa.write_text(json.dumps(report), encoding="utf-8")
+            with self.assertRaisesRegex(VisualizationInputError, "失败检查"):
                 load_damage_result(result_path, allowed_root=root)
-            qa.write_text('{"status":"pass"}', encoding="utf-8")
+            report["checks"] = []
+            qa.write_text(json.dumps(report), encoding="utf-8")
             self.assertFalse(load_damage_result(result_path, allowed_root=root).synthetic)
 
     def test_masks_alone_are_rejected(self):
@@ -70,7 +93,7 @@ class Stage2VisualizationTests(unittest.TestCase):
             del result["artifacts"]["damage_vector"]
             result["artifacts"]["building_mask"] = "buildings.tif"
             path.write_text(json.dumps(result), encoding="utf-8")
-            with self.assertRaisesRegex(VisualizationInputError, "逐建筑"):
+            with self.assertRaisesRegex(VisualizationInputError, "逐栋|逐建筑"):
                 load_damage_result(path, allowed_root=root)
 
     def test_invalid_building_attributes_and_paths_are_rejected(self):
@@ -111,8 +134,9 @@ class Stage2VisualizationTests(unittest.TestCase):
             ("damage_result.json", "damage-result.schema.json"),
             ("damage_vector.geojson", "damage-vector.schema.json"),
             ("tile_index.geojson", "tile-index.schema.json"),
+            ("layer_manifest.json", "layer-manifest.schema.json"),
         ):
-            validator = Draft202012Validator(json.loads((ROOT / "schemas/v1" / schema).read_text(encoding="utf-8")))
+            validator = Draft202012Validator(json.loads((ROOT / "schemas/v2" / schema).read_text(encoding="utf-8")))
             validator.validate(json.loads((FIXTURE / artifact).read_text(encoding="utf-8")))
 
     @unittest.skipUnless(HAS_GIS and importlib.util.find_spec("geopandas"), "install .[gis]")

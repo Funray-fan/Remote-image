@@ -1,0 +1,117 @@
+{
+  "type": "object",
+  "properties": {
+    "event_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "study_area_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "target_crs": {
+      "type": "string",
+      "minLength": 1
+    },
+    "layers": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "sources": {
+      "$ref": "#/$defs/ContextSources"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "schema_version": {
+      "const": "2.0",
+      "type": "string"
+    }
+  },
+  "required": [
+    "event_id",
+    "study_area_id",
+    "target_crs",
+    "layers",
+    "sources",
+    "created_at",
+    "schema_version"
+  ],
+  "additionalProperties": false,
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://remote-image.local/schemas/v2/context-layers.schema.json",
+  "title": "ContextLayers",
+  "$defs": {
+    "ContextSources": {
+      "type": "object",
+      "properties": {
+        "event_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "layers": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/SourceRecord"
+          }
+        }
+      },
+      "required": [
+        "event_id",
+        "layers"
+      ],
+      "additionalProperties": false
+    },
+    "SourceRecord": {
+      "type": "object",
+      "properties": {
+        "path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source": {
+          "type": "string",
+          "minLength": 1
+        },
+        "date": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "license_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "id_field": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "path",
+        "source",
+        "date",
+        "license_id",
+        "id_field"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

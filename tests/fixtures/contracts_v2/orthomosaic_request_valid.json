@@ -1,0 +1,14 @@
+{
+  "schema_version": "2.0",
+  "event_id": "synthetic_event",
+  "study_area": {
+    "identifier": "synthetic_area",
+    "boundary": "synthetic/study_area.geojson",
+    "coordinate_reference_system": "EPSG:32650"
+  },
+  "image_directory": "synthetic/uav_photos",
+  "positioning_source": "GNSS",
+  "control_source": "none",
+  "ground_control_points": null,
+  "output_dir": "synthetic/output/orthomosaic"
+}

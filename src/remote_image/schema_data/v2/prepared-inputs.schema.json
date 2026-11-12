@@ -1,0 +1,201 @@
+{
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": "2.0",
+      "type": "string"
+    },
+    "pre_event": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/RasterAsset"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "post_event": {
+      "$ref": "#/$defs/RasterAsset"
+    },
+    "study_area_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "grid": {
+      "$ref": "#/$defs/GridSpec"
+    },
+    "valid_mask": {
+      "anyOf": [
+        {
+          "type": "string",
+          "minLength": 1
+        },
+        {
+          "type": "null"
+        }
+      ]
+    }
+  },
+  "required": [
+    "schema_version",
+    "pre_event",
+    "post_event",
+    "study_area_id",
+    "grid",
+    "valid_mask"
+  ],
+  "additionalProperties": false,
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://remote-image.local/schemas/v2/prepared-inputs.schema.json",
+  "title": "PreparedInputs",
+  "$defs": {
+    "RasterAsset": {
+      "type": "object",
+      "properties": {
+        "asset_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "acquired_at": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "source": {
+          "type": "string",
+          "minLength": 1
+        },
+        "coordinate_reference_system": {
+          "type": "string",
+          "minLength": 1
+        },
+        "pixel_size_m": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "bands": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "footprint": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "source_type": {
+          "enum": [
+            "satellite",
+            "uav_orthomosaic",
+            "public_orthomosaic"
+          ],
+          "type": "string"
+        },
+        "is_substitute": {
+          "type": "boolean"
+        },
+        "quality_notes": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "asset_id",
+        "path",
+        "acquired_at",
+        "source",
+        "coordinate_reference_system",
+        "pixel_size_m",
+        "bands",
+        "footprint",
+        "source_type",
+        "is_substitute",
+        "quality_notes"
+      ],
+      "additionalProperties": false
+    },
+    "GridSpec": {
+      "type": "object",
+      "properties": {
+        "transform": {
+          "type": "array",
+          "prefixItems": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "type": "number"
+            }
+          ],
+          "items": false,
+          "minItems": 6,
+          "maxItems": 6
+        },
+        "width": {
+          "type": "integer"
+        },
+        "height": {
+          "type": "integer"
+        },
+        "pixel_size_x_m": {
+          "type": "number"
+        },
+        "pixel_size_y_m": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "transform",
+        "width",
+        "height",
+        "pixel_size_x_m",
+        "pixel_size_y_m"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

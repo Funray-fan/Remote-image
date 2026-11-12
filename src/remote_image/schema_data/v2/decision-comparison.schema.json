@@ -1,0 +1,148 @@
+{
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": "2.0",
+      "type": "string"
+    },
+    "event_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "before": {
+      "$ref": "#/$defs/DecisionSnapshot"
+    },
+    "after": {
+      "$ref": "#/$defs/DecisionSnapshot"
+    },
+    "inputs_and_parameters_match": {
+      "type": "boolean"
+    },
+    "comparable_pairs": {
+      "type": "array",
+      "items": {
+        "type": "array",
+        "prefixItems": [
+          {
+            "type": "string",
+            "minLength": 1
+          },
+          {
+            "type": "string",
+            "minLength": 1
+          }
+        ],
+        "items": false,
+        "minItems": 2,
+        "maxItems": 2
+      }
+    },
+    "newly_reachable_goal_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "newly_unreachable_goal_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "warnings": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    }
+  },
+  "required": [
+    "schema_version",
+    "event_id",
+    "before",
+    "after",
+    "inputs_and_parameters_match",
+    "comparable_pairs",
+    "newly_reachable_goal_ids",
+    "newly_unreachable_goal_ids",
+    "warnings"
+  ],
+  "additionalProperties": false,
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://remote-image.local/schemas/v2/decision-comparison.schema.json",
+  "title": "DecisionComparison",
+  "$defs": {
+    "DecisionSnapshot": {
+      "type": "object",
+      "properties": {
+        "run_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "decision_result_path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "confirmed_blocked_crossings": {
+          "type": "integer"
+        },
+        "reachable_goal_count": {
+          "type": "integer"
+        },
+        "mean_distance_m": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "mean_detour_ratio": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "unknown_edge_length_m": {
+          "type": "number"
+        },
+        "coverage": {
+          "type": "object",
+          "additionalProperties": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        }
+      },
+      "required": [
+        "run_id",
+        "decision_result_path",
+        "confirmed_blocked_crossings",
+        "reachable_goal_count",
+        "mean_distance_m",
+        "mean_detour_ratio",
+        "unknown_edge_length_m",
+        "coverage"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

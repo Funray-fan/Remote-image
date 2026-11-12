@@ -7,6 +7,8 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
 
+from remote_image.core.validation import ContractValidationError, validate_payload
+
 from .stage1 import (
     MapLayer,
     VisualizationInputError,
@@ -52,6 +54,10 @@ def _local_file(value: Any, base: Path, root: Path) -> Path:
     path = (base / value).resolve()
     if not path.is_relative_to(root):
         raise VisualizationInputError("阶段二文件路径必须位于仓库内")
+    if not path.is_file() and not Path(value).is_absolute():
+        repository_path = (root / value).resolve()
+        if repository_path.is_relative_to(root) and repository_path.is_file():
+            path = repository_path
     if not path.is_file():
         raise VisualizationInputError(f"阶段二文件不存在：{path}")
     return path
@@ -68,6 +74,13 @@ def _confidence(value: Any) -> bool:
     return type(value) in (int, float) and 0 <= value <= 1
 
 
+def _validate_v2(name: str, data: dict[str, Any]) -> None:
+    try:
+        validate_payload(name, data)
+    except ContractValidationError as exc:
+        raise VisualizationInputError(str(exc)) from exc
+
+
 def load_damage_result(
     path: Path, *, allowed_root: Path, spatial_qa_path: Path | None = None
 ) -> DamageMapResult:
@@ -75,14 +88,17 @@ def load_damage_result(
     root = allowed_root.resolve()
     path = _local_file(path, root, root)
     data = _read_json(path)
+    version = data.get("schema_version")
+    if version == "2.0":
+        _validate_v2("DamageResult", data)
     meta, artifacts = data.get("meta"), data.get("artifacts")
     if (
-        data.get("schema_version") != "1.0"
+        version not in {"1.0", "2.0"}
         or not isinstance(meta, dict)
-        or meta.get("schema_version") != "1.0"
+        or meta.get("schema_version") != version
         or not isinstance(artifacts, dict)
     ):
-        raise VisualizationInputError("需要 schema_version 1.0 的 DamageResult")
+        raise VisualizationInputError("需要版本一致的 v1 或 v2 DamageResult")
     event_id = _text(meta, "event_id")
     model_name = _text(data, "model_name")
     model_version = _text(data, "model_version")
@@ -106,6 +122,8 @@ def load_damage_result(
         qa = _read_json(_local_file(
             spatial_qa_path or (path.parent / "spatial_qa.json"), root, root
         ))
+        if version == "2.0":
+            _validate_v2("SpatialQAReport", qa)
         if qa.get("status") != "pass":
             raise VisualizationInputError("空间质检状态须为 pass，当前结果不能正式展示")
         if qa.get("event_id", event_id) != event_id:
@@ -115,6 +133,12 @@ def load_damage_result(
             warnings = [*warnings, *(item for item in qa_warnings if isinstance(item, str))]
 
     collection = _read_vector_collection(vector)
+    if version == "2.0":
+        # GeoPackage has its schema version in DamageResult. JSON carries it explicitly.
+        vector_data = {
+            "schema_version": "2.0", "type": collection["type"], "features": collection["features"]
+        } if vector.suffix.lower() == ".gpkg" else collection
+        _validate_v2("DamageVector", vector_data)
     if vector.suffix.lower() != ".gpkg" and collection.get("crs") is not None:
         crs = collection["crs"]
         props = crs.get("properties") if isinstance(crs, dict) else None
@@ -135,10 +159,18 @@ def load_damage_result(
             event_id, model_name, model_version
         ):
             raise VisualizationInputError(f"建筑 {building_id} 的事件或模型版本与结果不一致")
-        _text(properties, "source")
+        if version == "1.0":
+            _text(properties, "source")
+        elif properties.get("study_area_id") != meta.get("study_area_id"):
+            raise VisualizationInputError(f"建筑 {building_id} 的研究区与结果不一致")
         damage_class = _text(properties, "damage_class")
-        if damage_class not in DAMAGE_CLASSES or not _confidence(properties.get("confidence")):
-            raise VisualizationInputError(f"建筑 {building_id} 的损毁类别或置信度不符合当前 v1 schema")
+        unknown = (
+            version == "2.0" and properties.get("confidence") is None
+            and damage_class == "un-classified"
+            and isinstance(properties.get("reason"), str) and bool(properties["reason"].strip())
+        )
+        if damage_class not in DAMAGE_CLASSES or not (_confidence(properties.get("confidence")) or unknown):
+            raise VisualizationInputError(f"建筑 {building_id} 的损毁类别或置信度不符合当前 schema")
         if not isinstance(geometry, dict) or geometry.get("type") not in {"Polygon", "MultiPolygon"}:
             raise VisualizationInputError(f"建筑 {building_id} 需要面几何")
         points = list(_coordinates(geometry))
@@ -163,7 +195,12 @@ def render_damage_layer(
         raise VisualizationInputError("显示阈值必须在 0 到 1 之间")
     handle.buildings = {
         building_id: feature for building_id, feature in result.features.items()
-        if feature["properties"]["confidence"] >= confidence_display_threshold
+        if (
+            feature["properties"]["confidence"] is None and confidence_display_threshold == 0
+        ) or (
+            feature["properties"]["confidence"] is not None
+            and feature["properties"]["confidence"] >= confidence_display_threshold
+        )
     }
     handle.layers[:] = [layer for layer in handle.layers if layer.id != DAMAGE_LAYER_ID]
     handle.layers.append(MapLayer(

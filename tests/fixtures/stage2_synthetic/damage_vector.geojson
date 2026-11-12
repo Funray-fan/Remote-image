@@ -35,9 +35,10 @@
         "damage_class": "no-damage",
         "confidence": 0.97,
         "event_id": "demo-flood-2023",
-        "source": "synthetic_fixture",
         "model_name": "c3_synthetic_demo",
-        "model_version": "1.0.0"
+        "model_version": "1.0.0",
+        "study_area_id": "demo-area",
+        "reason": null
       }
     },
     {
@@ -74,9 +75,10 @@
         "damage_class": "minor-damage",
         "confidence": 0.76,
         "event_id": "demo-flood-2023",
-        "source": "synthetic_fixture",
         "model_name": "c3_synthetic_demo",
-        "model_version": "1.0.0"
+        "model_version": "1.0.0",
+        "study_area_id": "demo-area",
+        "reason": null
       }
     },
     {
@@ -113,9 +115,10 @@
         "damage_class": "major-damage",
         "confidence": 0.82,
         "event_id": "demo-flood-2023",
-        "source": "synthetic_fixture",
         "model_name": "c3_synthetic_demo",
-        "model_version": "1.0.0"
+        "model_version": "1.0.0",
+        "study_area_id": "demo-area",
+        "reason": null
       }
     },
     {
@@ -152,9 +155,10 @@
         "damage_class": "destroyed",
         "confidence": 0.94,
         "event_id": "demo-flood-2023",
-        "source": "synthetic_fixture",
         "model_name": "c3_synthetic_demo",
-        "model_version": "1.0.0"
+        "model_version": "1.0.0",
+        "study_area_id": "demo-area",
+        "reason": null
       }
     },
     {
@@ -189,11 +193,12 @@
       "properties": {
         "building_id": "DEMO-005",
         "damage_class": "un-classified",
-        "confidence": 0.48,
+        "confidence": null,
         "event_id": "demo-flood-2023",
-        "source": "synthetic_fixture",
         "model_name": "c3_synthetic_demo",
-        "model_version": "1.0.0"
+        "model_version": "1.0.0",
+        "study_area_id": "demo-area",
+        "reason": "Synthetic example without a valid prediction"
       }
     },
     {
@@ -230,10 +235,12 @@
         "damage_class": "major-damage",
         "confidence": 0.62,
         "event_id": "demo-flood-2023",
-        "source": "synthetic_fixture",
         "model_name": "c3_synthetic_demo",
-        "model_version": "1.0.0"
+        "model_version": "1.0.0",
+        "study_area_id": "demo-area",
+        "reason": null
       }
     }
-  ]
+  ],
+  "schema_version": "2.0"
 }

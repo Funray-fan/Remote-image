@@ -1,0 +1,44 @@
+{
+  "schema_version": "2.0",
+  "event_id": "synthetic_event",
+  "study_area": {
+    "identifier": "synthetic_area",
+    "boundary": "synthetic/study_area.geojson",
+    "coordinate_reference_system": "EPSG:32650"
+  },
+  "road_network": "synthetic/roads.gpkg",
+  "rescue_points": "synthetic/rescue_points.geojson",
+  "route_options": {
+    "start_ids": [
+      "base-1"
+    ],
+    "goal_ids": [
+      "target-1"
+    ],
+    "as_of": "2026-10-26T12:00:00+08:00",
+    "cost_mode": "distance",
+    "blocked_policy": "exclude",
+    "candidate_count": 2,
+    "unknown_policy": "penalize",
+    "unknown_penalty_factor": 10.0,
+    "max_detour_ratio": 2.0,
+    "risk_multiplier": 1.0
+  },
+  "priority_spec": {
+    "crs": "EPSG:32650",
+    "population_reference": 1000.0,
+    "grid_size_m": 1000.0,
+    "origin_x_m": 500000.0,
+    "origin_y_m": 4400000.0,
+    "weights": {
+      "damage": 0.4,
+      "population": 0.3,
+      "access": 0.3
+    }
+  },
+  "flood_result": null,
+  "damage_results": [],
+  "review_result": null,
+  "population_grid": "synthetic/population.tif",
+  "blocked_roads": "synthetic/road_states.gpkg"
+}

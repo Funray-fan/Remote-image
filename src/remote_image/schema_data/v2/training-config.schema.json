@@ -1,0 +1,52 @@
+{
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": "2.0",
+      "type": "string"
+    },
+    "seed": {
+      "type": "integer"
+    },
+    "epochs": {
+      "type": "integer"
+    },
+    "batch_size": {
+      "type": "integer"
+    },
+    "learning_rate": {
+      "type": "number"
+    },
+    "device": {
+      "type": "string",
+      "minLength": 1
+    },
+    "train_split": {
+      "type": "string",
+      "minLength": 1
+    },
+    "val_split": {
+      "type": "string",
+      "minLength": 1
+    },
+    "test_split": {
+      "type": "string",
+      "minLength": 1
+    }
+  },
+  "required": [
+    "schema_version",
+    "seed",
+    "epochs",
+    "batch_size",
+    "learning_rate",
+    "device",
+    "train_split",
+    "val_split",
+    "test_split"
+  ],
+  "additionalProperties": false,
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://remote-image.local/schemas/v2/training-config.schema.json",
+  "title": "TrainingConfig"
+}

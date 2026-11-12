@@ -1,7 +1,6 @@
 {
-  "schema_version": "1.0",
+  "schema_version": "2.0",
   "event_id": "demo-flood-2023",
-  "synthetic": true,
   "layers": [
     {
       "layer_id": "demo-optical-pre",

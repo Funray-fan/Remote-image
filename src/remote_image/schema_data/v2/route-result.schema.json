@@ -1,0 +1,125 @@
+{
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": "2.0",
+      "type": "string"
+    },
+    "meta": {
+      "$ref": "#/$defs/ResultMeta"
+    },
+    "routes_path": {
+      "type": "string",
+      "minLength": 1
+    },
+    "route_count": {
+      "type": "integer"
+    },
+    "unreachable_pairs": {
+      "type": "array",
+      "items": {
+        "type": "array",
+        "prefixItems": [
+          {
+            "type": "string",
+            "minLength": 1
+          },
+          {
+            "type": "string",
+            "minLength": 1
+          }
+        ],
+        "items": false,
+        "minItems": 2,
+        "maxItems": 2
+      }
+    },
+    "uncertain_count": {
+      "type": "integer"
+    },
+    "cost_mode": {
+      "enum": [
+        "distance",
+        "time",
+        "risk_weighted"
+      ],
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema_version",
+    "meta",
+    "routes_path",
+    "route_count",
+    "unreachable_pairs",
+    "uncertain_count",
+    "cost_mode"
+  ],
+  "additionalProperties": false,
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://remote-image.local/schemas/v2/route-result.schema.json",
+  "title": "RouteResult",
+  "$defs": {
+    "ResultMeta": {
+      "type": "object",
+      "properties": {
+        "schema_version": {
+          "enum": [
+            "2.0"
+          ],
+          "type": "string"
+        },
+        "event_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "study_area_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "input_asset_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "method": {
+          "type": "string",
+          "minLength": 1
+        },
+        "method_version": {
+          "type": "string",
+          "minLength": 1
+        },
+        "parameters": {
+          "type": "object",
+          "additionalProperties": {}
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "warnings": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      },
+      "required": [
+        "schema_version",
+        "event_id",
+        "study_area_id",
+        "input_asset_ids",
+        "method",
+        "method_version",
+        "parameters",
+        "created_at",
+        "warnings"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

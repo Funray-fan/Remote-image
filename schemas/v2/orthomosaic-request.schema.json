@@ -1,0 +1,91 @@
+{
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": "2.0",
+      "type": "string"
+    },
+    "event_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "study_area": {
+      "$ref": "#/$defs/StudyArea"
+    },
+    "image_directory": {
+      "type": "string",
+      "minLength": 1
+    },
+    "positioning_source": {
+      "enum": [
+        "GNSS",
+        "RTK",
+        "PPK",
+        "unknown"
+      ],
+      "type": "string"
+    },
+    "control_source": {
+      "enum": [
+        "GCP",
+        "none",
+        "unknown"
+      ],
+      "type": "string"
+    },
+    "ground_control_points": {
+      "anyOf": [
+        {
+          "type": "string",
+          "minLength": 1
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "output_dir": {
+      "type": "string",
+      "minLength": 1
+    }
+  },
+  "required": [
+    "schema_version",
+    "event_id",
+    "study_area",
+    "image_directory",
+    "positioning_source",
+    "control_source",
+    "ground_control_points",
+    "output_dir"
+  ],
+  "additionalProperties": false,
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://remote-image.local/schemas/v2/orthomosaic-request.schema.json",
+  "title": "OrthomosaicRequest",
+  "$defs": {
+    "StudyArea": {
+      "type": "object",
+      "properties": {
+        "identifier": {
+          "type": "string",
+          "minLength": 1
+        },
+        "boundary": {
+          "type": "string",
+          "minLength": 1
+        },
+        "coordinate_reference_system": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "identifier",
+        "boundary",
+        "coordinate_reference_system"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

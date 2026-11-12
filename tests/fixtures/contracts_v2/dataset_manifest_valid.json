@@ -1,0 +1,26 @@
+{
+  "schema_version": "2.0",
+  "dataset_name": "synthetic_xbd_subset",
+  "dataset_version": "0.0.0-fixture",
+  "items": [
+    {
+      "sample_id": "sample-1",
+      "event_id": "synthetic_training_event",
+      "scene_id": "scene-1",
+      "image_pair_id": "pair-1",
+      "group_id": "group-1",
+      "split": "train",
+      "pre_event_path": "synthetic/train_pre.png",
+      "post_event_path": "synthetic/train_post.png",
+      "label_path": "synthetic/train_label.json",
+      "footprint_path": null,
+      "source": "synthetic_fixture",
+      "license_id": "fixture-only"
+    }
+  ],
+  "source_url": "https://example.invalid/synthetic",
+  "license_id": "fixture-only",
+  "split_strategy": "scene_or_image_pair",
+  "spatial_overlap_checked": false,
+  "overlap_report_path": null
+}

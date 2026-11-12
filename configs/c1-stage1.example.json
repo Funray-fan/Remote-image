@@ -1,0 +1,7 @@
+{
+  "event_id": "fixture_event",
+  "study_area_id": "fixture_area",
+  "output_dir": "outputs",
+  "steps": [],
+  "notes": "空 steps 只验证 C1 编排入口；R1/R2/R3 提供真实函数后再配置业务步骤。"
+}

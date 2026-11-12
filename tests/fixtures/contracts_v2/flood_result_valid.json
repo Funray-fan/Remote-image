@@ -1,0 +1,25 @@
+{
+  "schema_version": "2.0",
+  "artifacts": {
+    "flood_mask": "synthetic/flood_mask.tif",
+    "flood_polygons": "synthetic/flood.geojson",
+    "metadata": "synthetic/flood_meta.json"
+  },
+  "meta": {
+    "schema_version": "2.0",
+    "event_id": "synthetic_event",
+    "study_area_id": "synthetic_area",
+    "input_asset_ids": [
+      "synthetic_post"
+    ],
+    "method": "sar_post_threshold",
+    "method_version": "0.0.0-fixture",
+    "parameters": {
+      "fixture_only": true
+    },
+    "created_at": "2026-10-26T12:00:00+08:00",
+    "warnings": [
+      "synthetic fixture; not a scientific result"
+    ]
+  }
+}
