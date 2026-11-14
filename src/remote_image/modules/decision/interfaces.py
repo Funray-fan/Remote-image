@@ -10,17 +10,25 @@ from remote_image.core.contracts import (
 )
 from remote_image.modules.decision.stage1 import (
     prepare_context_layers as _prepare_context_layers,
-    validate_context_layers as _validate_context_layers,
+    validate_context_layers as _validate_stage1_context_layers,
     validate_network as _validate_network,
 )
+from remote_image.modules.decision.stage2 import validate_context_layers as _validate_stage2_context_layers
 
 
 def prepare_context_layers(area: StudyArea, sources: ContextSources, target_crs: str, output_dir: Path) -> ContextLayers:
     return _prepare_context_layers(area, sources, target_crs, output_dir)
 
 
-def validate_context_layers(layers: ContextLayers, area: StudyArea) -> ContextQAReport:
-    return _validate_context_layers(layers, area)
+def validate_context_layers(
+    layers: ContextLayers, event_id: str | StudyArea, *, area: StudyArea | None = None,
+) -> ContextQAReport:
+    """阶段二接受 event_id；旧阶段一 StudyArea 调用保持兼容。"""
+    if isinstance(event_id, StudyArea):
+        if area is not None:
+            raise ValueError("旧阶段一调用不能重复传入 area")
+        return _validate_stage1_context_layers(layers, event_id)
+    return _validate_stage2_context_layers(layers, event_id, area=area)
 
 
 def validate_network(roads_path: Path, spec: NetworkSpec) -> NetworkReport:

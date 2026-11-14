@@ -27,3 +27,9 @@ python -m unittest discover -s tests/unit/r3 -v
 ```
 
 函数只处理本地已登记数据，不下载在线数据，也不会为缺失输入生成占位图层。阶段三的 `build_road_graph`、道路状态更新、路线和重点区算法仍保留为明确占位，不能把阶段一网络检查报告当成阶段三决策结果。
+
+## 阶段二 R3 交接
+
+`validate_context_layers(layers, event_id)` 复用阶段一 `ContextLayers`，检查事件 ID、来源/许可/观测日期、文件可读性、CRS、几何类型、对象 ID 及范围；可选 `area=StudyArea(...)` 才能核验当前事件研究区的空间覆盖。缺少边界时报告 `event_coverage=warning`，不得声称已核验覆盖。阶段一旧调用 `validate_context_layers(layers, area)` 继续可用。
+
+命令行入口及涿州本机复核结果见 [R3 阶段二交付说明](../../../../docs/R3_STAGE2_DELIVERY.md)。无来源日期的底图保持警告，不会臆造日期。涿州底图不能直接用于另一个 xBD 事件；必须登记对应事件的建筑/道路图层。
