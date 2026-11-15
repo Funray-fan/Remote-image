@@ -1,0 +1,41 @@
+{
+  "schema_version": "1.0",
+  "dataset_name": "r1_screened_input_handoff_v2",
+  "review_date": "2026-11-15",
+  "source": {
+    "name": "xBD",
+    "url": "https://huggingface.co/datasets/aryananand/xBD",
+    "revision": "b98724026e844e1fccd879c95e9f09f03c56e6f8",
+    "license": "CC BY-NC-SA 3.0",
+    "license_url": "https://creativecommons.org/licenses/by-nc-sa/3.0/",
+    "sampling_unit": "paired_scene",
+    "sampled_pairs": 320,
+    "source_files": 1280,
+    "source_bytes": 1003620586,
+    "full_local_source_manifest_sha256": "87a08035664e855569c935f2058ebdd1b98639a17bf1ec989f4206661631d2cf",
+    "file_level_records_public": false,
+    "file_level_records_rationale": "Keep held-out test scene identifiers and per-file records out of the public handoff."
+  },
+  "screening": {
+    "paired_scenes_screened": 320,
+    "pairs_prepared_for_contract_review": 280,
+    "pairs_released_for_model_use": 0,
+    "pairs_quarantined": 320,
+    "registration_insufficient_evidence": 317,
+    "registration_misaligned": 3,
+    "time_slices_with_label_derived_transform": 562,
+    "time_slices_unresolved": 78,
+    "absolute_positional_accuracy": "unknown",
+    "human_scope_acceptance": "pending",
+    "downstream_receipt": "pending",
+    "final_r1_acceptance": false
+  },
+  "publication": {
+    "imagery_included": false,
+    "labels_included": false,
+    "geospatial_outputs_included": false,
+    "model_weights_included": false,
+    "runtime_outputs_included": false,
+    "local_evidence_reference": "outputs/xbd_expanded/r1_handoff_v2/"
+  }
+}
