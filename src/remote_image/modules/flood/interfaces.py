@@ -4,7 +4,7 @@ from collections.abc import Sequence
 from pathlib import Path
 
 from remote_image.core.contracts import (
-    ContextLayers, ExposureReport, FloodContext, FloodOptions, FloodRequest,
+    ContextLayers, DamageResult, ExposureReport, FloodContext, FloodOptions, FloodRequest,
     FloodResult, PreparedInputs, RasterAsset, ReviewQAReport, ReviewResult,
     ReviewSpec, ReviewTemplate, SpatialQAReport, ThresholdReport,
 )
@@ -30,8 +30,12 @@ def summarize_exposure(flood: FloodResult, layers: ContextLayers, area_crs: str)
     return implementation(flood, layers, area_crs)
 
 
-def check_damage_geography(result, buildings: Path, tile_index: Path, area_crs: str) -> SpatialQAReport:
-    raise NotImplementedError("R2: 检查逐建筑结果、ID、空间偏移和切片边缘")
+def check_damage_geography(
+    result: DamageResult, buildings: Path, tile_index: Path,
+    expected_crs: str, match_tolerance_m: float, output_dir: Path,
+) -> SpatialQAReport:
+    from .damage_geography import check_damage_geography as implementation
+    return implementation(result, buildings, tile_index, expected_crs, match_tolerance_m, output_dir)
 
 
 def create_review_layer(ortho: RasterAsset, buildings: Path, roads: Path | None, spec: ReviewSpec, output_path: Path) -> ReviewTemplate:
