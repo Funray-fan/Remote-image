@@ -14,3 +14,5 @@
 ## 真实训练结果何时加入
 
 阶段二模型形成后，C2 另行提交模型 manifest、独立测试集评估报告和一个小型真实推理样例。真实样例只能证明模型实现与性能，不能临时改变公共键名和类别枚举；确需改变时走 schema 版本升级流程。
+
+C1 的 v2 合成加载/推理样例位于 `tests/fixtures/stage2_synthetic/`，测试适配器位于 `tests/integration/stage2_adapter.py`。这些文件只验证模型包和交接边界。
