@@ -69,3 +69,16 @@ class MyDamageModel(DamageModel):
 
 详细的目录归属、分支命名、禁止上传内容和 Pull Request 验收规则见 [CONTRIBUTING.md](CONTRIBUTING.md) 与 [GitHub 协作说明](docs/GITHUB_COLLABORATION.md)。`main` 只保存可运行版本，成员不得直接向 `main` 推送个人开发内容。冻结契约见 [docs/contract](docs/contract/README.md)。
 
+## C1 第二阶段模型接入
+
+C1 已提供模型清单加载、注册、参数合并和结果契约校验：
+
+```python
+from remote_image.workflows.damage import load_model, register_model, run_damage
+
+adapter = load_model("models/manifests/damage_model.json", device="cpu")
+register_model(adapter.name, adapter)
+damage_result = run_damage(request, options)
+```
+
+manifest 字段、适配器工厂签名、参数优先级和错误码见 [C1 第二阶段说明](docs/contract/C1_STAGE2.md)。合成验收只使用 `tests/fixtures/contracts/` 和 `tests/support/stage2_adapter.py`，不要求真实训练权重。

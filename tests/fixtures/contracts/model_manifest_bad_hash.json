@@ -1,0 +1,45 @@
+{
+  "schema_version": "1.0",
+  "model_name": "fixture_damage_model",
+  "model_version": "1.0.0",
+  "task": "building_damage",
+  "adapter_entrypoint": "tests.support.stage2_adapter:build_fixture_model",
+  "weights": [
+    {
+      "path": "tests/fixtures/contracts/model_weight.placeholder",
+      "sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+    }
+  ],
+  "input": {
+    "bands": ["VV"],
+    "pre_event_required": false,
+    "pixel_size_m": {"min": 0.1, "max": 10.0},
+    "normalization": {"method": "none", "parameters": {}}
+  },
+  "inference_defaults": {
+    "tile_size_px": 256,
+    "overlap_ratio": 0.25,
+    "confidence_threshold": 0.5,
+    "device": "cpu",
+    "batch_size": 2
+  },
+  "inference_limits": {
+    "allowed_devices": ["cpu", "cuda"],
+    "tile_size_px": {"min": 128, "max": 4096},
+    "overlap_ratio": {"min": 0.0, "max": 0.75},
+    "confidence_threshold": {"min": 0.0, "max": 1.0},
+    "batch_size": {"min": 1, "max": 8}
+  },
+  "class_map": {
+    "0": "no-damage",
+    "1": "minor-damage",
+    "2": "major-damage",
+    "3": "destroyed",
+    "4": "un-classified"
+  },
+  "dependencies": {
+    "python": ">=3.10",
+    "packages": []
+  },
+  "license_id": "synthetic-fixture-only"
+}

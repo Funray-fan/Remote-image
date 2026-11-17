@@ -18,3 +18,4 @@
 
 - [v1.4 Word 源文件](workflow-contract-v1.4.docx)
 - [v1.4 PDF 阅读版](workflow-contract-v1.4.pdf)
+- [C1 第二阶段模型加载与推理](C1_STAGE2.md)

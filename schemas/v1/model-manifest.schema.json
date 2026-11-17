@@ -1,0 +1,172 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/Funray-fan/Remote-image/schemas/v1/model-manifest.schema.json",
+  "title": "ModelManifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "model_name",
+    "model_version",
+    "task",
+    "adapter_entrypoint",
+    "weights",
+    "input",
+    "inference_defaults",
+    "inference_limits",
+    "class_map",
+    "dependencies",
+    "license_id"
+  ],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "model_name": {"type": "string", "minLength": 1},
+    "model_version": {"type": "string", "minLength": 1},
+    "task": {"enum": ["building_damage", "building_segmentation"]},
+    "adapter_entrypoint": {
+      "type": "string",
+      "pattern": "^[A-Za-z_][A-Za-z0-9_.]*:[A-Za-z_][A-Za-z0-9_]*$"
+    },
+    "weights": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["path", "sha256"],
+        "properties": {
+          "path": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "^(?!/)(?![A-Za-z]:)(?!.*(?:^|/)\\.\\.(?:/|$))[^:]+$"
+          },
+          "sha256": {"type": "string", "pattern": "^[a-fA-F0-9]{64}$"}
+        }
+      }
+    },
+    "input": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["bands", "pre_event_required", "pixel_size_m", "normalization"],
+      "properties": {
+        "bands": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {"type": "string", "minLength": 1}
+        },
+        "pre_event_required": {"type": "boolean"},
+        "pixel_size_m": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["min", "max"],
+          "properties": {
+            "min": {"type": "number", "minimum": 0},
+            "max": {"type": "number", "exclusiveMinimum": 0}
+          }
+        },
+        "normalization": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["method", "parameters"],
+          "properties": {
+            "method": {"enum": ["none", "min_max", "z_score", "custom"]},
+            "parameters": {"type": "object"}
+          }
+        }
+      }
+    },
+    "inference_defaults": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "tile_size_px",
+        "overlap_ratio",
+        "confidence_threshold",
+        "device",
+        "batch_size"
+      ],
+      "properties": {
+        "tile_size_px": {"type": "integer", "minimum": 1},
+        "overlap_ratio": {
+          "type": "number",
+          "minimum": 0,
+          "exclusiveMaximum": 1
+        },
+        "confidence_threshold": {"type": "number", "minimum": 0, "maximum": 1},
+        "device": {"type": "string", "minLength": 1},
+        "batch_size": {"type": "integer", "minimum": 1}
+      }
+    },
+    "inference_limits": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "allowed_devices",
+        "tile_size_px",
+        "overlap_ratio",
+        "confidence_threshold",
+        "batch_size"
+      ],
+      "properties": {
+        "allowed_devices": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {"type": "string", "minLength": 1}
+        },
+        "tile_size_px": {"$ref": "#/$defs/integerRange"},
+        "overlap_ratio": {"$ref": "#/$defs/numberRange"},
+        "confidence_threshold": {"$ref": "#/$defs/numberRange"},
+        "batch_size": {"$ref": "#/$defs/integerRange"}
+      }
+    },
+    "class_map": {
+      "type": "object",
+      "minProperties": 1,
+      "propertyNames": {"pattern": "^[0-9]+$"},
+      "additionalProperties": {
+        "enum": [
+          "no-damage",
+          "minor-damage",
+          "major-damage",
+          "destroyed",
+          "un-classified"
+        ]
+      }
+    },
+    "dependencies": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["python", "packages"],
+      "properties": {
+        "python": {"type": "string", "minLength": 1},
+        "packages": {
+          "type": "array",
+          "items": {"type": "string", "minLength": 1}
+        }
+      }
+    },
+    "license_id": {"type": "string", "minLength": 1}
+  },
+  "$defs": {
+    "integerRange": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["min", "max"],
+      "properties": {
+        "min": {"type": "integer"},
+        "max": {"type": "integer"}
+      }
+    },
+    "numberRange": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["min", "max"],
+      "properties": {
+        "min": {"type": "number"},
+        "max": {"type": "number"}
+      }
+    }
+  }
+}

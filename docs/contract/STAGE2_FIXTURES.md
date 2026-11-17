@@ -14,3 +14,4 @@
 ## 真实训练结果何时加入
 
 阶段二模型形成后，C2 另行提交模型 manifest、独立测试集评估报告和一个小型真实推理样例。真实样例只能证明模型实现与性能，不能临时改变公共键名和类别枚举；确需改变时走 schema 版本升级流程。
+- C1 使用 `model_manifest_valid.json` 校验 manifest，并通过 `tests/support/stage2_adapter.py` 的合成工厂完成加载、注册、参数合并和结果校验。

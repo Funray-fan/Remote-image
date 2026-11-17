@@ -83,6 +83,39 @@ class InferenceOptions:
 
 
 @dataclass(frozen=True)
+class ModelWeight:
+    path: Path
+    sha256: str
+
+
+@dataclass(frozen=True)
+class ModelInputSpec:
+    bands: tuple[str, ...]
+    pre_event_required: bool
+    pixel_size_m_min: float
+    pixel_size_m_max: float
+    normalization_method: str
+    normalization_parameters: dict[str, JSONValue] = field(default_factory=dict)
+
+
+@dataclass(frozen=True)
+class ModelManifest:
+    schema_version: str
+    model_name: str
+    model_version: str
+    task: DamageTask
+    adapter_entrypoint: str
+    weights: tuple[ModelWeight, ...]
+    input_spec: ModelInputSpec
+    inference_defaults: InferenceOptions
+    inference_limits: dict[str, JSONValue]
+    class_map: dict[int, DamageClass]
+    dependencies: dict[str, JSONValue]
+    license_id: str
+    manifest_path: Path
+
+
+@dataclass(frozen=True)
 class OrthomosaicRequest:
     event_id: str
     study_area: StudyArea
