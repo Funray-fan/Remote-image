@@ -14,6 +14,7 @@
 - [三阶段数据条件](DATA_READINESS.md)
 - [阶段出口清单和结果清单模板](STAGE_EXIT_CHECKLIST.md)
 - [阶段二合成 fixture 说明](STAGE2_FIXTURES.md)
+- [C1 第二阶段模型加载与推理](C1_STAGE2.md)
 
 历史版本：
 

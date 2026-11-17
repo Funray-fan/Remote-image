@@ -1,0 +1,62 @@
+{
+  "schema_version": "2.0",
+  "model_name": "fixture_damage_model",
+  "model_version": "2.0.0",
+  "task": "building_damage",
+  "weights_path": "tests/fixtures/stage2_synthetic/model_weight.placeholder",
+  "weights_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+  "input_spec": {
+    "sensors": ["satellite"],
+    "bands": ["R", "G", "B"],
+    "pixel_size_min_m": 0.1,
+    "pixel_size_max_m": 2.0,
+    "requires_pre_event": false,
+    "normalization": {},
+    "tile_size_px": 256,
+    "nodata_policy": "mask_and_ignore"
+  },
+  "inference_defaults": {
+    "tile_size_px": 256,
+    "overlap_ratio": 0.2,
+    "confidence_threshold": 0.5,
+    "device": "cpu",
+    "batch_size": 2
+  },
+  "inference_limits": {
+    "tile_size_min_px": 128,
+    "tile_size_max_px": 512,
+    "allowed_tile_sizes_px": [128, 256, 512],
+    "overlap_ratio_max": 0.75,
+    "confidence_threshold_min": 0.0,
+    "confidence_threshold_max": 1.0,
+    "allowed_devices": ["cpu", "cuda"],
+    "batch_size_max": 8
+  },
+  "object_aggregation": {
+    "geometry_source": "model_localization",
+    "id_rule": "model_stable_id",
+    "background_code": 255,
+    "damage_class_map": {
+      "0": "no-damage",
+      "1": "minor-damage",
+      "2": "major-damage",
+      "3": "destroyed",
+      "4": "un-classified"
+    },
+    "confidence_definition": "mean_class_probability",
+    "low_confidence_policy": "un-classified",
+    "tile_merge_rule": "mean_probability_over_valid_overlap",
+    "empty_pixel_policy": "un-classified_null_confidence_with_reason"
+  },
+  "class_map": {
+    "0": "no-damage",
+    "1": "minor-damage",
+    "2": "major-damage",
+    "3": "destroyed",
+    "4": "un-classified"
+  },
+  "dependencies": {
+    "python": ">=3.10"
+  },
+  "evaluation_path": "tests/fixtures/stage2_synthetic/evaluation.json"
+}
