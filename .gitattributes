@@ -1,0 +1,2 @@
+# Keep the synthetic placeholder's bytes stable for the ModelManifest SHA-256 check.
+tests/fixtures/stage2_synthetic/model_weight.placeholder -text
