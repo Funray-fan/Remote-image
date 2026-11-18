@@ -31,6 +31,10 @@ from remote_image.modules.visualization.stage2 import (
     render_damage_layer,
     show_building_detail,
 )
+from remote_image.modules.visualization.context import load_context_view
+from remote_image.modules.visualization.spatial_qa import load_spatial_qa_view
+from remote_image.modules.visualization.model_evidence import load_model_evidence
+from remote_image.core.errors import PipelineError
 
 
 REPOSITORY_ROOT = Path(__file__).resolve().parents[1]
@@ -212,20 +216,58 @@ def show_stage1() -> None:
 def show_stage2() -> None:
     st.title("建筑灾损评估地图")
     st.caption("阶段二 · 光学遥感逐建筑结果 · 离线展示")
+    qa_panel = st.container()
     with st.sidebar:
         st.header("阶段二数据")
-        sample = st.radio("数据来源", ["合成演示", "本地推理结果"]) == "合成演示"
-        if sample:
+        source = st.radio("数据来源", ["合成演示", "本地推理结果", "C1 合成联调"])
+        sample = source == "合成演示"
+        runtime_demo = source == "C1 合成联调"
+        model_value = ""
+        if sample or runtime_demo:
             result_path = STAGE2_FIXTURE / "damage_result.json"
             optics = str((STAGE2_FIXTURE / "layer_manifest.json").relative_to(REPOSITORY_ROOT))
             flood = str(DEFAULT_MANIFEST.relative_to(REPOSITORY_ROOT))
             qa_path = None
+            context_value = str(STAGE2_FIXTURE / "context_layers.json")
+            context_qa_value = ""
+            review_warning = False
+            if runtime_demo:
+                from remote_image.core.contracts import InferenceOptions
+                from remote_image.workflows.c3_stage2_demo import run_synthetic_handoff
+
+                st.warning("合成调用链：使用占位权重和已知标签，不是真实模型推理。")
+                tile_size = st.selectbox("联调切片尺寸", [128, 256, 512], index=1)
+                batch_size = st.number_input("联调批大小", min_value=1, max_value=8, value=2)
+                if st.button("运行 C1→R2→C3 合成联调"):
+                    try:
+                        with st.spinner("校验模型包并运行合成调用链…"):
+                            demo_path = run_synthetic_handoff(REPOSITORY_ROOT,
+                                InferenceOptions(tile_size_px=tile_size, batch_size=int(batch_size)))
+                        st.session_state["c1_demo_result"] = str(demo_path)
+                    except PipelineError as exc:
+                        st.error(f"C1 错误 [{exc.code.value}]：{exc.message}")
+                        st.json(exc.to_dict())
+                        return
+                    except (OSError, ValueError) as exc:
+                        st.error(f"合成联调失败：{exc}")
+                        return
+                if "c1_demo_result" not in st.session_state:
+                    st.info("点击运行后，展示 C1 实际返回并经 R2 检查的合成结果。")
+                    return
+                result_path = _safe_path(st.session_state["c1_demo_result"], REPOSITORY_ROOT)
+                qa_path = result_path.parent / "spatial_qa.json"
+                model_value = str(STAGE2_FIXTURE / "model_manifest.json")
+                st.caption(f"本次结果：{result_path.relative_to(REPOSITORY_ROOT)}")
         else:
             st.caption("路径相对于仓库根目录。先由上游完成模型推理和空间质检。")
             value = st.text_input("逐建筑结果 DamageResult 路径", placeholder="outputs/事件/stage2/damage_result.json")
             qa = st.text_input("空间质检路径", placeholder="默认读取结果同目录的 spatial_qa.json")
+            review_warning = st.checkbox("复核模式：允许查看 R2 warning 结果", value=False)
             optics = st.text_input("光学影像清单路径（可选）", placeholder="outputs/事件/stage2/layer_manifest.json")
             flood = st.text_input("洪水图层清单路径（可选）", placeholder="outputs/事件/stage1/layer_manifest.json")
+            context_value = st.text_input("R3 背景图层 ContextLayers 路径（可选）")
+            context_qa_value = st.text_input("R3 背景复核报告路径（可选）", placeholder="默认读取背景清单同目录 context_qa.json")
+            model_value = st.text_input("C1 ModelManifest 路径（可选）", placeholder="models/模型/model_manifest.json")
             if not value.strip():
                 st.info("输入逐建筑结果路径后即可查看建筑损毁。")
                 return
@@ -236,8 +278,42 @@ def show_stage2() -> None:
                 st.error(str(exc))
                 return
 
+        report_path = qa_path or result_path.parent / "spatial_qa.json"
+        if report_path.is_file() or qa_path is not None:
+            with qa_panel:
+                with st.expander("R2 灾损空间质检与疑点", expanded=True):
+                    try:
+                        qa_view = load_spatial_qa_view(report_path, allowed_root=REPOSITORY_ROOT)
+                        report = qa_view.report
+                        {"pass": st.success, "warning": st.warning, "fail": st.error}[report["status"]](
+                            f"R2 空间质检：{report['status']}")
+                        st.caption("空间检查不代表模型准确率。此报告未包含事件 ID 或输入哈希，须由交付方确认对应当前结果；疑点地图独立展示。")
+                        st.table([
+                            {"检查项": item["name"], "状态": item["status"],
+                             "数量/实际值": json.dumps(item["actual"], ensure_ascii=False), "说明": item["message"]}
+                            for item in report["checks"]
+                        ])
+                        st.json(report["metrics"])
+                        for warning in report["warnings"]:
+                            st.warning(warning)
+                        st.download_button("下载 R2 质检报告", qa_view.report_path.read_bytes(),
+                                           file_name="spatial_qa.json", mime="application/json")
+                        if qa_view.samples_path:
+                            st.download_button("下载 R2 疑点清单", qa_view.samples_path.read_bytes(),
+                                               file_name="suspect_samples.csv", mime="text/csv")
+                        if qa_view.suspect_layer:
+                            st.caption("R2 交付的疑点位置（紫色为待复核，红色为失败）；不作为正式灾损图层。")
+                            _show_map(render_map([qa_view.suspect_layer], [qa_view.suspect_layer.id],
+                                vector_features={qa_view.suspect_layer.id: qa_view.features}, interactive=True))
+                            st.table([feature["properties"] for feature in qa_view.features])
+                        else:
+                            st.info("报告未提供可显示的疑点几何；请结合检查项和 CSV 复核。")
+                    except (OSError, VisualizationInputError) as exc:
+                        st.error(f"R2 复核材料无法完整读取：{exc}")
+
         try:
-            result = load_damage_result(result_path, allowed_root=REPOSITORY_ROOT, spatial_qa_path=qa_path)
+            result = load_damage_result(result_path, allowed_root=REPOSITORY_ROOT, spatial_qa_path=qa_path,
+                                        allow_warning_review=review_warning)
         except (OSError, VisualizationInputError) as exc:
             st.error(str(exc))
             return
@@ -247,6 +323,18 @@ def show_stage2() -> None:
         st.caption("此阈值只筛选展示和查询，原始预测保持不变。未知置信度仅在阈值为 0 时显示。")
         handle = DamageMapHandle(result.event_id)
         context_notes = []
+        context_view = None
+        if context_value.strip():
+            try:
+                context_view = load_context_view(
+                    _safe_path(context_value.strip(), REPOSITORY_ROOT),
+                    event_id=result.event_id, study_area_id=result.study_area_id,
+                    allowed_root=REPOSITORY_ROOT,
+                    qa_path=_safe_path(context_qa_value.strip(), REPOSITORY_ROOT) if context_qa_value.strip() else None,
+                )
+                handle.layers.extend(context_view.layers)
+            except (OSError, VisualizationInputError) as exc:
+                context_notes.append(f"R3 背景图层未叠加：{exc}")
         has_optical_raster = False
         for prefix, name, value in (("optical", "光学影像", optics), ("flood", "洪水", flood)):
             if not value.strip():
@@ -290,10 +378,57 @@ def show_stage2() -> None:
 
     if result.synthetic:
         st.warning("合成演示：影像、建筑位置、损毁标签及置信度均用于验证界面，不代表真实灾情或模型精度。")
+    if result.review_only:
+        st.warning("人工复核模式：R2 状态为 warning，当前损毁结果尚未通过正式空间验收。")
     for note in context_notes:
         st.info(note)
     for warning in result.warnings:
         st.warning(warning)
+
+    with st.expander("C1 模型包与推理记录", expanded=bool(model_value)):
+        st.caption(f"模型：{result.model_name} · {result.model_version}")
+        st.caption("输入资产：" + "、".join(result.input_asset_ids))
+        effective_options = result.parameters.get("inference_options")
+        if effective_options is not None:
+            st.write("结果记录的有效推理参数")
+            st.json(effective_options)
+            st.caption("地图显示置信度下限仅筛选展示，不改变模型推理参数或原始预测。")
+        else:
+            st.info("结果未记录有效推理参数。")
+        if model_value.strip():
+            try:
+                evidence = load_model_evidence(_safe_path(model_value.strip(), REPOSITORY_ROOT), result,
+                                               allowed_root=REPOSITORY_ROOT)
+                st.success("C1 模型包校验通过：文件、权重 SHA-256、名称/版本和类别映射匹配。")
+                st.caption("校验包完整性与身份不代表模型效果达标，也不证明该结果由此权重生成。")
+                st.json({key: evidence[key] for key in ("weights_sha256", "input_spec", "class_map",
+                    "inference_defaults", "inference_limits", "object_aggregation", "evaluation_path")})
+            except PipelineError as exc:
+                st.error(f"C1 错误 [{exc.code.value}]：{exc.message}")
+                st.json(exc.to_dict())
+            except (OSError, VisualizationInputError) as exc:
+                st.error(f"模型包与结果无法关联：{exc}")
+        else:
+            st.info("未提供模型包；当前仅展示结果声明的模型版本。")
+
+    with st.expander("R3 背景图层复核与来源", expanded=context_view is not None):
+        if context_view is None:
+            st.info("尚未加载当前事件的 R3 背景图层复核；R2 灾损空间质检单独读取。")
+        else:
+            if context_view.report is not None:
+                status = context_view.report["status"]
+                {"pass": st.success, "warning": st.warning, "fail": st.error}[status](f"R3 背景复核：{status}")
+                st.table([
+                    {"检查项": item["name"], "状态": item["status"],
+                     "预期": json.dumps(item["expected"], ensure_ascii=False),
+                     "实际": json.dumps(item["actual"], ensure_ascii=False), "说明": item["message"]}
+                    for item in context_view.report["checks"]
+                ])
+                st.caption("复核指标（范围为原图层 CRS；相交不代表完整覆盖）")
+                st.json(context_view.report["metrics"])
+            st.table(list(context_view.sources))
+            for notice in context_view.notices:
+                st.warning(notice)
 
     map_col, detail_col = st.columns([2, 1])
     with map_col:

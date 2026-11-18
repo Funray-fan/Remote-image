@@ -27,11 +27,13 @@ def query_feature(event_id: str, layer_id: str, feature_id: str) -> FeatureDetai
 
 
 def render_damage_layer(event_id: str, result: DamageResult, handle: MapHandle, confidence_display_threshold: float) -> LayerId:
-    raise NotImplementedError("C3: 按类别和置信度显示逐建筑结果")
+    from .public_stage2 import render_damage_layer as render
+    return render(event_id, result, handle, confidence_display_threshold)
 
 
 def show_building_detail(event_id: str, layer_id: str, building_id: str) -> FeatureDetail:
-    raise NotImplementedError("C3: 显示建筑损毁类别、置信度和模型版本")
+    from .public_stage2 import show_building_detail as detail
+    return detail(event_id, layer_id, building_id)
 
 
 def render_orthomosaic(asset: RasterAsset, handle: MapHandle) -> LayerId:

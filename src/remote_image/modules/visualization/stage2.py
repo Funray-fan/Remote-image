@@ -39,6 +39,10 @@ class DamageMapResult:
     input_asset_ids: tuple[str, ...]
     warnings: tuple[str, ...]
     synthetic: bool
+    study_area_id: str | None = None
+    spatial_qa: dict[str, Any] | None = None
+    review_only: bool = False
+    parameters: dict[str, Any] = field(default_factory=dict)
 
 
 @dataclass
@@ -82,12 +86,22 @@ def _validate_v2(name: str, data: dict[str, Any]) -> None:
 
 
 def load_damage_result(
-    path: Path, *, allowed_root: Path, spatial_qa_path: Path | None = None
+    path: Path, *, allowed_root: Path, spatial_qa_path: Path | None = None,
+    allow_warning_review: bool = False,
 ) -> DamageMapResult:
     """Load a standard DamageResult; require R2 QA for non-fixture results."""
     root = allowed_root.resolve()
     path = _local_file(path, root, root)
     data = _read_json(path)
+    return _load_damage_payload(data, base=path.parent, root=root, spatial_qa_path=spatial_qa_path,
+                                allow_warning_review=allow_warning_review)
+
+
+def _load_damage_payload(
+    data: dict[str, Any], *, base: Path, root: Path, spatial_qa_path: Path | None = None,
+    allow_warning_review: bool = False,
+) -> DamageMapResult:
+    """Shared boundary for serialized files and public DamageResult objects."""
     version = data.get("schema_version")
     if version == "2.0":
         _validate_v2("DamageResult", data)
@@ -111,20 +125,25 @@ def load_damage_result(
         or not isinstance(warnings, list) or not all(isinstance(item, str) for item in warnings)
     ):
         raise VisualizationInputError("DamageResult 的输入资产或告警字段无效")
-    vector = _local_file(artifacts["damage_vector"], path.parent, root)
-    _local_file(artifacts.get("tile_index"), path.parent, root)
-    metadata = _read_json(_local_file(artifacts.get("metadata"), path.parent, root))
+    vector = _local_file(artifacts["damage_vector"], base, root)
+    _local_file(artifacts.get("tile_index"), base, root)
+    metadata = _read_json(_local_file(artifacts.get("metadata"), base, root))
     parameters = meta.get("parameters")
     synthetic = metadata.get("fixture_only") is True or (
         isinstance(parameters, dict) and parameters.get("fixture_only") is True
     )
-    if not synthetic:
+    qa = None
+    review_only = False
+    if not synthetic or spatial_qa_path is not None:
         qa = _read_json(_local_file(
-            spatial_qa_path or (path.parent / "spatial_qa.json"), root, root
+            spatial_qa_path or (base / "spatial_qa.json"), root, root
         ))
         if version == "2.0":
             _validate_v2("SpatialQAReport", qa)
-        if qa.get("status") != "pass":
+        if any(item.get("status") == "fail" for item in qa.get("checks", [])):
+            raise VisualizationInputError("空间质检包含失败检查，不能加载损毁结果")
+        review_only = qa.get("status") == "warning" and allow_warning_review
+        if qa.get("status") != "pass" and not review_only:
             raise VisualizationInputError("空间质检状态须为 pass，当前结果不能正式展示")
         if qa.get("event_id", event_id) != event_id:
             raise VisualizationInputError("空间质检与损毁结果的事件 ID 不一致")
@@ -178,7 +197,8 @@ def load_damage_result(
             raise VisualizationInputError(f"建筑 {building_id} 的坐标无效或不是经纬度")
         features[building_id] = feature
     return DamageMapResult(
-        event_id, model_name, model_version, vector, features, tuple(asset_ids), tuple(warnings), synthetic
+        event_id, model_name, model_version, vector, features, tuple(asset_ids), tuple(warnings), synthetic,
+        meta.get("study_area_id"), qa, review_only, dict(parameters or {}),
     )
 
 

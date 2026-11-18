@@ -1,0 +1,35 @@
+{
+  "schema_version": "2.0",
+  "status": "warning",
+  "checks": [
+    {
+      "name": "event_id",
+      "status": "pass",
+      "expected": "demo-flood-2023",
+      "actual": "demo-flood-2023",
+      "message": "合成联调事件一致"
+    },
+    {
+      "name": "sources.event_id",
+      "status": "pass",
+      "expected": "demo-flood-2023",
+      "actual": "demo-flood-2023",
+      "message": "合成联调事件一致"
+    },
+    {
+      "name": "event_coverage",
+      "status": "warning",
+      "expected": "当前事件研究区边界",
+      "actual": null,
+      "message": "合成界面样例未检查研究区覆盖"
+    }
+  ],
+  "metrics": {},
+  "warnings": [
+    "合成报告仅验证 C3 展示，不代表 R3 真实复核。",
+    "缺少人口图层，人口暴露保持未知。"
+  ],
+  "artifacts": {
+    "context_layers": "context_layers.json"
+  }
+}

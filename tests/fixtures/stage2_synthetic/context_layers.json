@@ -1,0 +1,30 @@
+{
+  "schema_version": "2.0",
+  "event_id": "demo-flood-2023",
+  "study_area_id": "demo-area",
+  "target_crs": "EPSG:4326",
+  "created_at": "2026-11-16T00:00:00Z",
+  "layers": {
+    "buildings": "../stage1_synthetic/buildings.geojson",
+    "roads": "../stage1_synthetic/roads.geojson"
+  },
+  "sources": {
+    "event_id": "demo-flood-2023",
+    "layers": {
+      "buildings": {
+        "path": "../stage1_synthetic/buildings.geojson",
+        "source": "C3 synthetic fixture; not real event data",
+        "date": null,
+        "license_id": "CC0-1.0",
+        "id_field": "feature_id"
+      },
+      "roads": {
+        "path": "../stage1_synthetic/roads.geojson",
+        "source": "C3 synthetic fixture; not real event data",
+        "date": null,
+        "license_id": "CC0-1.0",
+        "id_field": "feature_id"
+      }
+    }
+  }
+}
